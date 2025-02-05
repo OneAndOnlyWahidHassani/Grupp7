@@ -84,6 +84,7 @@ public class ChooseDimension extends Pane {
         tenByTenView.setTranslateX(275);
         tenByTenView.setTranslateY(200);
         tenByTenView.toFront();
+        tenByTenView.setPickOnBounds(true);
         tenByTenView.setOnMouseEntered(e -> {
             tenByTenView.setImage(tenByTenResize);
             tenByTenView.setTranslateX(273);
@@ -108,6 +109,7 @@ public class ChooseDimension extends Pane {
         fourteenView.setTranslateX(275);
         fourteenView.setTranslateY(250);
         fourteenView.toFront();
+        fourteenView.setPickOnBounds(true);
         fourteenView.setOnMouseEntered(e -> {
             fourteenView.setImage(fourteenResize);
             fourteenView.setTranslateX(273);
@@ -132,6 +134,7 @@ public class ChooseDimension extends Pane {
         eighteenView.setTranslateX(275);
         eighteenView.setTranslateY(300);
         eighteenView.toFront();
+        eighteenView.setPickOnBounds(true);
         eighteenView.setOnMouseEntered(e -> {
             eighteenView.setImage(eighteenResize);
             eighteenView.setTranslateX(273);
@@ -156,6 +159,7 @@ public class ChooseDimension extends Pane {
         painView.setTranslateX(275);
         painView.setTranslateY(350);
         painView.toFront();
+        painView.setPickOnBounds(true);
         painView.setOnMouseEntered(e -> {
             painView.setImage(painResize);
             painView.setTranslateX(273);
@@ -180,6 +184,7 @@ public class ChooseDimension extends Pane {
         returnView.setTranslateX(300);
         returnView.setTranslateY(450);
         returnView.toFront();
+        returnView.setPickOnBounds(true);
         returnView.setOnMouseEntered(e -> {
             returnView.setImage(returnResize);
             returnView.setTranslateX(298);
