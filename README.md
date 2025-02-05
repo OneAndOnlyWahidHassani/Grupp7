@@ -1,8 +1,7 @@
-# GitWorkshop2.0
-Grupp 22
+Grupp 7 har tagit över projektet och kommer införa nya ändringar.
 
-Länk till arbetet: 
-https://github.com/AndreEklund/Mazegen
+Tidigare ägare:
+Länk till arbetet-https://github.com/AndreEklund/Mazegen
 
 
 Instruktioner för att köra vårat program.
