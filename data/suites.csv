@@ -1,0 +1,2 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"Get a raw maze","16","getRawMaze()","","Wed Feb 05 15:05:05 UTC 2025","passed","Wed Feb 05 15:05:05 UTC 2025","","model.MazeGeneration.MazeGeneratorTest","model.MazeGeneration.MazeGeneratorTest","getRawMaze"
