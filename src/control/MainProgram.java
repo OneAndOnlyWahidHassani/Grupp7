@@ -116,14 +116,6 @@ public class MainProgram extends Application {
         randomScene.setCursor(new ImageCursor(cursorImage));
     }
 
-    /*private void tempMethod() throws IOException, ClassNotFoundException {
-        FileManager fileManager = new FileManager();
-
-        SaveMapsToFiles save = new SaveMapsToFiles();
-
-        int[][] test = fileManager.read("level11");
-    }*/
-
     /**
      * Byter scen till huvudmenyn.
      */

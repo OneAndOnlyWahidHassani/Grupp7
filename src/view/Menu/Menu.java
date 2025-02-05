@@ -20,6 +20,8 @@ public class Menu extends Pane {
     private Image randomizeResize;
     private Image help;
     private Image helpResize;
+    private Image select;
+    private Image selectResize;
     private Image mazegen;
     private AudioPlayer audioPlayer;
     private RightPanel panel;
@@ -51,6 +53,8 @@ public class Menu extends Pane {
         randomizeResize = new Image("file:files/texts/Randomize.png", 255, 33, false, false);
         help = new Image("file:files/texts/Help.png", 250, 30, false, false);
         helpResize = new Image("file:files/texts/Help.png", 255, 33, false, false);
+        select = new Image("file:files/texts/Select.png", 250, 30, false, false);
+        selectResize = new Image("file:files/texts/Select.png", 255, 33, false, false);
     }
 
     /**
@@ -99,6 +103,27 @@ public class Menu extends Pane {
             }
         });
 
+        ImageView selectView = new ImageView(select);
+        selectView.setStyle("fx-background-color: transparent;");
+        selectView.setTranslateX(275);
+        selectView.setTranslateY(250);
+        selectView.toFront();
+        selectView.setPickOnBounds(true);
+        selectView.setOnMouseEntered(e -> {
+            selectView.setImage(selectResize);
+            selectView.setTranslateX(273);
+            selectView.setTranslateY(247);
+        });
+        selectView.setOnMouseExited(e -> {
+            selectView.setImage(randomize);
+            selectView.setTranslateX(275);
+            selectView.setTranslateY(250);
+        });
+        selectView.setOnMouseClicked(e -> {
+            mainProgram.chooseDimension();
+            audioPlayer.playButtonSound();
+        });
+
         ImageView randomizeView = new ImageView(randomize);
         randomizeView.setStyle("fx-background-color: transparent;");
         randomizeView.setTranslateX(275);
@@ -141,7 +166,7 @@ public class Menu extends Pane {
             audioPlayer.playButtonSound();
         });
 
-        this.getChildren().addAll(campaignView,randomizeView,helpView,mazegenView);
+        this.getChildren().addAll(campaignView,randomizeView,selectView, helpView,mazegenView);
     }
 
 }
