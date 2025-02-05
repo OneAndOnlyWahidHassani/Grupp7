@@ -13,6 +13,8 @@ import javafx.stage.Stage;
 import model.Maps.*;
 
 import model.MazeGeneration.GenerateNextLevel;
+import model.ReaderWriter.FileManager;
+import model.ReaderWriter.SaveMapsToFiles;
 import view.AudioPlayer;
 import view.Campaign.*;
 import view.GameOverScreen;
@@ -23,6 +25,7 @@ import view.WorldIntroAnimation;
 
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * @author André Eklund
@@ -112,6 +115,14 @@ public class MainProgram extends Application {
         helpScene.setCursor(new ImageCursor(cursorImage));
         randomScene.setCursor(new ImageCursor(cursorImage));
     }
+
+    /*private void tempMethod() throws IOException, ClassNotFoundException {
+        FileManager fileManager = new FileManager();
+
+        SaveMapsToFiles save = new SaveMapsToFiles();
+
+        int[][] test = fileManager.read("level11");
+    }*/
 
     /**
      * Byter scen till huvudmenyn.
