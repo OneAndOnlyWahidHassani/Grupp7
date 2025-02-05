@@ -115,7 +115,7 @@ public class Menu extends Pane {
             selectView.setTranslateY(247);
         });
         selectView.setOnMouseExited(e -> {
-            selectView.setImage(randomize);
+            selectView.setImage(select);
             selectView.setTranslateX(275);
             selectView.setTranslateY(250);
         });
@@ -127,18 +127,18 @@ public class Menu extends Pane {
         ImageView randomizeView = new ImageView(randomize);
         randomizeView.setStyle("fx-background-color: transparent;");
         randomizeView.setTranslateX(275);
-        randomizeView.setTranslateY(250);
+        randomizeView.setTranslateY(300);
         randomizeView.toFront();
         randomizeView.setPickOnBounds(true);
         randomizeView.setOnMouseEntered(e -> {
             randomizeView.setImage(randomizeResize);
             randomizeView.setTranslateX(273);
-            randomizeView.setTranslateY(247);
+            randomizeView.setTranslateY(297);
         });
         randomizeView.setOnMouseExited(e -> {
             randomizeView.setImage(randomize);
             randomizeView.setTranslateX(275);
-            randomizeView.setTranslateY(250);
+            randomizeView.setTranslateY(300);
         });
         randomizeView.setOnMouseClicked(e -> {
             mainProgram.chooseDimension();
@@ -148,18 +148,18 @@ public class Menu extends Pane {
         ImageView helpView = new ImageView(help);
         helpView.setStyle("fx-background-color: transparent;");
         helpView.setTranslateX(275);
-        helpView.setTranslateY(300);
+        helpView.setTranslateY(350);
         helpView.toFront();
         helpView.setPickOnBounds(true);
         helpView.setOnMouseEntered(e -> {
             helpView.setImage(helpResize);
             helpView.setTranslateX(273);
-            helpView.setTranslateY(297);
+            helpView.setTranslateY(347);
         });
         helpView.setOnMouseExited(e -> {
             helpView.setImage(help);
             helpView.setTranslateX(275);
-            helpView.setTranslateY(300);
+            helpView.setTranslateY(350);
         });
         helpView.setOnMouseClicked(e -> {
             mainProgram.changeToHelp();

@@ -68,7 +68,6 @@ public class MainProgram extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         audioPlayer = new AudioPlayer();
         audioPlayer.playIntroMusic();
 
@@ -181,7 +180,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld1Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld1Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         if (level == 1) {
             System.out.println("hello");
@@ -215,7 +214,7 @@ public class MainProgram extends Application {
      * @throws InterruptedException
      */
 
-    public void nextWorld2Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld2Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World2Maps world2Maps = new World2Maps();
 
@@ -255,7 +254,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld3Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld3Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World3Maps world3Maps = new World3Maps();
 
@@ -296,7 +295,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld4Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld4Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World4Maps world4Maps = new World4Maps();
 
@@ -337,7 +336,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld5Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld5Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World5Maps world5Maps = new World5Maps();
 
@@ -378,7 +377,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld6Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld6Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World6Maps world6Maps = new World6Maps();
 
