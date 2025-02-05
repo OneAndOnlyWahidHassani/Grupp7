@@ -40,6 +40,7 @@ public class MainProgram extends Application {
     private Scene menuScene;
     private Scene introScene;
     private Scene helpScene;
+    private Scene highscoreScene;
     private Scene chooseDimensionScene;
     private Scene selectMapScene;
     private Scene selectLevelScene;
@@ -49,6 +50,7 @@ public class MainProgram extends Application {
     private ChooseDimension chooseDimension;
     private SelectWorldMap selectWorldMap;
     private SelectLevel selectLevel;
+    private HighscoreView highscoreView;
     private Scene randomScene;
     private Scene campaignScene;
     private RightPanel rightPanel;
@@ -81,6 +83,7 @@ public class MainProgram extends Application {
         menu = new Menu(this, audioPlayer, rightPanel);
         intro = new Intro(this, audioPlayer);
         help = new Help(this, audioPlayer);
+        highscoreView = new HighscoreView(this, audioPlayer);
         chooseDimension = new ChooseDimension(this, audioPlayer);
         selectWorldMap = new SelectWorldMap(this, audioPlayer);
         selectLevel = new SelectLevel(this, audioPlayer, 1);
@@ -90,6 +93,7 @@ public class MainProgram extends Application {
         selectMapScene = new Scene(selectWorldMap, 800, 600);
         selectLevelScene = new Scene(selectLevel, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
+        highscoreScene = new Scene(highscoreView, 800, 600);
 
         mainPaneRandomMaze = new BorderPane();
         mainPaneCampaign = new BorderPane();
@@ -184,6 +188,11 @@ public class MainProgram extends Application {
         mainWindow.setScene(helpScene);
     }
 
+    public void showHighscore()
+    {
+        mainWindow.setScene(highscoreScene);
+    }
+
     /**
      * Vid gameOver körs denna metod.
      * Kör en enkel animation med texten "Game Over".
@@ -204,7 +213,6 @@ public class MainProgram extends Application {
     public void nextWorld1Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         if (level == 1) {
-            System.out.println("hello");
             rightPanel.changeLevelCounter("12");
             mainPaneCampaign.setCenter(new World1Template(world1Maps.getLevel12(), 2, heartCrystals, this, rightPanel, 0, audioPlayer, 25));
 
@@ -234,7 +242,6 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-
     public void nextWorld2Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World2Maps world2Maps = new World2Maps();

@@ -22,6 +22,9 @@ public class Menu extends Pane {
     private Image helpResize;
     private Image select;
     private Image selectResize;
+
+    private Image highscore;
+    private Image highscoreResize;
     private Image mazegen;
     private AudioPlayer audioPlayer;
     private RightPanel panel;
@@ -55,6 +58,8 @@ public class Menu extends Pane {
         helpResize = new Image("file:files/texts/Help.png", 255, 33, false, false);
         select = new Image("file:files/texts/Select.png", 250, 30, false, false);
         selectResize = new Image("file:files/texts/Select.png", 255, 33, false, false);
+        highscore = new Image("file:files/texts/Highscore.png", 250, 30, false, false);
+        highscoreResize = new Image("file:files/texts/Highscore.png", 255, 33, false, false);
     }
 
     /**
@@ -166,7 +171,29 @@ public class Menu extends Pane {
             audioPlayer.playButtonSound();
         });
 
-        this.getChildren().addAll(campaignView,randomizeView,selectView, helpView,mazegenView);
+
+        ImageView highscoreView = new ImageView(highscore);
+        highscoreView.setStyle("fx-background-color: transparent;");
+        highscoreView.setTranslateX(275);
+        highscoreView.setTranslateY(400);
+        highscoreView.toFront();
+        highscoreView.setPickOnBounds(true);
+        highscoreView.setOnMouseEntered(e -> {
+            highscoreView.setImage(highscoreResize);
+            highscoreView.setTranslateX(273);
+            highscoreView.setTranslateY(397);
+        });
+        highscoreView.setOnMouseExited(e -> {
+            highscoreView.setImage(highscore);
+            highscoreView.setTranslateX(275);
+            highscoreView.setTranslateY(400);
+        });
+        highscoreView.setOnMouseClicked(e -> {
+            mainProgram.showHighscore();
+            audioPlayer.playButtonSound();
+        });
+
+        this.getChildren().addAll(campaignView,randomizeView,selectView, helpView,highscoreView, mazegenView);
     }
 
 }
