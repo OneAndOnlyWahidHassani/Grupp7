@@ -10,6 +10,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import model.HighscoreList;
 import model.Maps.*;
 
 import model.MazeGeneration.GenerateNextLevel;
@@ -60,6 +61,7 @@ public class MainProgram extends Application {
     private AudioPlayer audioPlayer;
     private GameOverScreen gameOverScreen;
     private Image cursorImage;
+    private HighscoreList highscoreList;
 
     /**
      * En metod som startar programmet.
@@ -110,6 +112,8 @@ public class MainProgram extends Application {
         campaignScene = new Scene(mainPaneCampaign, 800, 600);
         randomScene = new Scene(mainPaneRandomMaze, 800, 600);
 
+        highscoreList = new HighscoreList();
+
         mainWindow.setScene(introScene);
         mainWindow.show();
 
@@ -124,7 +128,8 @@ public class MainProgram extends Application {
     /**
      * Byter scen till huvudmenyn.
      */
-    public void changeToMenu() {
+    public void changeToMenu()
+    {
         mainWindow.setScene(menuScene);
     }
 
@@ -146,7 +151,6 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      */
     public void changeToCampaign() throws FileNotFoundException {
-
         world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
 
         mainPaneCampaign.setCenter(world1Template);
@@ -185,6 +189,7 @@ public class MainProgram extends Application {
      * Kör en enkel animation med texten "Game Over".
      */
     public void gameOver() {
+        highscoreList.addScore(5);
         gameOverScreen = new GameOverScreen(this);
         mainPaneCampaign.getChildren().add(gameOverScreen);
     }
