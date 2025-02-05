@@ -120,7 +120,7 @@ public class Menu extends Pane {
             selectView.setTranslateY(250);
         });
         selectView.setOnMouseClicked(e -> {
-            mainProgram.chooseDimension();
+            mainProgram.selectWorldMap();
             audioPlayer.playButtonSound();
         });
 

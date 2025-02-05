@@ -13,8 +13,6 @@ import javafx.stage.Stage;
 import model.Maps.*;
 
 import model.MazeGeneration.GenerateNextLevel;
-import model.ReaderWriter.FileManager;
-import model.ReaderWriter.SaveMapsToFiles;
 import view.AudioPlayer;
 import view.Campaign.*;
 import view.GameOverScreen;
@@ -42,10 +40,14 @@ public class MainProgram extends Application {
     private Scene introScene;
     private Scene helpScene;
     private Scene chooseDimensionScene;
+    private Scene selectMapScene;
+    private Scene selectLevelScene;
     private Intro intro;
     private Menu menu;
     private Help help;
     private ChooseDimension chooseDimension;
+    private SelectWorldMap selectWorldMap;
+    private SelectLevel selectLevel;
     private Scene randomScene;
     private Scene campaignScene;
     private RightPanel rightPanel;
@@ -78,9 +80,13 @@ public class MainProgram extends Application {
         intro = new Intro(this, audioPlayer);
         help = new Help(this, audioPlayer);
         chooseDimension = new ChooseDimension(this, audioPlayer);
+        selectWorldMap = new SelectWorldMap(this, audioPlayer);
+        selectLevel = new SelectLevel(this, audioPlayer, 1);
         introScene = new Scene(intro, 800, 600);
         menuScene = new Scene(menu, 800, 600);
         helpScene = new Scene(help, 800, 600);
+        selectMapScene = new Scene(selectWorldMap, 800, 600);
+        selectLevelScene = new Scene(selectLevel, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
 
         mainPaneRandomMaze = new BorderPane();
@@ -155,6 +161,16 @@ public class MainProgram extends Application {
      */
     public void chooseDimension() {
         mainWindow.setScene(chooseDimensionScene);
+    }
+
+    public void selectWorldMap()
+    {
+        mainWindow.setScene(selectMapScene);
+    }
+
+    public void selectLevelMap()
+    {
+        mainWindow.setScene(selectLevelScene);
     }
 
     /**
