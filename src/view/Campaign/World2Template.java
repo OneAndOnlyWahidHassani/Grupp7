@@ -30,7 +30,7 @@ import java.util.ArrayList;
  */
 
 
-public class World2Template extends World1Template {
+public class World2Template extends WorldTemplate {
     
     private int squareSize;
     private int duration=10;
@@ -47,7 +47,10 @@ public class World2Template extends World1Template {
     private AudioPlayer audioPlayer;
     private int seconds;
 
-    public World2Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, boolean bossMap, RightPanel panel) throws FileNotFoundException {
+    public World2Template(){
+        super();
+    }
+    public World2Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, boolean bossMap) throws FileNotFoundException {
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, world, audioPlayer, 35);
         squareSize = 600/(level.length+2);
         this.panel = panel;
@@ -61,6 +64,7 @@ public class World2Template extends World1Template {
         rightPanel.setSTARTTIME(35);
         rightPanel.resetTimerLabel();
     }
+
     public void setupGhost() {
         ghost = new Image("file:files/ghost.png", squareSize, squareSize, false, false);
     }

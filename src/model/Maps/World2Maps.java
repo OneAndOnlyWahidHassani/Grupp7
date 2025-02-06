@@ -4,9 +4,9 @@ package model.Maps;
  * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
  */
 
-public class World2Maps {
+public class World2Maps extends WorldMaps {
 
-    private int[][] level21 = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    private int[][] level1 = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                           {4, 0, 4, 1, 1, 0, 0, 0, 3, 0},
                                           {1, 1, 1, 0, 1, 0, 0, 0, 4, 0},
                                           {0, 0, 0, 1, 1, 1, 1, 1, 1, 0},
@@ -17,7 +17,7 @@ public class World2Maps {
                                           {1, 0, 1, 1, 0, 1, 0, 0, 0, 1},
                                           {7, 0, 2, 0, 0, 1, 1, 1, 1, 4}};
 
-    private int[][] level22 = new int[][]{{0, 5, 1, 4, 0, 0, 4, 1, 1, 0},
+    private int[][] level2 = new int[][]{{0, 5, 1, 4, 0, 0, 4, 1, 1, 0},
                                           {1, 0, 0, 1, 1, 0, 1, 0, 2, 0},
                                           {1, 4, 1, 0, 1, 1, 1, 0, 0, 0},
                                           {1, 0, 1, 1, 1, 0, 1, 1, 0, 0},
@@ -29,7 +29,7 @@ public class World2Maps {
                                           {1, 4, 1, 1, 0, 3, 0, 0, 1, 4}};
 
 
-    private int[][] level23 = new int[][]{{0, 1, 1, 4, 0, 0, 1, 0, 0, 0},
+    private int[][] level3 = new int[][]{{0, 1, 1, 4, 0, 0, 1, 0, 0, 0},
                                           {1, 4, 0, 1, 0, 0, 1, 4, 6, 4},
                                           {4, 0, 1, 1, 0, 1, 1, 0, 0, 1},
                                           {1, 0, 4, 0, 0, 1, 0, 0, 0, 4},
@@ -40,7 +40,7 @@ public class World2Maps {
                                           {0, 1, 0, 0, 0, 1, 0, 1, 1, 1},
                                           {5, 4, 1, 1, 1, 2, 0, 0, 0, 3}};
 
-    private int[][] level24 = new int[][] {{0, 1, 4, 6, 1, 0, 0, 0, 1, 1},
+    private int[][] level4 = new int[][] {{0, 1, 4, 6, 1, 0, 0, 0, 1, 1},
                                            {0, 1, 0, 0, 1, 0, 1, 1, 1, 3},
                                            {0, 1, 1, 0, 1, 0, 1, 0, 0, 0},
                                            {0, 0, 1, 0, 1, 4, 1, 1, 1, 4},
@@ -51,7 +51,7 @@ public class World2Maps {
                                            {0, 1, 1, 4, 0, 1, 0, 1, 0 ,1},
                                            {0, 0, 0, 1, 1, 1, 0, 1, 1 ,2}};
 
-    private int[][] level25 = new int[][] {{0, 0, 0, 0, 0, 3, 0, 0, 5, 0, 0},
+    private int[][] level5 = new int[][] {{0, 0, 0, 0, 0, 3, 0, 0, 5, 0, 0},
                                            {0, 5, 0, 0, 0, 7, 0, 0, 1, 0, 0},
                                            {4, 1, 1, 0, 0, 1, 0, 0, 4, 1, 2},
                                            {1, 0, 1, 4, 0, 6, 0, 0, 1, 0, 0},
@@ -63,27 +63,31 @@ public class World2Maps {
                                            {1, 0, 4, 1, 1, 0, 1, 0, 0, 1, 4},
                                            {4, 1, 1 ,0 ,1 ,6 ,1 ,1 ,4 ,1 ,0}};
 
+    public World2Maps(int world) {
+        super(world);
+    }
+
     /**
      * Returnerar en array som representerar en nivå i spelet.
      * @return returnerar en array av siffror.
      */
-    public int[][] getLevel21(){
-        return level21;
+    public int[][] getLevel1(){
+        return level1;
     }
 
-    public int[][] getLevel22(){
-        return level22;
+    public int[][] getLevel2(){
+        return level2;
     }
 
-    public int[][] getLevel23(){
-        return level23;
+    public int[][] getLevel3(){
+        return level3;
     }
 
-    public int[][] getLevel24(){
-        return level24;
+    public int[][] getLevel4(){
+        return level4;
     }
 
-    public int[][] getLevel25() {
-        return level25;
+    public int[][] getLevel5() {
+        return level5;
     }
 }

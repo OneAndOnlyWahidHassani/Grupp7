@@ -25,7 +25,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class World3Template extends World1Template {
+public class World3Template extends WorldTemplate {
 
 
     /**
@@ -48,6 +48,9 @@ public class World3Template extends World1Template {
     private TimeThread time;
     private AudioPlayer audioPlayer;
 
+    public World3Template(){
+        super();
+    }
     public World3Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 60);
         squareSize = 600/(level.length+2);

@@ -18,7 +18,7 @@ import java.io.FileNotFoundException;
  * @author Filip Örnling
  */
 
-public class World6Template extends World1Template {
+public class World6Template extends WorldTemplate {
 
 
     private Image ghost;
@@ -48,6 +48,9 @@ public class World6Template extends World1Template {
     private ImageView ghost10V;
 
 
+    public World6Template(){
+        super();
+    }
     public World6Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 99);
         squareSize = 600/(level.length+2);

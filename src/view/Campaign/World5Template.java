@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
  * @author Filip Örnling
  */
 
-public class World5Template extends World1Template {
+public class World5Template extends WorldTemplate {
 
     private Image ghost;
 
@@ -30,6 +30,9 @@ public class World5Template extends World1Template {
 
 
 
+    public World5Template(){
+        super();
+    }
     public World5Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
 
         super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 90);

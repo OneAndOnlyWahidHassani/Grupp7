@@ -2,7 +2,7 @@ package model.Maps;
 /**
  * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
  */
-public class World6Maps {
+public class World6Maps extends WorldMaps{
 
     private int[][] level61 = new int[][]{{3, 7, 1, 1, 1, 0, 1, 1, 0, 1, 1, 4, 1, 1, 1, 4, 1, 1},
                                           {0, 0, 0, 0, 1, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 1, 0, 1},
@@ -100,6 +100,10 @@ public class World6Maps {
                                            {0, 4, 0, 1, 4, 1, 0, 1, 1, 4, 0, 1, 4, 1, 0, 1, 1, 0},
                                            {0, 1, 4, 1, 0, 1, 1, 4, 0, 1, 1, 1, 0, 1, 4, 1, 0, 0},
                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+    public World6Maps(int world) {
+        super(world);
+    }
 
     /**
      * Returnerar en array som representerar en nivå i spelet.

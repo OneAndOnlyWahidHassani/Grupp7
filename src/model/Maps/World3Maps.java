@@ -1,6 +1,6 @@
 package model.Maps;
 
-public class World3Maps {
+public class World3Maps extends WorldMaps{
 
     /**
      * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
@@ -70,6 +70,10 @@ public class World3Maps {
                                 {1, 0, 1, 1, 1, 0, 0, 1,1,1,1,1},
                                 {1, 0, 0, 1, 0, 0, 0, 1,0,0,0,1},
                                 {1, 1, 1, 1, 0, 0, 0, 1,1,1,1,2},};
+
+    public World3Maps(int world) {
+        super(world);
+    }
 
 
     /**
