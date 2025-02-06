@@ -1,7 +1,7 @@
 package view.Campaign;
 
 
-import control.MainProgram;
+import control.CampaignController;
 import javafx.animation.FadeTransition;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
@@ -21,8 +21,9 @@ import java.util.ArrayList;
 
 
 public class WorldTemplate extends GridPane {
-    private MainProgram mainProgram;
-    private int[][] level;
+    //private MainProgram mainProgram;
+    CampaignController campaignController;
+    private int[][] levelArray;
     private ArrayList<Label> collectibles = new ArrayList<>();
     private ArrayList<Label> pickaxes = new ArrayList<>();
     private MouseListener mouseListener = new MouseListener();
@@ -39,14 +40,13 @@ public class WorldTemplate extends GridPane {
     private boolean wallDestroyed;
     private int collectiblesObtained = 0;
     private int squareSize;
-    private int currentLevel;
     private int heartCrystals;
     private Image pickAxeImage;
     private boolean pickaxeObtained;
     private boolean gameStarted;
     private boolean startNotClickedOnce = true;
     private boolean totalTimeStarted = false;
-    private int world;
+
     private int seconds = 25;
 
     private RightPanel rightPanel;
@@ -58,22 +58,20 @@ public class WorldTemplate extends GridPane {
     public WorldTemplate(){
 
     }
-    public WorldTemplate(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int world, AudioPlayer audioPlayer, int seconds) throws FileNotFoundException {
-        this.mainProgram = mainProgram;
-        this.currentLevel = currentLevel;
-        this.level = level;
-        this.heartCrystals = heartCrystals;
+    public WorldTemplate(int[][] levelArray, CampaignController campaignController, RightPanel rightPanel, AudioPlayer audioPlayer, int seconds) throws FileNotFoundException {
+        this.campaignController = campaignController;
+        this.levelArray = levelArray;
         this.seconds = seconds;
-
+        this.heartCrystals = campaignController.getHeartCrystals();
         rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
         this.rightPanel = rightPanel;
         this.audioPlayer = audioPlayer;
-        this.world = world;
-        squareSize = 600/(level.length+2);
+        squareSize = 600/(levelArray.length+2);
         setBackground();
-        setupImages(world);
+        setupImages(campaignController.getWorld());
         setupBorders();
         setupLevel();
+        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
         rightPanel.setSTARTTIME(seconds);
         rightPanel.resetTimerLabel();
 
@@ -97,17 +95,17 @@ public class WorldTemplate extends GridPane {
      * Skapar en ram runt spelplanen.
      */
     public void setupBorders() {
-        for (int i = 0; i < level.length + 1; i++) {
+        for (int i = 0; i < levelArray.length + 1; i++) {
             add(getBorders(), i, 0);
         }
-        for (int i = 0; i < level.length + 1; i++) {
+        for (int i = 0; i < levelArray.length + 1; i++) {
             add(getBorders(), 0, i);
         }
-        for (int i = 0; i < level.length + 2; i++) {
-            add(getBorders(), i, level.length + 1);
+        for (int i = 0; i < levelArray.length + 2; i++) {
+            add(getBorders(), i, levelArray.length + 1);
         }
-        for (int i = 0; i < level.length + 2; i++) {
-            add(getBorders(), level.length + 1, i);
+        for (int i = 0; i < levelArray.length + 2; i++) {
+            add(getBorders(), levelArray.length + 1, i);
         }
     }
 
@@ -116,33 +114,33 @@ public class WorldTemplate extends GridPane {
      * Exempelvis så representerar 1:or väg, 0:or väggar, och 7:or hjärtan osv.
      */
     public void setupLevel() {
-        for (int i = 0; i < level.length; i++) {
-            for (int j = 0; j < level.length; j++) {
+        for (int i = 0; i < levelArray.length; i++) {
+            for (int j = 0; j < levelArray.length; j++) {
 
-                if (level[i][j] == 1) {
+                if (levelArray[i][j] == 1) {
                     add(getPath(),j + 1,i + 1);
                 }
-                else if (level[i][j] == 0){
+                else if (levelArray[i][j] == 0){
                     add(getWall(),j + 1,i + 1);
                 }
-                else if (level[i][j] == 2){
+                else if (levelArray[i][j] == 2){
                     add(getStart(),j + 1,i + 1);
                 }
-                else if (level[i][j] == 3){
+                else if (levelArray[i][j] == 3){
                     add(getGoal(),j + 1,i + 1);
                 }
-                else if (level[i][j] == 4){
+                else if (levelArray[i][j] == 4){
                     add(getPath(),j + 1,i + 1);
                     add(addCollectible(),j + 1,i + 1);
                 }
-                else if (level[i][j] == 5){
+                else if (levelArray[i][j] == 5){
                     add(getPath(),j + 1,i + 1);
                     add(addPickAxe(),j + 1,i + 1);
                 }
-                else if (level[i][j] == 6){
+                else if (levelArray[i][j] == 6){
                     add(getBreakableWall(),j + 1,i + 1);
                 }
-                else if (level[i][j] == 7){
+                else if (levelArray[i][j] == 7){
                     add(getPath(),j + 1,i + 1);
                     add(addHeartCrystal(),j + 1,i + 1);
                 }
@@ -156,26 +154,29 @@ public class WorldTemplate extends GridPane {
      * @param value Den aktuella världen.
      */
     public void setupImages(int value){
-
-        String folder = "";
-
-        if (value == 0) {
-            folder = "forest";
-        }
-        else if (value == 1) {
-            folder = "underground";
-        }
-        else if (value == 2) {
-            folder = "lava";
-        }
-        else if(value == 3) {
-            folder = "cloud";
-        }
-        else if(value == 4) {
-            folder = "desert";
-        }
-        else if(value == 5) {
-            folder = "space";
+        String folder;
+        switch (value){
+            case 1:
+                folder = "forest";
+                break;
+            case 2:
+                folder = "underground";
+                break;
+            case 3:
+                folder = "lava";
+                break;
+            case 4:
+                folder = "cloud";
+                break;
+            case 5:
+                folder = "desert";
+                break;
+            case 6:
+                folder = "space";
+                break;
+            default:
+                folder = "";
+                break;
         }
 
         path = new Image("file:files/" + folder + "/path.png", squareSize, squareSize, false, false);
@@ -428,7 +429,7 @@ public class WorldTemplate extends GridPane {
     private void gameOver() {
         audioPlayer.playGameOverSound();
         audioPlayer.stopMusic();
-        mainProgram.gameOver();
+        campaignController.gameOver();
         rightPanel.pauseClock();
         gameStarted = true;
         time.setGameOver(true);
@@ -447,26 +448,13 @@ public class WorldTemplate extends GridPane {
         if (startButtonPressed && allCollectiblesObtained) {
             audioPlayer.stopClockSound();
             audioPlayer.playGoalSound();
-            nextLevel();
+            campaignController.nextLevel();
             rightPanel.pauseClock();
             rightPanel.setTheTime(seconds);
             gameStarted = true;
             time.setGameOver(true);
             time = null;
         }
-    }
-
-    /**
-     * Baserad på den aktuella världen väljer programmmet vilken nivå som ska spelas.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
-     */
-    public void nextLevel() throws FileNotFoundException, InterruptedException {
-        if(currentLevel == 5){
-            world++;
-            currentLevel = 0;
-        }
-        mainProgram.campaignWorldManager(world +1 , ++currentLevel, heartCrystals);
     }
 
     /**
@@ -570,4 +558,10 @@ public class WorldTemplate extends GridPane {
             }
         }
     }
+
+    public int getHeartCrystals() {
+        return heartCrystals;
+    }
+
+
 }

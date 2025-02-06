@@ -1,6 +1,6 @@
 package view.Campaign;
 
-import control.MainProgram;
+import control.CampaignController;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.scene.image.Image;
@@ -31,18 +31,17 @@ public class World4Template extends WorldTemplate {
     private PathTransition animation5;
     private PathTransition animation6;
     private Thread platfrom;
-    private int currentLevel;
+    private int level;
 
     public World4Template(){
         super();
     }
-    public World4Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
-        super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 80);
-        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-        this.currentLevel = currentLevel;
-        squareSize = 600/(level.length+2);
+    public World4Template(int[][] levelArray, CampaignController campaignController, RightPanel rightPanel, AudioPlayer audioPlayer) throws FileNotFoundException {
+        super(levelArray, campaignController, campaignController.getRightPanel(), campaignController.getAudioPlayer(), 80);
+        rightPanel.changeHeartCounter(String.valueOf(campaignController.getHeartCrystals()));
+        this.level = campaignController.getLevel();
+        squareSize = 600/(levelArray.length+2);
 
-        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
         rightPanel.resetTimerLabel();
         setupGhost();
     }
@@ -70,7 +69,7 @@ public class World4Template extends WorldTemplate {
      */
 
     public void initialize() {
-        if (currentLevel==2){
+        if (level ==2){
             ImageView ghost3V = new ImageView();
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
@@ -120,7 +119,7 @@ public class World4Template extends WorldTemplate {
 
         }
 
-        else if (currentLevel ==3){
+        else if (level ==3){
 
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
@@ -158,7 +157,7 @@ public class World4Template extends WorldTemplate {
             ghost2V.setOnMouseEntered(e -> enteredGhost(e));
 
         }
-        else if (currentLevel ==4){
+        else if (level ==4){
             ImageView ghost4V = new ImageView();
             ImageView ghost2V = new ImageView();
             ImageView ghost1V = new ImageView();
@@ -272,7 +271,7 @@ public class World4Template extends WorldTemplate {
             ghost7V.setOnMouseEntered(e -> enteredGhost(e));
 
         }
-        else if(currentLevel==5) {
+        else if(level ==5) {
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
             ImageView ghost3V = new ImageView();
@@ -343,7 +342,7 @@ public class World4Template extends WorldTemplate {
 
         }
 
-        else if (currentLevel==6){
+        else if (level ==6){
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
             ImageView ghost3V = new ImageView();

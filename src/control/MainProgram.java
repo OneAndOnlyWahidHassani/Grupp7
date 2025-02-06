@@ -9,12 +9,8 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-
-import model.Maps.*;
-
 import model.MazeGeneration.GenerateNextLevel;
 import view.AudioPlayer;
-import view.Campaign.*;
 import view.GameOverScreen;
 import view.Randomize.MapTemplate;
 import model.MazeGeneration.MazeGenerator;
@@ -53,8 +49,7 @@ public class MainProgram extends Application {
     private AudioPlayer audioPlayer;
     private GameOverScreen gameOverScreen;
     private Image cursorImage;
-    private WorldMaps worldMaps;
-    private WorldTemplate worldTemplate;
+    private CampaignController campaignController;
 
 
     /**
@@ -66,7 +61,6 @@ public class MainProgram extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         audioPlayer = new AudioPlayer();
         audioPlayer.playIntroMusic();
 
@@ -139,19 +133,27 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      */
     public void changeToCampaign() {
+        campaignController = new CampaignController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign);
         try{
-            campaignWorldManager(1, 5, 3);
+            campaignController.campaignWorldManager();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         mainWindow.setScene(campaignScene);
-        introAnimation = new WorldIntroAnimation("1");
+        setUpNewWorldAnimation();
+    }
+    public void setUpNewWorldAnimation(){
+        introAnimation = new WorldIntroAnimation(String.valueOf(campaignController.getWorld()));
         mainPaneCampaign.getChildren().add(introAnimation);
         introAnimation.setDisable(true);
+        audioPlayer.playWorldIntroSound();
     }
 
+    public CampaignController getCampaignController(){
+        return campaignController;
+    }
     /**
      * Byter scen till den del av menyn där användaren får välja dimension på labyrinten.
      */
@@ -166,74 +168,6 @@ public class MainProgram extends Application {
         mainWindow.setScene(helpScene);
     }
 
-    /**
-     * Vid gameOver körs denna metod.
-     * Kör en enkel animation med texten "Game Over".
-     */
-    public void gameOver() {
-        gameOverScreen = new GameOverScreen(this);
-        mainPaneCampaign.getChildren().add(gameOverScreen);
-    }
-
-    public void campaignWorldManager(int world, int level, int heartCrystals) throws FileNotFoundException, InterruptedException{
-        worldMaps = new WorldMaps(world);
-        worldTemplate = new WorldTemplate();
-        switch (world){
-            case 1:
-                worldMaps = new World1Maps(world);
-                worldTemplate = new World1Template(setUpLevel(level), level, heartCrystals, this, rightPanel, (world-1), audioPlayer, 25);
-                break;
-            case 2:
-                worldMaps = new World2Maps(world);
-                worldTemplate = new World2Template(setUpLevel(level), level, heartCrystals, this, rightPanel, (world-1), audioPlayer, false);
-                break;
-            case 3:
-                worldMaps = new World3Maps(world);
-                break;
-            case 4:
-                worldMaps = new World4Maps(world);
-                break;
-            case 5:
-                worldMaps = new World5Maps(world);
-                break;
-            case 6:
-                worldMaps = new World6Maps(world);
-                break;
-
-        }
-        campaignLevelManager(world, level);
-    }
-    public void campaignLevelManager(int world, int level){
-        rightPanel.changeLevelCounter(String.valueOf(world*10 + level));
-        mainPaneCampaign.setCenter(worldTemplate);
-    }
-
-    public int[][] setUpLevel(int level) throws FileNotFoundException, InterruptedException {
-        int[][] levelArray;
-        switch (level){
-            case 1:
-                levelArray = worldMaps.getLevel1();
-            break;
-            case 2:
-                levelArray = worldMaps.getLevel2();
-                break;
-            case 3:
-                levelArray = worldMaps.getLevel3();
-                break;
-            case 4:
-                levelArray = worldMaps.getLevel4();
-                break;
-            case 5:
-                levelArray = worldMaps.getLevel5();
-                break;
-            case 6:
-                worldTemplate.nextLevel();
-            default:
-                System.out.println("If we se this something crazy is going on at setUpLevel");
-                throw new FileNotFoundException();
-        }
-        return levelArray;
-    }
 
     /**
      * Main startar programmet.

@@ -1,29 +1,17 @@
 package view.Campaign;
 
-import control.MainProgram;
+import control.CampaignController;
 import javafx.animation.Animation;
-import javafx.animation.FadeTransition;
 import javafx.animation.PathTransition;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.event.EventHandler;
-import javafx.scene.control.Label;
-import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import model.TimeThread;
 import view.AudioPlayer;
 import view.Menu.RightPanel;
 
-import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 public class World3Template extends WorldTemplate {
 
@@ -43,7 +31,7 @@ public class World3Template extends WorldTemplate {
     private PathTransition animation5;
     private PathTransition animation6;
     private Thread platfrom;
-    private int currentLevel;
+    private int level;
     private RightPanel panel;
     private TimeThread time;
     private AudioPlayer audioPlayer;
@@ -51,13 +39,13 @@ public class World3Template extends WorldTemplate {
     public World3Template(){
         super();
     }
-    public World3Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
-        super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 60);
-        squareSize = 600/(level.length+2);
-        this.currentLevel = currentLevel;
+    public World3Template(int[][] levelArray, CampaignController campaignController, RightPanel rightPanel, AudioPlayer audioPlayer) throws FileNotFoundException {
+        super(levelArray, campaignController, campaignController.getRightPanel(), campaignController.getAudioPlayer(), 60);
+        squareSize = 600/(levelArray.length+2);
+        this.level = campaignController.getLevel();
         this.panel = rightPanel;
         this.audioPlayer = audioPlayer;
-        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+        rightPanel.changeHeartCounter(String.valueOf(campaignController.getHeartCrystals()));
         rightPanel.setSTARTTIME(60);
         rightPanel.resetTimerLabel();
         setupGhost();
@@ -88,7 +76,7 @@ public class World3Template extends WorldTemplate {
      */
 
     public void initialize() {
-        if (currentLevel==2){
+        if (level ==2){
             ImageView ghost3V = new ImageView();
             ImageView ghost1V = new ImageView();
             ghost3V.setImage(ghost);
@@ -123,7 +111,7 @@ public class World3Template extends WorldTemplate {
 
         }
 
-        else if (currentLevel ==3){
+        else if (level ==3){
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
 
@@ -159,7 +147,7 @@ public class World3Template extends WorldTemplate {
             ghost2V.setOnMouseEntered(e -> enteredGhost(e));
 
         }
-        else if (currentLevel ==4){
+        else if (level ==4){
           ImageView ghost4V = new ImageView();
           ImageView ghost2V = new ImageView();
           ImageView ghost1V = new ImageView();
@@ -249,7 +237,7 @@ public class World3Template extends WorldTemplate {
             ghost5V.setOnMouseEntered(e -> enteredGhost(e));
 
         }
-        else if(currentLevel==5) {
+        else if(level ==5) {
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
             ImageView ghost3V = new ImageView();
@@ -320,7 +308,7 @@ public class World3Template extends WorldTemplate {
 
         }
 
-            else if (currentLevel==6){
+            else if (level ==6){
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
             ImageView ghost3V = new ImageView();

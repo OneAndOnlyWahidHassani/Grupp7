@@ -1,6 +1,6 @@
 package view.Campaign;
 
-import control.MainProgram;
+import control.CampaignController;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.scene.image.Image;
@@ -26,21 +26,20 @@ public class World5Template extends WorldTemplate {
     private PathTransition animation3;
     private PathTransition animation4;
     private PathTransition animation5;
-    private int currentLevel;
+    private int level;
 
 
 
     public World5Template(){
         super();
     }
-    public World5Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
+    public World5Template(int[][] levelArray, CampaignController campaignController, RightPanel rightPanel, AudioPlayer audioPlayer) throws FileNotFoundException {
+        super(levelArray, campaignController, campaignController.getRightPanel(), campaignController.getAudioPlayer(), 90);
 
-        super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 90);
+        squareSize = 600/(levelArray.length+2);
+        this.level = campaignController.getLevel();
 
-        squareSize = 600/(level.length+2);
-        this.currentLevel = currentLevel;
-
-        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+        rightPanel.changeHeartCounter(String.valueOf(campaignController.getHeartCrystals()));
         rightPanel.resetTimerLabel();
         initialize();
     }
@@ -57,7 +56,7 @@ public class World5Template extends WorldTemplate {
 
         ghost = new Image("file:files/mob_egypt.png", squareSize, squareSize, false, false);
 
-        if (currentLevel==2){
+        if (level ==2){
 
             ImageView ghost3V = new ImageView();
             ImageView ghost1V = new ImageView();
@@ -93,7 +92,7 @@ public class World5Template extends WorldTemplate {
 
         }
 
-        else if (currentLevel == 3){
+        else if (level == 3){
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
 
@@ -129,7 +128,7 @@ public class World5Template extends WorldTemplate {
             ghost2V.setOnMouseEntered(e -> enteredGhost(e));
 
         }
-        else if (currentLevel == 4 ){
+        else if (level == 4 ){
 
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
@@ -166,7 +165,7 @@ public class World5Template extends WorldTemplate {
             ghost2V.setOnMouseEntered(e -> enteredGhost(e));
 
         }
-        else if(currentLevel==5) {
+        else if(level ==5) {
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
             ImageView ghost3V = new ImageView();
@@ -214,7 +213,7 @@ public class World5Template extends WorldTemplate {
             animation3.play();
         }
 
-        else if (currentLevel==6){
+        else if (level ==6){
             ImageView ghost1V = new ImageView();
             ImageView ghost2V = new ImageView();
             ImageView ghost3V = new ImageView();

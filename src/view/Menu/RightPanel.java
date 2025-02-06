@@ -297,7 +297,7 @@ public class RightPanel extends GridPane {
             @Override
             public void run() {
 
-                mainProgram.gameOver();
+                mainProgram.getCampaignController().gameOver();
                 audioPlayer.playGameOverSound();
                 audioPlayer.stopMusic();
                 totTime.setGameOver(true);

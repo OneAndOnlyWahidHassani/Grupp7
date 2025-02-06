@@ -1,17 +1,15 @@
 package view.Campaign;
 
-import control.MainProgram;
+import control.CampaignController;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import view.AudioPlayer;
 import view.Menu.RightPanel;
 
-import javax.lang.model.element.AnnotationMirror;
 import java.io.FileNotFoundException;
 
 /**
@@ -51,12 +49,10 @@ public class World6Template extends WorldTemplate {
     public World6Template(){
         super();
     }
-    public World6Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
-        super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 99);
-        squareSize = 600/(level.length+2);
-        this.currentLevel = currentLevel;
-        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-        rightPanel.resetTimerLabel();
+    public World6Template(int[][] levelArray, CampaignController campaignController) throws FileNotFoundException {
+        super(levelArray, campaignController, campaignController.getRightPanel(), campaignController.getAudioPlayer(), 99);
+        squareSize = 600/(levelArray.length+2);
+        this.currentLevel = campaignController.getLevel();
         initialize();
 
     }
