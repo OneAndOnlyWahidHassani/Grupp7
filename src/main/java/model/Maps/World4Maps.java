@@ -3,9 +3,9 @@ package model.Maps;
 /**
  * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
  */
-public class World4Maps {
+public class World4Maps extends WorldMaps {
 
-    private int[][] level41 = new int[][]{{7, 0, 0, 1, 1, 1, 1, 4, 1, 1, 1, 0, 0, 2},
+    private int[][] level1 = new int[][]{{7, 0, 0, 1, 1, 1, 1, 4, 1, 1, 1, 0, 0, 2},
                                           {1, 0, 1, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 1},
                                           {4, 0, 1, 0, 0, 4, 0, 1, 0, 1, 1, 1, 0, 1},
                                           {1, 0, 1, 1, 1, 1, 0, 4, 0, 4, 0, 1, 1, 1},
@@ -20,7 +20,7 @@ public class World4Maps {
                                           {4, 1, 0, 0, 0, 0, 0, 1, 1, 4, 1, 0, 0, 1},
                                           {0, 0, 4, 1, 4, 1, 4, 1, 0, 0, 1, 1, 1, 3}};
 
-    private int[][] level42 = new int[][]{{4, 1, 0, 0, 7, 0, 4, 0, 0, 0, 1, 1, 1, 1},
+    private int[][] level2 = new int[][]{{4, 1, 0, 0, 7, 0, 4, 0, 0, 0, 1, 1, 1, 1},
                                           {0, 4, 1, 1, 4, 0, 1, 4, 1, 4, 1, 0, 0, 1},
                                           {0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 4},
                                           {1, 1, 1, 1, 1, 1, 0, 4, 0, 4, 1, 1, 1, 0},
@@ -36,7 +36,7 @@ public class World4Maps {
                                           {3, 0, 1, 1, 4, 1, 1, 4, 0, 1, 1, 1, 4, 2}};
 
 
-    private int[][] level43 = new int[][]   {{3, 1, 1, 4, 0, 6, 4, 1, 1, 0, 1, 0, 0, 4},
+    private int[][] level3 = new int[][]   {{3, 1, 1, 4, 0, 6, 4, 1, 1, 0, 1, 0, 0, 4},
                                              {0, 0, 0, 1, 1, 4, 0, 0, 1, 4, 1, 0, 4, 1},
                                              {0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 1, 1, 1, 0},
                                              {0, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0},
@@ -51,7 +51,7 @@ public class World4Maps {
                                              {1, 0, 0, 0, 4, 1, 1, 1, 0, 1, 0, 4, 1, 0},
                                              {2, 1, 4, 1, 1, 0, 0, 1, 1, 4, 1, 1, 0, 0}};
 
-    private int[][] level44 = new int[][]{{2, 1, 1, 4, 1, 1, 0, 1, 4, 1, 0, 4, 1, 1},
+    private int[][] level4 = new int[][]{{2, 1, 1, 4, 1, 1, 0, 1, 4, 1, 0, 4, 1, 1},
                                           {0, 0, 0, 0, 0, 1, 4, 1, 0, 1, 0, 1, 0, 1},
                                           {4, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 4},
                                           {1, 1, 1, 1, 4, 1, 1, 7, 0, 0, 6, 0, 0, 1},
@@ -66,7 +66,7 @@ public class World4Maps {
                                           {1, 0, 0, 1, 0, 1, 0, 0, 4, 1, 0, 0, 4, 1},
                                           {1, 1, 1, 4, 0, 1, 4, 1, 1, 0, 0, 0, 0, 3}};
 
-    private int[][] level45 = new int[][] {{3, 1, 0, 4, 1, 1, 4, 1, 1, 4, 0, 4, 1, 4},
+    private int[][] level5 = new int[][] {{3, 1, 0, 4, 1, 1, 4, 1, 1, 4, 0, 4, 1, 4},
                                            {0, 4, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 1},
                                            {0, 0, 4, 1, 0, 0, 1, 0, 0, 1, 4, 0, 0, 1},
                                            {4, 1, 0, 4, 1, 0, 1, 0, 1, 4, 0, 1, 1, 4},
@@ -80,27 +80,33 @@ public class World4Maps {
                                            {4, 1, 1, 1, 4, 0, 1, 0, 0, 0, 1, 0, 0, 1},
                                            {1, 0, 0, 0, 1, 0, 1, 4, 0, 1, 1, 4, 1, 1},
                                            {5, 1, 1, 1, 4, 0, 0, 1, 1, 4, 0, 0, 0, 2}};
+
+    public World4Maps(int world) {
+        super(world);
+    }
+
     /**
      * Returnerar en array som representerar en nivå i spelet.
      * @return returnerar en array av siffror.
      */
-    public int[][] getLevel41(){
-        return level41;
+    @Override
+    public int[][] getLevel1(){
+        return level1;
     }
-
-    public int[][] getLevel42(){
-        return level42;
+    @Override
+    public int[][] getLevel2(){
+        return level2;
     }
-
-    public int[][] getLevel43(){
-        return level43;
+    @Override
+    public int[][] getLevel3(){
+        return level3;
     }
-
-    public int[][] getLevel44(){
-        return level44;
+    @Override
+    public int[][] getLevel4(){
+        return level4;
     }
-
-    public int[][] getLevel45() {
-        return level45;
+    @Override
+    public int[][] getLevel5() {
+        return level5;
     }
 }

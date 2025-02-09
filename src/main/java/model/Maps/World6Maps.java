@@ -2,9 +2,9 @@ package model.Maps;
 /**
  * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
  */
-public class World6Maps {
+public class World6Maps extends WorldMaps{
 
-    private int[][] level61 = new int[][]{{3, 7, 1, 1, 1, 0, 1, 1, 0, 1, 1, 4, 1, 1, 1, 4, 1, 1},
+    private int[][] level1 = new int[][]{{3, 7, 1, 1, 1, 0, 1, 1, 0, 1, 1, 4, 1, 1, 1, 4, 1, 1},
                                           {0, 0, 0, 0, 1, 0, 0, 1, 4, 1, 0, 0, 0, 0, 0, 1, 0, 1},
                                           {4, 0, 4, 0, 4, 1, 0, 0, 1, 0, 0, 1, 4, 1, 0, 1, 0, 4},
                                           {1, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 0, 1, 1, 1, 0, 1},
@@ -23,7 +23,7 @@ public class World6Maps {
                                           {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1},
                                           {1, 1, 1, 4, 1, 1, 1, 4, 1, 1, 1, 1, 1, 0, 0, 1, 0, 2}};
 
-    private int[][] level62 = new int[][]{{2, 1, 1, 1, 0, 0, 0, 1, 0, 1, 4, 1, 1, 4, 1, 1, 1, 7},
+    private int[][] level2 = new int[][]{{2, 1, 1, 1, 0, 0, 0, 1, 0, 1, 4, 1, 1, 4, 1, 1, 1, 7},
                                           {1, 1, 1, 1, 4, 1, 1, 1, 0, 1, 0, 0, 0, 0, 1, 0, 4, 1},
                                           {1, 4, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1},
                                           {1, 1, 1, 1, 0, 0, 0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 1, 4},
@@ -43,7 +43,7 @@ public class World6Maps {
                                           {0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 4, 1, 1, 1, 1, 4, 4, 3}};
 
 
-    private int[][] level63 = new int[][]{{3, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+    private int[][] level3 = new int[][]{{3, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                           {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
                                           {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1},
                                           {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1},
@@ -63,7 +63,7 @@ public class World6Maps {
                                           {0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 2}};
 
 
-    private int[][] level64 = new int[][] {{2, 0, 1, 0, 0, 0, 0, 1, 1, 4, 1, 0, 4, 1, 4, 0, 1, 3},
+    private int[][] level4 = new int[][] {{2, 0, 1, 0, 0, 0, 0, 1, 1, 4, 1, 0, 4, 1, 4, 0, 1, 3},
                                            {1, 0, 4, 1, 1, 4, 1, 1, 0, 0, 0, 1, 4, 0, 1, 1, 1, 0},
                                            {1, 0, 0, 0, 0, 1, 0, 1, 4, 1, 1, 4, 0, 0, 0, 0, 1, 0},
                                            {1, 1, 1, 0, 1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 4},
@@ -82,7 +82,7 @@ public class World6Maps {
                                            {1, 0, 1, 0, 1, 0, 4, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 4},
                                            {1, 1, 1, 0, 4, 1, 1, 4, 1, 4, 0, 0, 1, 4, 1, 1, 1, 1}};
 
-    private int[][] level65 = new int[][] {{1, 1, 1, 0, 1, 1, 1, 0, 4, 1, 1, 0, 1, 1, 1, 0, 1, 2},
+    private int[][] level5 = new int[][] {{1, 1, 1, 0, 1, 1, 1, 0, 4, 1, 1, 0, 1, 1, 1, 0, 1, 2},
                                            {4, 0, 1, 1, 4, 0, 1, 1, 1, 0, 1, 4, 1, 0, 4, 1, 1, 0},
                                            {1, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                                            {0, 1, 0, 1, 0, 1, 4, 1, 0, 1, 1, 4, 0, 1, 4, 1, 0, 0},
@@ -101,27 +101,32 @@ public class World6Maps {
                                            {0, 1, 4, 1, 0, 1, 1, 4, 0, 1, 1, 1, 0, 1, 4, 1, 0, 0},
                                            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
+    public World6Maps(int world) {
+        super(world);
+    }
+
     /**
      * Returnerar en array som representerar en nivå i spelet.
      * @return returnerar en array av siffror.
      */
-    public int[][] getLevel61(){
-        return level61;
+    @Override
+    public int[][] getLevel1(){
+        return level1;
     }
-
-    public int[][] getLevel62(){
-        return level62;
+    @Override
+    public int[][] getLevel2(){
+        return level2;
     }
-
-    public int[][] getLevel63(){
-        return level63;
+    @Override
+    public int[][] getLevel3(){
+        return level3;
     }
-
-    public int[][] getLevel64(){
-        return level64;
+    @Override
+    public int[][] getLevel4(){
+        return level4;
     }
-
-    public int[][] getLevel65() {
-        return level65;
+    @Override
+    public int[][] getLevel5() {
+        return level5;
     }
 }
