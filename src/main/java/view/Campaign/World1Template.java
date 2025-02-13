@@ -601,4 +601,19 @@ public class World1Template extends GridPane {
             }
         }
     }
+    // In World1Template class
+    public int getHeartCrystals() {
+        return heartCrystals;
+    }
+
+    public boolean isPickaxeObtained() {
+        return pickaxeObtained;
+    }
+
+    public boolean isStartButtonPressed() {
+        return startButtonPressed;
+    }
+    public MouseListener getMouseListener() {
+        return mouseListener;
+    }
 }
