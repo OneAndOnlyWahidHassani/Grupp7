@@ -19,9 +19,9 @@ public class World3Maps extends WorldMaps{
     private int[][] level4;
     private int[][] level5;
 
-    public World3Maps() throws IOException, ClassNotFoundException
+    public World3Maps(int world) throws IOException, ClassNotFoundException
     {
-        super(3);
+        super(world);
         List<int[][]> world3Map = fileManager.read("worldMap3");
         level1 = world3Map.get(0);
         level2 = world3Map.get(1);
@@ -29,12 +29,6 @@ public class World3Maps extends WorldMaps{
         level4 = world3Map.get(3);
         level5 = world3Map.get(4);
     }
-
-    public World3Maps(int world) {
-        super(world);
-    }
-
-
     /**
      * Returnerar en array som representerar en nivå i spelet.
      * @return returnerar en array av siffror.

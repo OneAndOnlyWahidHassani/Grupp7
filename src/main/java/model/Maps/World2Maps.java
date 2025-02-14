@@ -21,12 +21,9 @@ public class World2Maps extends WorldMaps {
     private int[][] level5;
 
 
-    public World2Maps(int world) {
-        super(world);
-    }
-    public World2Maps() throws IOException, ClassNotFoundException
+    public World2Maps(int world) throws IOException, ClassNotFoundException
     {
-        super(2);
+        super(world);
         List<int[][]> world2Map = fileManager.read("worldMap2");
         level1 = world2Map.get(0);
         level2 = world2Map.get(1);

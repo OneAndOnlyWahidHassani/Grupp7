@@ -174,6 +174,10 @@ public class MainProgram extends Application {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
         }
     }
 

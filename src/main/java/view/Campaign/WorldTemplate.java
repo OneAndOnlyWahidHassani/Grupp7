@@ -16,6 +16,7 @@ import view.Menu.RightPanel;
 import view.WorldIntroAnimation;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -241,7 +242,7 @@ public class WorldTemplate extends GridPane {
         label.setOnMouseEntered(e -> {
             try {
                 gameController.enteredGoal();
-            } catch (FileNotFoundException | InterruptedException fileNotFoundException) {
+            } catch ( IOException | ClassNotFoundException | InterruptedException fileNotFoundException  ) {
                 fileNotFoundException.printStackTrace();
             }
         });

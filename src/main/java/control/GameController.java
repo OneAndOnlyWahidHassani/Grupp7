@@ -17,6 +17,7 @@ import view.GameOverScreen;
 import view.Menu.RightPanel;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameController {
@@ -55,8 +56,8 @@ public class GameController {
         enemyController = new EnemyController(this);
         totTime = new TotalTime(false);
         time = null;
-        world = 6;
-        level = 5;
+        world = 1;
+        level = 1;
         heartCrystals = 3;
     }
 
@@ -80,7 +81,7 @@ public class GameController {
             setUpNewWorldAnimation();
         }
     }
-    public void campaignWorldManager() throws FileNotFoundException, InterruptedException {
+    public void campaignWorldManager() throws FileNotFoundException, InterruptedException, IOException, ClassNotFoundException {
         worldMaps = new WorldMaps(world);
         worldTemplate = new WorldTemplate();
         switch (world) {
@@ -120,7 +121,7 @@ public class GameController {
     }
 
 
-    public int[][] setUpLevel(int level) throws FileNotFoundException, InterruptedException {
+    public int[][] setUpLevel(int level) throws FileNotFoundException, InterruptedException, IOException, ClassNotFoundException {
         int[][] levelArray;
         switch (level) {
             case 1:
@@ -147,7 +148,7 @@ public class GameController {
         return levelArray;
     }
 
-    public void nextLevel() throws FileNotFoundException, InterruptedException {
+    public void nextLevel() throws FileNotFoundException, InterruptedException, IOException, ClassNotFoundException {
         if (level == 5) {
             world++;
             level = 1;
@@ -213,7 +214,7 @@ public class GameController {
             startButtonPressed = false;
         }
     }
-    public void enteredGoal() throws FileNotFoundException, InterruptedException {
+    public void enteredGoal() throws  InterruptedException, IOException, ClassNotFoundException {
         if (startButtonPressed && allCollectiblesObtained) {
             audioPlayer.stopClockSound();
             audioPlayer.playGoalSound();

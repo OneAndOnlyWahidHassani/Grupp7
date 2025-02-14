@@ -102,12 +102,8 @@ public class SelectLevel extends Pane{
             level1View.setTranslateY(150);
         });
         level1View.setOnMouseClicked(e -> {
-            try {
                 mainProgram.changeToCampaign();
                 audioPlayer.playButtonSound();
-            } catch (IOException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
         });
 
         ImageView level2View = new ImageView(level2);
@@ -127,12 +123,7 @@ public class SelectLevel extends Pane{
             level2View.setTranslateY(200);
         });
         level2View.setOnMouseClicked(e -> {
-            try {
-                mainProgram.nextWorld2Level(2, 3);
-                audioPlayer.playButtonSound();
-            } catch (IOException | InterruptedException | ClassNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
+            audioPlayer.playButtonSound();
         });
 
         ImageView level3View = new ImageView(level3);
@@ -152,12 +143,7 @@ public class SelectLevel extends Pane{
             level3View.setTranslateY(250);
         });
         level3View.setOnMouseClicked(e -> {
-            try {
-                mainProgram.nextWorld3Level(3, 3);
-                audioPlayer.playButtonSound();
-            } catch (IOException | InterruptedException | ClassNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
+            audioPlayer.playButtonSound();
         });
 
         ImageView level4View = new ImageView(level4);
@@ -177,12 +163,7 @@ public class SelectLevel extends Pane{
             level4View.setTranslateY(300);
         });
         level4View.setOnMouseClicked(e -> {
-            try {
-                mainProgram.nextWorld4Level(4, 3);
-                audioPlayer.playButtonSound();
-            } catch (IOException | InterruptedException | ClassNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
+            audioPlayer.playButtonSound();
         });
 
         ImageView level5View = new ImageView(level5);
@@ -202,12 +183,7 @@ public class SelectLevel extends Pane{
             level5View.setTranslateY(350);
         });
         level5View.setOnMouseClicked(e -> {
-            try {
-                mainProgram.nextWorld5Level(5, 3);
-                audioPlayer.playButtonSound();
-            } catch (IOException | InterruptedException | ClassNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
+            audioPlayer.playButtonSound();
         });
 
         ImageView returnView = new ImageView(returnImage);
