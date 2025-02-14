@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
  */
 
 public class World5Template extends WorldTemplate {
-
     public World5Template(){
         super();
     }

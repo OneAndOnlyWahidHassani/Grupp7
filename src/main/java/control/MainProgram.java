@@ -1,6 +1,7 @@
 package control;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -9,6 +10,10 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+
+import javafx.stage.WindowEvent;
+import model.HighscoreList;
+import model.Maps.*;
 import model.MazeGeneration.GenerateNextLevel;
 import view.AudioPlayer;
 import view.GameOverScreen;
@@ -19,6 +24,7 @@ import view.WorldIntroAnimation;
 
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * @author André Eklund
@@ -34,11 +40,17 @@ public class MainProgram extends Application {
     private Scene menuScene;
     private Scene introScene;
     private Scene helpScene;
+    private Scene highscoreScene;
     private Scene chooseDimensionScene;
+    private Scene selectMapScene;
+    private Scene selectLevelScene;
     private Intro intro;
     private Menu menu;
     private Help help;
     private ChooseDimension chooseDimension;
+    private SelectWorldMap selectWorldMap;
+    private SelectLevel selectLevel;
+    private HighscoreView highscoreView;
     private Scene randomScene;
     private Scene campaignScene;
     private RightPanel rightPanel;
@@ -50,7 +62,7 @@ public class MainProgram extends Application {
     private GameOverScreen gameOverScreen;
     private Image cursorImage;
     private GameController gameController;
-
+    private HighscoreList highscoreList;
 
     /**
      * En metod som startar programmet.
@@ -70,11 +82,18 @@ public class MainProgram extends Application {
         menu = new Menu(this, audioPlayer, rightPanel);
         intro = new Intro(this, audioPlayer);
         help = new Help(this, audioPlayer);
+        highscoreList = new HighscoreList();
+        highscoreView = new HighscoreView(this, audioPlayer, 1, highscoreList);
         chooseDimension = new ChooseDimension(this, audioPlayer);
+        selectWorldMap = new SelectWorldMap(this, audioPlayer);
+        selectLevel = new SelectLevel(this, audioPlayer, 1);
         introScene = new Scene(intro, 800, 600);
         menuScene = new Scene(menu, 800, 600);
         helpScene = new Scene(help, 800, 600);
+        selectMapScene = new Scene(selectWorldMap, 800, 600);
+        selectLevelScene = new Scene(selectLevel, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
+        highscoreScene = new Scene(highscoreView, 800, 600);
 
         mainPaneRandomMaze = new BorderPane();
         mainPaneCampaign = new BorderPane();
@@ -106,12 +125,27 @@ public class MainProgram extends Application {
         chooseDimensionScene.setCursor(new ImageCursor(cursorImage));
         helpScene.setCursor(new ImageCursor(cursorImage));
         randomScene.setCursor(new ImageCursor(cursorImage));
+
+        //Körs när användaren stänger programmet
+        //Används för att spara Highscore listan
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                try {
+                    highscoreList.write();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                System.exit(0);
+            }
+        });
     }
 
     /**
      * Byter scen till huvudmenyn.
      */
-    public void changeToMenu() {
+    public void changeToMenu()
+    {
         mainWindow.setScene(menuScene);
     }
 
@@ -134,17 +168,14 @@ public class MainProgram extends Application {
      */
     public void changeToCampaign() {
         gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign);
-        try{
+        try {
             gameController.campaignWorldManager();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        mainWindow.setScene(campaignScene);
-        gameController.setUpNewWorldAnimation();
     }
-
 
     public GameController getCampaignController(){
         return gameController;
@@ -156,11 +187,25 @@ public class MainProgram extends Application {
         mainWindow.setScene(chooseDimensionScene);
     }
 
+    public void selectWorldMap()
+    {
+        mainWindow.setScene(selectMapScene);
+    }
+
+    public void selectLevelMap()
+    {
+        mainWindow.setScene(selectLevelScene);
+    }
+
     /**
      * Byter scen till hjälpfönstret.
      */
     public void changeToHelp() {
         mainWindow.setScene(helpScene);
+    }
+
+    public void showHighscore() {
+        mainWindow.setScene(highscoreScene);
     }
 
 
@@ -172,3 +217,4 @@ public class MainProgram extends Application {
         launch(args);
     }
 }
+

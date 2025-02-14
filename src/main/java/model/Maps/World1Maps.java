@@ -1,58 +1,36 @@
 package model.Maps;
 
+import model.ReaderWriter.FileManager;
+
+import java.io.IOException;
+import java.util.List;
+
 /**
  * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
  */
 
 public class World1Maps extends WorldMaps {
+    FileManager fileManager = new FileManager();
+    private int[][] level1;
+    private int[][] level2;
+    private int[][] level3;
+    private int[][] level4;
+    private int[][] level5;
 
-    private int[][] level1 = {{0, 0, 0, 0, 0, 0, 1, 3},
-            {0, 0, 1, 1, 4, 1, 1, 1},
-            {0, 0, 1, 0, 0, 0, 0, 0},
-            {0, 4, 1, 1, 1, 0, 0, 0},
-            {0, 0, 0, 0, 1, 0, 0, 0},
-            {0, 0, 0, 1, 1, 1, 4, 0},
-            {1, 4, 1, 1, 0, 0, 0, 0},
-            {2, 1, 1, 0, 0, 0, 0, 0}};
-
-    private int[][] level2 = {{0, 0, 0, 0, 0, 0, 1, 2},
-            {0, 4, 1, 0, 1, 1, 1, 0},
-            {0, 0, 1, 1, 1, 0, 1, 0},
-            {0, 0, 0, 0, 0, 1, 4, 0},
-            {0, 0, 1, 1, 1, 1, 0, 0},
-            {0, 0, 1, 0, 0, 0, 0, 0},
-            {0, 4, 1, 0, 1, 1, 4, 1},
-            {0, 0, 1, 1, 4, 0, 0, 3}};
-
-    private int[][] level3 = {{4, 0, 0, 0, 0, 0, 0, 4},
-            {1, 0, 1, 1, 4, 1, 1, 1},
-            {1, 1, 1, 0, 0, 1, 0, 0},
-            {0, 1, 0, 4, 0, 1, 1, 0},
-            {0, 1, 0, 1, 0, 0, 1, 0},
-            {0, 1, 1, 1, 4, 0, 1, 0},
-            {0, 0, 0, 0, 1, 0, 4, 1},
-            {0, 3, 1, 4, 1, 0, 0, 2}};
-
-    private int[][] level4 = {{0, 0, 0, 0, 0, 0, 0, 0},
-            {4, 1, 0, 1, 4, 1, 0, 4},
-            {0, 1, 0, 1, 0, 1, 0, 1},
-            {1, 1, 1, 1, 0, 4, 1, 1},
-            {4, 0, 0, 0, 0, 0, 0, 1},
-            {1, 1, 0, 1, 4, 1, 0, 4},
-            {0, 1, 0, 1, 0, 1, 4, 0},
-            {0, 2, 1, 1, 0, 0, 1, 3}};
-
-    private int[][] level5 = {{0, 0, 0, 0, 0, 4, 0, 0},
-            {0, 4, 1, 5, 0, 1, 1, 1},
-            {0, 1, 0, 0, 0, 4, 0, 1},
-            {0, 1, 0, 0, 0, 0, 1, 1},
-            {0, 1, 1, 1, 1, 1, 1, 0},
-            {0, 6, 0, 1, 1, 0, 0, 0},
-            {4, 7, 4, 0, 1, 1, 1, 0},
-            {4, 3, 4, 0, 0, 0, 1, 2}};
 
     public World1Maps(int world) {
         super(world);
+    }
+
+    public World1Maps() throws IOException, ClassNotFoundException
+    {
+        super(1);
+        List<int[][]> world1Map = fileManager.read("worldMap1");
+        level1 = world1Map.get(0);
+        level2 = world1Map.get(1);
+        level3 = world1Map.get(2);
+        level4 = world1Map.get(3);
+        level5 = world1Map.get(4);
     }
 
     /**

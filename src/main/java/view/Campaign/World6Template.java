@@ -16,8 +16,6 @@ public class World6Template extends WorldTemplate {
     }
     public World6Template(int[][] levelArray, GameController gameController) throws FileNotFoundException {
         super(levelArray, gameController);
-        initialize();
-
     }
 
     public void initialize(){

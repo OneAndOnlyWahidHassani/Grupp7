@@ -11,7 +11,6 @@ import java.io.FileNotFoundException;
  */
 
 public class World4Template extends WorldTemplate {
-
     public World4Template(){
         super();
     }
