@@ -179,6 +179,8 @@ public class MainProgram extends Application {
         } catch (ClassNotFoundException e){
             e.printStackTrace();
         }
+        mainWindow.setScene(campaignScene);
+        gameController.setUpNewWorldAnimation();
     }
 
     public GameController getCampaignController(){
