@@ -1,23 +1,19 @@
 package view.Campaign;
 
 
-import control.CampaignController;
-import javafx.animation.Animation;
+import control.GameController;
+import control.EnemyController;
 import javafx.animation.FadeTransition;
-import javafx.animation.PathTransition;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
-import javafx.event.EventHandler;
-import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import model.TimeThread;
-import model.TotalTime;
 import view.AudioPlayer;
 import view.Menu.RightPanel;
+import view.WorldIntroAnimation;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -25,11 +21,8 @@ import java.util.ArrayList;
 
 public class WorldTemplate extends GridPane {
     //private MainProgram mainProgram;
-    CampaignController campaignController;
+    private GameController gameController;
     private int[][] levelArray;
-    private ArrayList<Label> collectibles = new ArrayList<>();
-    private ArrayList<Label> pickaxes = new ArrayList<>();
-    private MouseListener mouseListener = new MouseListener();
     private Image wall;
     private Image path;
     private Image border;
@@ -38,49 +31,33 @@ public class WorldTemplate extends GridPane {
     private Image start;
     private Image heart;
     private Image breakableWall;
-    private boolean startButtonPressed;
-    private boolean allCollectiblesObtained;
-    private boolean wallDestroyed;
-    private int collectiblesObtained = 0;
     private int squareSize;
     private int heartCrystals;
     private Image pickAxeImage;
-    private boolean pickaxeObtained;
-    private boolean gameStarted;
-    private boolean startNotClickedOnce = true;
-    private boolean totalTimeStarted = false;
-
     private int seconds;
 
     private RightPanel rightPanel;
     private AudioPlayer audioPlayer;
-    private TimeThread time;
-    private TotalTime totTime;
-
-    Enemy enemy;
 
     public WorldTemplate(){
 
     }
-    public WorldTemplate(int[][] levelArray, CampaignController campaignController, int seconds) throws FileNotFoundException {
-        this.campaignController = campaignController;
+    public WorldTemplate(int[][] levelArray, GameController gameController) throws FileNotFoundException {
+        this.gameController = gameController;
         this.levelArray = levelArray;
-        this.seconds = seconds;
-        this.heartCrystals = campaignController.getHeartCrystals();
-        this.rightPanel = campaignController.getRightPanel();
-        this.audioPlayer = campaignController.getAudioPlayer();
+        this.seconds = gameController.getSeconds();
+        this.heartCrystals = gameController.getHeartCrystals();
+        this.rightPanel = gameController.getRightPanel();
+        this.audioPlayer = gameController.getAudioPlayer();
         rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
         squareSize = 600/(levelArray.length+2);
         setBackground();
-        setupImages(campaignController.getWorld());
+        setupImages(gameController.getWorld());
         setupBorders();
         setupLevel();
-        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
         rightPanel.setSTARTTIME(seconds);
         rightPanel.resetTimerLabel();
-        totTime = new TotalTime(false);
-        time = null;
-        enemy = new Enemy();
+
     }
 
     /**
@@ -204,7 +181,7 @@ public class WorldTemplate extends GridPane {
         wallView.setFitHeight(squareSize);
         wallView.setFitWidth(squareSize);
         label.setGraphic(wallView);
-        label.setOnMouseEntered(e -> enteredWall(e));
+        label.setOnMouseEntered(e -> gameController.enteredWall(e));
         label.setOnMouseExited(e -> exitedLabel(e));
         return label;
     }
@@ -232,7 +209,7 @@ public class WorldTemplate extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseEntered(e -> enteredWall(e));
+        label.setOnMouseEntered(e -> gameController.enteredWall(e));
         label.setOnMouseExited(e -> exitedLabel(e));
         return label;
     }
@@ -247,7 +224,7 @@ public class WorldTemplate extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseEntered(e -> enteredBreakableWall(e));
+        label.setOnMouseEntered(e -> gameController.enteredBreakableWall(e));
         return label;
     }
 
@@ -263,7 +240,7 @@ public class WorldTemplate extends GridPane {
         label.setGraphic(borderView);
         label.setOnMouseEntered(e -> {
             try {
-                enteredGoal();
+                gameController.enteredGoal();
             } catch (FileNotFoundException | InterruptedException fileNotFoundException) {
                 fileNotFoundException.printStackTrace();
             }
@@ -281,7 +258,7 @@ public class WorldTemplate extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setOnMouseClicked(e -> startLevel());
+        label.setOnMouseClicked(e -> gameController.startLevel());
         return label;
     }
 
@@ -299,8 +276,8 @@ public class WorldTemplate extends GridPane {
         borderView.setEffect(glow);
         collectible.setStyle("fx-background-color: transparent;");
         collectible.setGraphic(borderView);
-        collectible.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener);
-        collectibles.add(collectible);
+        collectible.addEventHandler(MouseEvent.MOUSE_ENTERED, gameController.getMouseListener());
+        gameController.getCollectibles().add(collectible);
         return collectible;
     }
 
@@ -319,28 +296,8 @@ public class WorldTemplate extends GridPane {
         heartCrystal.setStyle("fx-background-color: transparent;");
         heartCrystal.setGraphic(borderView);
         heartCrystal.setOpacity(0.8);
-        heartCrystal.setOnMouseEntered(e -> heartCrystalObtained(e));
+        heartCrystal.setOnMouseEntered(e -> gameController.heartCrystalObtained(e));
         return heartCrystal;
-    }
-
-    /**
-     * När en användare vidrör en label av typen heartCrystal körs denna metod.
-     * Om spelaren har mindre än tre återstående liv inkrementeras variabeln heartCrystals.
-     * @param e Används för att hitta rätt label.
-     */
-
-    private void heartCrystalObtained(MouseEvent e) {
-
-        Label label = (Label)e.getSource();
-
-        if (startButtonPressed) {
-            audioPlayer.playHeartSound();
-            label.setVisible(false);
-            if(heartCrystals<3){
-                heartCrystals++;
-                rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-            }
-        }
     }
 
     /**
@@ -357,132 +314,11 @@ public class WorldTemplate extends GridPane {
         borderView.setEffect(glow);
         pickAxe.setStyle("fx-background-color: transparent;");
         pickAxe.setGraphic(borderView);
-        pickAxe.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener);
-        pickaxes.add(pickAxe);
+        pickAxe.addEventHandler(MouseEvent.MOUSE_ENTERED, gameController.getMouseListener());
+        gameController.getPickaxes().add(pickAxe);
         return pickAxe;
     }
 
-    /**
-     * Om en spelare vidrör en vägg med muspekaren körs denna metod.
-     * Om spelrundan är aktiverad förlorar spelaren ett liv.
-     * Om spelaren endast har ett återstående liv kvar vid kollisionen körs metoden gameOver.
-     * @param e Används för att hitta rätt label.
-     */
-    public void enteredWall(MouseEvent e) {
-        Label label = (Label)e.getSource();
-        FadeTransition fade = new FadeTransition();
-        fade.setNode(label);
-        fade.setDuration(Duration.seconds(0.3));
-        fade.setFromValue(10);
-        fade.setToValue(0.6);
-        fade.play();
-
-        if (startButtonPressed) {
-
-            heartCrystals--;
-            rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-
-            if (heartCrystals == 0) {
-                gameOver();
-            }
-            audioPlayer.playDeathSound();
-            startButtonPressed = false;
-        }
-    }
-
-    /**
-     * Om en spelare vidrör ett spöke med muspekaren körs denna metod.
-     * Om spelrundan är aktiverad förlorar spelaren ett liv.
-     * Om spelaren endast har ett återstående liv kvar vid kollisionen körs metoden gameOver.
-     * @param e
-     */
-    public void enteredGhost(MouseEvent e){
-        ImageView view = (ImageView) e.getSource();
-        FadeTransition fade = new FadeTransition();
-        fade.setNode(view);
-        fade.setDuration(Duration.seconds(1));
-        fade.setFromValue(10);
-        fade.setToValue(0.6);
-        fade.setToValue(10);
-        fade.play();
-
-
-        if (startButtonPressed) {
-            audioPlayer.playMobSound();
-            audioPlayer.playDeathSound();
-            heartCrystals--;
-            rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-
-            if (heartCrystals == 0) {
-                gameOver();
-            }
-            startButtonPressed = false;
-        }
-    }
-
-    /**
-     * Avslutar spelrundan och kör metoden gameOver i mainProgram.
-     */
-    private void gameOver() {
-        audioPlayer.playGameOverSound();
-        audioPlayer.stopMusic();
-        campaignController.gameOver();
-        rightPanel.pauseClock();
-        gameStarted = true;
-        time.setGameOver(true);
-        rightPanel.setGameOver(true);
-        time = null;
-        rightPanel.removePickaxe();
-
-    }
-
-    /**
-     * Om spelrundan är aktiverad och spelaren har plockat upp alla collectibles startas nästa nivå.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
-     */
-    public void enteredGoal() throws FileNotFoundException, InterruptedException {
-        if (startButtonPressed && allCollectiblesObtained) {
-            audioPlayer.stopClockSound();
-            audioPlayer.playGoalSound();
-            campaignController.nextLevel();
-            rightPanel.pauseClock();
-            rightPanel.setTheTime(seconds);
-            gameStarted = true;
-            time.setGameOver(true);
-            time = null;
-        }
-    }
-
-    /**
-     * Startar spelrundan och timern.
-     */
-    public void startLevel() {
-
-        if (!totalTimeStarted){
-            rightPanel.startTotalTimer();
-            rightPanel.setTimerIsStarted(true);
-        }
-
-        if (!gameStarted){
-            rightPanel.resumeClock();
-            gameStarted = true;
-            time = new TimeThread(seconds, rightPanel);
-            time.setGameOver(false);
-            time.start();
-
-        }else if (startNotClickedOnce){
-            rightPanel.runClock();
-            time = new TimeThread(seconds, rightPanel);
-            time.setGameOver(false);
-            time.start();
-
-        }
-        totalTimeStarted = true;
-        startNotClickedOnce = false;
-        audioPlayer.playStartSound();
-        startButtonPressed = true;
-    }
 
     /**
      * När muspekaren lämnar en label slutar den att highlightas.
@@ -498,87 +334,26 @@ public class WorldTemplate extends GridPane {
         fade.play();
     }
 
-    /**
-     * Om spelrundan är startad och spelaren har plockat upp en yxa går det att förstöra väggen.
-     * Om spelrundan är startad och spelaren inte plockat upp en yxa förlorar hen ett liv vid kollision med väggen.
-     * @param e Används för att hitta rätt label.
-     */
-    public void enteredBreakableWall(MouseEvent e) {
-
-        Label label = (Label)e.getSource();
-        ImageView pathView = new ImageView(path);
-
-        if (startButtonPressed) {
-
-            if (pickaxeObtained) {
-                label.setGraphic(pathView);
-                pickaxeObtained = false;
-                rightPanel.removePickaxe();
-                wallDestroyed = true;
-                audioPlayer.playBreakableWallSound();
-            }
-            else if (!wallDestroyed) {
-                enteredWall(e);
-            }
-        }
+    public void setNewWorldAnimation(BorderPane mainPaneCampaign, int world){
+        WorldIntroAnimation introAnimation = new WorldIntroAnimation(String.valueOf(world));
+        mainPaneCampaign.getChildren().add(introAnimation);
+        introAnimation.setDisable(true);
+        audioPlayer.playWorldIntroSound();
+        audioPlayer.playLevelMusic(getWorldName(world));
+        rightPanel.setTheTime(seconds);
+        rightPanel.resetTimerLabel();
     }
 
-
-    /**
-     * En listener som körs när spelaren plockar upp en collectible eller en yxa.
-     */
-    private class MouseListener implements EventHandler<MouseEvent> {
-
-        @Override
-        public void handle(MouseEvent e) {
-            if (startButtonPressed) {
-
-                for (Label label : pickaxes){
-                    if (e.getSource()== label){
-                        audioPlayer.playPickAxeSound();
-                        label.setVisible(false);
-                        pickaxeObtained = true;
-                        rightPanel.addPickaxe();
-                    }
-                }
-
-                for (Label label: collectibles) {
-                    if (e.getSource() == label) {
-                        audioPlayer.playCollectibleSound();
-                        label.setVisible(false);
-                        collectiblesObtained++;
-                        if (collectiblesObtained == collectibles.size()) {
-                            allCollectiblesObtained = true;
-                        }
-                    }
-                }
-
-            }
-        }
-    }
-
-    public void setEnemy(Enemy enemy) {
-        this.enemy = enemy;
-    }
-
-
-    public int getHeartCrystals() {
-        return heartCrystals;
-    }
-
-    public int getSeconds() {
-        return seconds;
-    }
-
-    public RightPanel getRightPanel() {
-        return rightPanel;
-    }
-
-    public AudioPlayer getAudioPlayer() {
-        return audioPlayer;
-    }
 
     public int getSquareSize() {
         return squareSize;
+    }
+
+    public Image getImagePath(){
+        return path;
+    }
+
+    public GameController getGameController() {
+        return gameController;
     }
 }

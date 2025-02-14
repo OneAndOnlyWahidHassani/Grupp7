@@ -1,17 +1,15 @@
 package view.Campaign;
 
 
-import control.CampaignController;
-import view.AudioPlayer;
-import view.Menu.RightPanel;
+import control.GameController;
 
 import java.io.FileNotFoundException;
 
 
 public class World1Template extends WorldTemplate {
 
-    public World1Template(int[][] levelArray, CampaignController campaignController) throws FileNotFoundException {
-        super(levelArray, campaignController, 25);
+    public World1Template(int[][] levelArray, GameController gameController) throws FileNotFoundException {
+        super(levelArray, gameController);
     }
 
     public World1Template() {

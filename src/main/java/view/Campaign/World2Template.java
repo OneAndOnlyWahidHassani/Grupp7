@@ -1,6 +1,7 @@
 package view.Campaign;
 
-import control.CampaignController;
+import control.EnemyController;
+import control.GameController;
 import javafx.animation.Animation;
 import javafx.animation.PathTransition;
 import javafx.scene.control.Label;
@@ -8,6 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
+import model.Enemy;
 
 import java.io.FileNotFoundException;
 
@@ -28,8 +30,8 @@ public class World2Template extends WorldTemplate {
     public World2Template(){
         super();
     }
-    public World2Template(int[][] levelArray, CampaignController campaignController) throws FileNotFoundException {
-        super(levelArray, campaignController, 35);
+    public World2Template(int[][] levelArray, GameController gameController) throws FileNotFoundException {
+        super(levelArray, gameController);
         initialize();
     }
 
@@ -42,7 +44,10 @@ public class World2Template extends WorldTemplate {
 
     public void initialize() {
         Image ghost = new Image("file:files/ghost.png", getSquareSize(), getSquareSize(), false, false);
-        if(campaignController.getLevel() == 5) {
+        if(getGameController().getLevel() == 5) {
+            EnemyController enemyController = getGameController().getEnemyController();
+            Enemy enemy;
+
             ImageView ghost1V = new ImageView(ghost);
             ImageView ghost2V = new ImageView(ghost);
             ImageView ghost3V = new ImageView(ghost);
@@ -64,12 +69,12 @@ public class World2Template extends WorldTemplate {
             ghost5VLabel.setGraphic(ghost5V);
             ghost6VLabel.setGraphic(ghost6V);
 
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost4V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost5V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost6V.setOnMouseEntered(e -> enteredGhost(e));
+            ghost1V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost2V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost3V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost4V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost5V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost6V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
 
             add(ghost1V, 10, 0);
             add(ghost2V, 9, 0);
@@ -160,12 +165,12 @@ public class World2Template extends WorldTemplate {
             animation.setCycleCount(PathTransition.INDEFINITE);
             animation.play();
 
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost4V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost5V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost6V.setOnMouseEntered(e -> enteredGhost(e));
+            ghost1V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost2V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost3V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost4V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost5V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
+            ghost6V.setOnMouseEntered(e -> getGameController().enteredGhost(e));
         }
     }
 }

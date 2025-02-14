@@ -1,33 +1,19 @@
 package view.Campaign;
 
-import control.CampaignController;
-import javafx.animation.Animation;
-import javafx.animation.PathTransition;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-import model.TimeThread;
-import view.AudioPlayer;
-import view.Menu.RightPanel;
+import control.GameController;
+import control.EnemyController;
+import model.Enemy;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 
 public class World3Template extends WorldTemplate {
 
 
-    /**
-     * @author Filip Örnling
-     */
-
-    //private Image ghost;
-
     public World3Template(){
         super();
     }
-    public World3Template(int[][] levelArray, CampaignController campaignController) throws FileNotFoundException {
-        super(levelArray, campaignController, 60);
+    public World3Template(int[][] levelArray, GameController gameController) throws FileNotFoundException {
+        super(levelArray, gameController);
         initialize();
     }
     /**
@@ -38,86 +24,90 @@ public class World3Template extends WorldTemplate {
      */
 
     public void initialize() {
-        setEnemy(new Enemy("file:files/ghost.png", getSquareSize(), this, 5));
-        ArrayList<ImageView> ghosts = enemy.getGhosts();
-        switch (campaignController.getLevel()) {
+        EnemyController enemyController = getGameController().getEnemyController();
+        Enemy enemy;
+
+        switch (getGameController().getLevel()) {
             case 1:
-                add(ghosts.get(0), 5, 5);
-                add(ghosts.get(1), 14, 5);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),125,251,65,-147);
+                enemyController.setAnimation(enemy, 4, false);
+                add(enemy.getIcon(),5,5);
 
-                enemy.setRectangle(125, 251, 65, -147, 0);
-                enemy.setRectangle(84, 123, 65, -147, 1);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),84, 123, 65, -147);
+                enemyController.setAnimation(enemy, 4, false);
+                add(enemy.getIcon(),14,5);
 
-                enemy.setAnimation(0, 4, false);
-                enemy.setAnimation(1, 4, false);
                 break;
 
             case 2:
-                add(ghosts.get(0),9,3);
-                add(ghosts.get(1), 9, 3);
 
-                enemy.setRectangle(125, 120, 65, -147, 0);
-                enemy.setRectangle(210, 125, 190, -231, 1);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),125, 120, 65, -147);
+                enemyController.setAnimation(enemy, 2, false);
+                add(enemy.getIcon(),10,2);
 
-                enemy.setAnimation(0,  2, false);
-                enemy.setAnimation(1,  2, false);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),210, 125, 190, -231);
+                enemyController.setAnimation(enemy, 2, false);
+                add(enemy.getIcon(),9,3);
+
                 break;
 
             case 3:
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),0, 83, 105, -232);
+                enemyController.setAnimation(enemy, 2, true);
+                add(enemy.getIcon(),10,1);
 
-                add(ghosts.get(0),10,1);
-                add(ghosts.get(1),15,1);
-                add(ghosts.get(2),12,1);
-                add(ghosts.get(3),10,4);
-                add(ghosts.get(4),15,4);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),0, 83, 105, -232);
+                enemyController.setAnimation(enemy, 2, true);
+                add(enemy.getIcon(),15,1);
 
-                enemy.setRectangle(0, 83, 105, -232, 0);
-                enemy.setRectangle(0, 83, 105, -232, 1);
-                enemy.setRectangle(0, 83, 105, -232, 2);
-                enemy.setRectangle(125, 83, 190, -230, 3);
-                enemy.setRectangle(125, 83, 190, -230, 4);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),0, 83, 105, -232);
+                enemyController.setAnimation(enemy, 2, true);
+                add(enemy.getIcon(),12,1);
 
-                enemy.setAnimation(0, 2, true);
-                enemy.setAnimation(1, 2, true);
-                enemy.setAnimation(2, 2, true);
-                enemy.setAnimation(3, 2, true);
-                enemy.setAnimation(4, 3, true);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),125, 83, 190, -230);
+                enemyController.setAnimation(enemy, 2, true);
+                add(enemy.getIcon(),10,4);
+
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),125, 83, 190, -230);
+                enemyController.setAnimation(enemy, 3, true);
+                add(enemy.getIcon(),15,4);
                 break;
 
             case 4:
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),83, 125, 65, -150);
+                enemyController.setAnimation(enemy, 2, true);
+                add(enemy.getIcon(),8,3);
 
-                add(ghosts.get(3), 8, 11);
-                add(ghosts.get(0), 8, 3);
-                add(ghosts.get(1), 8, 8);
-                add(ghosts.get(2), 8, 12);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),0, 125, 65, -150);
+                enemyController.setAnimation(enemy, 1.5, true);
+                add(enemy.getIcon(),8,8);
 
-                enemy.setRectangle(83, 125, 65, -150, 0);
-                enemy.setRectangle(0, 125, 65, -150, 1);
-                enemy.setRectangle(400, 0, 20, -150, 2);
-                enemy.setRectangle(400, 0, 20, -150, 3);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),400, 0, 20, -150);
+                enemyController.setAnimation(enemy, 2.5, true);
+                add(enemy.getIcon(),8,12);
 
-                enemy.setAnimation(3, 3, true);
-                enemy.setAnimation(2, 2.5, true);
-                enemy.setAnimation(1, 1.5, true);
-                enemy.setAnimation(0, 2, true);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),400, 0, 20, -150);
+                enemyController.setAnimation(enemy, 3, true);
+                add(enemy.getIcon(),8,11);
+
                 break;
 
             case 5:
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),83, 125, 65, -150);
+                enemyController.setAnimation(enemy, 2, false);
+                add(enemy.getIcon(),7,6);
 
-                add(ghosts.get(0),7,6);
-                add(ghosts.get(1),8,2);
-                add(ghosts.get(2),8,6);
-                add(ghosts.get(3), 8,10);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),0, 40, 65, -150);
+                enemyController.setAnimation(enemy, 1.5, true);
+                add(enemy.getIcon(),8,2);
 
-                enemy.setRectangle(83, 125, 65, -150, 0);
-                enemy.setRectangle(0, 40, 65, -150, 1);
-                enemy.setRectangle(170, 87, 20, 20, 2);
-                enemy.setRectangle(170, 87, 20, 20, 3);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),170, 87, 20, 20);
+                enemyController.setAnimation(enemy, 2.5, true);
+                add(enemy.getIcon(),8,6);
 
-                enemy.setAnimation(3, 3, true);
-                enemy.setAnimation(2, 2.5, true);
-                enemy.setAnimation(1, 1.5, true);
-                enemy.setAnimation(0, 2, false);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("Ghost"),getSquareSize(),170, 87, 20, 20);
+                enemyController.setAnimation(enemy, 3, true);
+                add(enemy.getIcon(),8,10);
 
                 break;
 

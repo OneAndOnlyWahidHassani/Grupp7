@@ -49,7 +49,7 @@ public class MainProgram extends Application {
     private AudioPlayer audioPlayer;
     private GameOverScreen gameOverScreen;
     private Image cursorImage;
-    private CampaignController campaignController;
+    private GameController gameController;
 
 
     /**
@@ -133,21 +133,21 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      */
     public void changeToCampaign() {
-        campaignController = new CampaignController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign);
+        gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign);
         try{
-            campaignController.campaignWorldManager();
+            gameController.campaignWorldManager();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         mainWindow.setScene(campaignScene);
-        campaignController.setUpNewWorldAnimation();
+        gameController.setUpNewWorldAnimation();
     }
 
 
-    public CampaignController getCampaignController(){
-        return campaignController;
+    public GameController getCampaignController(){
+        return gameController;
     }
     /**
      * Byter scen till den del av menyn där användaren får välja dimension på labyrinten.
