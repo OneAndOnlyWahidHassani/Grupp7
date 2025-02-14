@@ -1,15 +1,18 @@
 package view.Menu;
 
 import control.MainProgram;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import model.HighscoreList;
 import view.AudioPlayer;
 
-import java.io.IOException;
 import java.util.ArrayList;
+
+import static javax.swing.text.StyleConstants.setAlignment;
 
 public class HighscoreView extends Pane{
     private MainProgram mainProgram;
@@ -47,7 +50,7 @@ public class HighscoreView extends Pane{
      * Metod som länkar Image-objekten till png-filer
      */
     public void setupLabelsAndImages() {
-        selectLevel = new Image("file:files/texts/SelectLevel.png", 800, 600, false, false);
+        selectLevel = new Image("file:files/texts/HighscoreTitle.png", 800, 600, false, false);
 
         for(int i = 0; i < highscoreListScores.length; i++)
         {
@@ -86,43 +89,21 @@ public class HighscoreView extends Pane{
         dimensionView.setStyle("fx-background-color: transparent;");
 
         int x = 275;
-        int y = 150;
+        int y = 100;
+        String fontFamily = "Arial";
+        double fontSize = 26;
 
         for (Label l : highscoreLabels)
         {
+            l.setStyle("-fx-font: 24 arial;");
+            l.setTextFill(Color.WHITE);
             l.setTranslateX(x);
             l.setTranslateY(y);
             l.toFront();
             getChildren().add(l);
 
-            x = x + 50;
+            y = y + 35;
         }
-
-
-        /*ImageView level1View = new ImageView(level1);
-        level1View.setStyle("fx-background-color: transparent;");
-        level1View.setTranslateX(275);
-        level1View.setTranslateY(150);
-        level1View.toFront();
-        level1View.setPickOnBounds(true);
-        level1View.setOnMouseEntered(e -> {
-            level1View.setImage(level1Resize);
-            level1View.setTranslateX(273);
-            level1View.setTranslateY(147);
-        });
-        level1View.setOnMouseExited(e -> {
-            level1View.setImage(level1);
-            level1View.setTranslateX(275);
-            level1View.setTranslateY(150);
-        });
-        level1View.setOnMouseClicked(e -> {
-            try {
-                mainProgram.changeToCampaign();
-                audioPlayer.playButtonSound();
-            } catch (IOException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });*/
 
         ImageView returnView = new ImageView(returnImage);
         returnView.setStyle("fx-background-color: transparent;");
