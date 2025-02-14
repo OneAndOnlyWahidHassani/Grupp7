@@ -16,7 +16,7 @@ import java.io.FileNotFoundException;
  * @author Filip Örnling
  */
 
-public class World4Template extends view.Campaign.World1Template {
+public class World4Template extends World1Template {
 
 
     private Image ghost;

@@ -1,6 +1,7 @@
 package control;
 
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -10,6 +11,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
+import javafx.stage.WindowEvent;
+import model.HighscoreList;
 import model.Maps.*;
 
 import model.MazeGeneration.GenerateNextLevel;
@@ -23,6 +26,7 @@ import view.WorldIntroAnimation;
 
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
 /**
  * @author André Eklund
@@ -38,11 +42,17 @@ public class MainProgram extends Application {
     private Scene menuScene;
     private Scene introScene;
     private Scene helpScene;
+    private Scene highscoreScene;
     private Scene chooseDimensionScene;
+    private Scene selectMapScene;
+    private Scene selectLevelScene;
     private Intro intro;
     private Menu menu;
     private Help help;
     private ChooseDimension chooseDimension;
+    private SelectWorldMap selectWorldMap;
+    private SelectLevel selectLevel;
+    private HighscoreView highscoreView;
     private Scene randomScene;
     private Scene campaignScene;
     private RightPanel rightPanel;
@@ -55,6 +65,7 @@ public class MainProgram extends Application {
     private AudioPlayer audioPlayer;
     private GameOverScreen gameOverScreen;
     private Image cursorImage;
+    private HighscoreList highscoreList;
 
     /**
      * En metod som startar programmet.
@@ -65,7 +76,6 @@ public class MainProgram extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
         audioPlayer = new AudioPlayer();
         audioPlayer.playIntroMusic();
 
@@ -75,11 +85,17 @@ public class MainProgram extends Application {
         menu = new Menu(this, audioPlayer, rightPanel);
         intro = new Intro(this, audioPlayer);
         help = new Help(this, audioPlayer);
+        highscoreView = new HighscoreView(this, audioPlayer, 1);
         chooseDimension = new ChooseDimension(this, audioPlayer);
+        selectWorldMap = new SelectWorldMap(this, audioPlayer);
+        selectLevel = new SelectLevel(this, audioPlayer, 1);
         introScene = new Scene(intro, 800, 600);
         menuScene = new Scene(menu, 800, 600);
         helpScene = new Scene(help, 800, 600);
+        selectMapScene = new Scene(selectWorldMap, 800, 600);
+        selectLevelScene = new Scene(selectLevel, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
+        highscoreScene = new Scene(highscoreView, 800, 600);
 
         mainPaneRandomMaze = new BorderPane();
         mainPaneCampaign = new BorderPane();
@@ -102,6 +118,8 @@ public class MainProgram extends Application {
         campaignScene = new Scene(mainPaneCampaign, 800, 600);
         randomScene = new Scene(mainPaneRandomMaze, 800, 600);
 
+        highscoreList = new HighscoreList();
+
         mainWindow.setScene(introScene);
         mainWindow.show();
 
@@ -111,12 +129,27 @@ public class MainProgram extends Application {
         chooseDimensionScene.setCursor(new ImageCursor(cursorImage));
         helpScene.setCursor(new ImageCursor(cursorImage));
         randomScene.setCursor(new ImageCursor(cursorImage));
+
+        //Körs när användaren stänger programmet
+        //Används för att spara Highscore listan
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent windowEvent) {
+                try {
+                    highscoreList.write();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+                System.exit(0);
+            }
+        });
     }
 
     /**
      * Byter scen till huvudmenyn.
      */
-    public void changeToMenu() {
+    public void changeToMenu()
+    {
         mainWindow.setScene(menuScene);
     }
 
@@ -138,7 +171,6 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      */
     public void changeToCampaign() throws FileNotFoundException {
-
         world1Template = new World1Template(world1Maps.getLevel11(), 1, 3, this, rightPanel, 0, audioPlayer, 25);
 
         mainPaneCampaign.setCenter(world1Template);
@@ -155,6 +187,16 @@ public class MainProgram extends Application {
         mainWindow.setScene(chooseDimensionScene);
     }
 
+    public void selectWorldMap()
+    {
+        mainWindow.setScene(selectMapScene);
+    }
+
+    public void selectLevelMap()
+    {
+        mainWindow.setScene(selectLevelScene);
+    }
+
     /**
      * Byter scen till hjälpfönstret.
      */
@@ -162,11 +204,17 @@ public class MainProgram extends Application {
         mainWindow.setScene(helpScene);
     }
 
+    public void showHighscore()
+    {
+        mainWindow.setScene(highscoreScene);
+    }
+
     /**
      * Vid gameOver körs denna metod.
      * Kör en enkel animation med texten "Game Over".
      */
-    public void gameOver() {
+    public void gameOver(int score, String name) {
+        highscoreList.addScore(score, name);
         gameOverScreen = new GameOverScreen(this);
         mainPaneCampaign.getChildren().add(gameOverScreen);
     }
@@ -178,10 +226,9 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld1Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld1Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         if (level == 1) {
-            System.out.println("hello");
             rightPanel.changeLevelCounter("12");
             mainPaneCampaign.setCenter(new World1Template(world1Maps.getLevel12(), 2, heartCrystals, this, rightPanel, 0, audioPlayer, 25));
 
@@ -211,8 +258,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-
-    public void nextWorld2Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld2Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World2Maps world2Maps = new World2Maps();
 
@@ -252,7 +298,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld3Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld3Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World3Maps world3Maps = new World3Maps();
 
@@ -293,7 +339,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld4Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld4Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World4Maps world4Maps = new World4Maps();
 
@@ -334,7 +380,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld5Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld5Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World5Maps world5Maps = new World5Maps();
 
@@ -375,7 +421,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextWorld6Level(int level, int heartCrystals) throws FileNotFoundException, InterruptedException {
+    public void nextWorld6Level(int level, int heartCrystals) throws IOException, InterruptedException, ClassNotFoundException {
 
         World6Maps world6Maps = new World6Maps();
 

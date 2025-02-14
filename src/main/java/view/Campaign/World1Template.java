@@ -17,6 +17,7 @@ import view.AudioPlayer;
 import view.Menu.RightPanel;
 
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -283,7 +284,7 @@ public class World1Template extends GridPane {
         label.setOnMouseEntered(e -> {
             try {
                 enteredGoal();
-            } catch (FileNotFoundException | InterruptedException fileNotFoundException) {
+            } catch (InterruptedException | IOException | ClassNotFoundException fileNotFoundException) {
                 fileNotFoundException.printStackTrace();
             }
         });
@@ -445,14 +446,13 @@ public class World1Template extends GridPane {
     private void gameOver() {
         audioPlayer.playGameOverSound();
         audioPlayer.stopMusic();
-        mainProgram.gameOver();
+        mainProgram.gameOver(currentLevel, "default");
         rightPanel.pauseClock();
         gameStarted = true;
         time.setGameOver(true);
         rightPanel.setGameOver(true);
         time = null;
         rightPanel.removePickaxe();
-
     }
 
     /**
@@ -460,7 +460,7 @@ public class World1Template extends GridPane {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void enteredGoal() throws FileNotFoundException, InterruptedException {
+    public void enteredGoal() throws IOException, InterruptedException, ClassNotFoundException {
         if (startButtonPressed && allCollectiblesObtained) {
             audioPlayer.stopClockSound();
             audioPlayer.playGoalSound();
@@ -478,7 +478,7 @@ public class World1Template extends GridPane {
      * @throws FileNotFoundException
      * @throws InterruptedException
      */
-    public void nextLevel() throws FileNotFoundException, InterruptedException {
+    public void nextLevel() throws IOException, InterruptedException, ClassNotFoundException {
 
         if (world == 0) {
             mainProgram.nextWorld1Level(currentLevel, heartCrystals);
