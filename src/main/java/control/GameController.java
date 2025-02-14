@@ -56,8 +56,8 @@ public class GameController {
         enemyController = new EnemyController(this);
         totTime = new TotalTime(false);
         time = null;
-        world = 1;
-        level = 1;
+        world = 5;
+        level = 5;
         heartCrystals = 3;
     }
 
@@ -149,7 +149,7 @@ public class GameController {
     }
 
     public void nextLevel() throws FileNotFoundException, InterruptedException, IOException, ClassNotFoundException {
-        if (level == 5) {
+        if (level >= 5) {
             world++;
             level = 1;
         }else {
