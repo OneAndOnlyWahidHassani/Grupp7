@@ -85,7 +85,8 @@ public class MainProgram extends Application {
         menu = new Menu(this, audioPlayer, rightPanel);
         intro = new Intro(this, audioPlayer);
         help = new Help(this, audioPlayer);
-        highscoreView = new HighscoreView(this, audioPlayer, 1);
+        highscoreList = new HighscoreList();
+        highscoreView = new HighscoreView(this, audioPlayer, 1, highscoreList);
         chooseDimension = new ChooseDimension(this, audioPlayer);
         selectWorldMap = new SelectWorldMap(this, audioPlayer);
         selectLevel = new SelectLevel(this, audioPlayer, 1);
@@ -117,8 +118,6 @@ public class MainProgram extends Application {
 
         campaignScene = new Scene(mainPaneCampaign, 800, 600);
         randomScene = new Scene(mainPaneRandomMaze, 800, 600);
-
-        highscoreList = new HighscoreList();
 
         mainWindow.setScene(introScene);
         mainWindow.show();

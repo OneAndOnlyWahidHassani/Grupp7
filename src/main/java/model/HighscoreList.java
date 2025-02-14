@@ -86,4 +86,22 @@ public class HighscoreList {
             }
         }
     }
+
+    public int[] getHighscoreScores()
+    {
+        if (highscoreListScores != null)
+        {
+            return highscoreListScores;
+        }
+        return highscoreListScores = new int[10];
+    }
+
+    public String[] getHighscoreNames()
+    {
+        if (highscoreListNames != null)
+        {
+            return highscoreListNames;
+        }
+        return highscoreListNames = new String[10];
+    }
 }
