@@ -1,14 +1,8 @@
 package view.Campaign;
 
-import control.MainProgram;
-import javafx.animation.Animation;
-import javafx.animation.PathTransition;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
-import view.AudioPlayer;
-import view.Menu.RightPanel;
+import control.GameController;
+import control.EnemyController;
+import model.Enemy;
 
 import java.io.FileNotFoundException;
 
@@ -16,49 +10,15 @@ import java.io.FileNotFoundException;
  * @author Filip Örnling
  */
 
-public class World4Template extends World1Template {
-
-
-    private Image ghost;
-    private Image largeGhost;
-
-    private int squareSize;
-    private ImageView imageView = new ImageView();
-    private PathTransition animation;
-    private PathTransition animation2;
-    private PathTransition animation3;
-    private PathTransition animation4;
-    private PathTransition animation5;
-    private PathTransition animation6;
-    private Thread platfrom;
-    private int currentLevel;
-
-    public World4Template(int[][] level, int currentLevel, int heartCrystals, MainProgram mainProgram, RightPanel rightPanel, int worldImage, AudioPlayer audioPlayer) throws FileNotFoundException {
-        super(level, currentLevel, heartCrystals, mainProgram, rightPanel, worldImage, audioPlayer, 80);
-        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-        this.currentLevel = currentLevel;
-        squareSize = 600/(level.length+2);
-
-        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
-        rightPanel.resetTimerLabel();
-        setupGhost();
+public class World4Template extends WorldTemplate {
+    public World4Template(){
+        super();
     }
-
-    public void setupGhost() throws FileNotFoundException {
-        ghost = new Image("file:files/god_mob2.png", squareSize, squareSize, false, false);
-
-        imageView.setImage(ghost);
-
-        imageView.setX(1);
-        imageView.setY(1);
-        imageView.setFitHeight(squareSize);
-        imageView.setFitWidth(squareSize);
-
-        imageView.setOnMouseEntered(e -> enteredWall(e));
+    public World4Template(int[][] levelArray, GameController gameController) throws FileNotFoundException {
+        super(levelArray, gameController);
 
         initialize();
     }
-
     /**
      * Metoden initialize instansierar olika antal ImageView objekt beroende på vilken bana som spelas
      * Metoden initialize instansierar även olika antal rectanglar i olika former beroende på bana
@@ -67,348 +27,106 @@ public class World4Template extends World1Template {
      */
 
     public void initialize() {
-        if (currentLevel==2){
-            ImageView ghost3V = new ImageView();
-            ImageView ghost1V = new ImageView();
-            ImageView ghost2V = new ImageView();
+        EnemyController enemyController = getGameController().getEnemyController();
+        Enemy enemy;
+        switch (getGameController().getLevel()){
+            case 1:
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),110, 150, 57, -130);
+                enemyController.setAnimation(enemy, 3.5, false);
+                add(enemy.getIcon(),15,9);
 
-            ghost2V.setImage(ghost);
-            ghost3V.setImage(ghost);
-            ghost1V.setImage(ghost);
-            add(ghost3V,15,9);
-            add(ghost1V,14,5);
-            add(ghost2V,0,10);
-            Rectangle rectangle = new Rectangle(110,150);
-            rectangle.setY(57);
-            rectangle.setX(-130);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),110, 75, 57, -130);
+                enemyController.setAnimation(enemy, 2, false);
+                add(enemy.getIcon(),14,5);
 
-            Rectangle rectangle2 = new Rectangle(110,75);
-            rectangle2.setY(57);
-            rectangle2.setX(-130);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),75, 75, 57, -130);
+                enemyController.setAnimation(enemy, 2.5, true);
+                add(enemy.getIcon(),5,7);
 
-            Rectangle rectangle1 = new Rectangle(75,75);
-            rectangle1.setX(57);
-            rectangle1.setY(-130);
+                break;
 
-            animation3 = new PathTransition();
-            animation3.setNode(ghost2V);
-            animation3.setPath(rectangle1);
-            animation3.setDuration(Duration.seconds(2.5));
-            animation3.setCycleCount(Animation.INDEFINITE);
-            animation3.setAutoReverse(true);
-            animation3.play();
+            case 2:
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),115, 115, 18, 18);
+                enemyController.setAnimation(enemy, 2, true);
+                add(enemy.getIcon(),1,4);
 
-            animation = new PathTransition();
-            animation.setNode(ghost3V);
-            animation.setDuration(Duration.seconds(3.5));
-            animation.setCycleCount(Animation.INDEFINITE);
-            animation.setPath(rectangle);
-            animation.play();
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),190, 190, 18, 18);
+                enemyController.setAnimation(enemy, 2, false);
+                add(enemy.getIcon(),5,9);
 
-            animation2 = new PathTransition();
-            animation2.setNode(ghost1V);
-            animation2.setDuration(Duration.seconds(2));
-            animation2.setCycleCount(Animation.INDEFINITE);
-            animation2.setPath(rectangle2);
-            animation2.play();
+                break;
 
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
+            case 3:
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),570, 0, 20, 20);
+                enemyController.setAnimation(enemy, 4, true);
+                add(enemy.getIcon(),0,2);
 
-        }
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),570, 0, 20, 20);
+                enemyController.setAnimation(enemy, 4, true);
+                add(enemy.getIcon(),0,4);
 
-        else if (currentLevel ==3){
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),570, 0, 20, 20);
+                enemyController.setAnimation(enemy, 4, true);
+                add(enemy.getIcon(),0,6);
 
-            ImageView ghost1V = new ImageView();
-            ImageView ghost2V = new ImageView();
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),570, 0, 20, 20);
+                enemyController.setAnimation(enemy, 4, true);
+                add(enemy.getIcon(),0,8);
 
-            ghost1V.setImage(ghost);
-            ghost2V.setImage(ghost);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),570, 0, 20, 20);
+                enemyController.setAnimation(enemy, 4, true);
+                add(enemy.getIcon(),0,10);
 
-            add(ghost1V,1,4);
-            add(ghost2V,5,9);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),570, 0, 20, 20);
+                enemyController.setAnimation(enemy, 4, true);
+                add(enemy.getIcon(),0,12);
 
-            Rectangle rectangle = new Rectangle(115,115);
-            rectangle.setY(18);
-            rectangle.setX(18);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),570, 0, 20, 20);
+                enemyController.setAnimation(enemy, 4, true);
+                add(enemy.getIcon(),0,14);
+                break;
 
-            Rectangle rectangle1 = new Rectangle(190,190);
-            rectangle1.setY(18);
-            rectangle1.setX(18);
+            case 4:
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),83, 125, 65,-150);
+                enemyController.setAnimation(enemy, 2, true);
+                add(enemy.getIcon(),8,2);
 
-            animation = new PathTransition();
-            animation.setNode(ghost1V);
-            animation.setDuration(Duration.seconds(2));
-            animation.setCycleCount(Animation.INDEFINITE);
-            animation.setPath(rectangle);
-            animation.setAutoReverse(true);
-            animation.play();
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),0, 125, 65,-150);
+                enemyController.setAnimation(enemy, 1.5, true);
+                add(enemy.getIcon(),9,9);
 
-            animation2 = new PathTransition();
-            animation2.setNode(ghost2V);
-            animation2.setDuration(Duration.seconds(2));
-            animation2.setCycleCount(Animation.INDEFINITE);
-            animation2.setPath(rectangle1);
-            animation2.play();
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),400, 0, 20,-150);
+                enemyController.setAnimation(enemy, 2.5, true);
+                add(enemy.getIcon(),8,12);
 
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),400, 0, 20,-150);
+                enemyController.setAnimation(enemy, 3, true);
+                add(enemy.getIcon(),8,11);
 
-        }
-        else if (currentLevel ==4){
-            ImageView ghost4V = new ImageView();
-            ImageView ghost2V = new ImageView();
-            ImageView ghost1V = new ImageView();
-            ImageView ghost3V = new ImageView();
-            ImageView ghost5V = new ImageView();
-            ImageView ghost6V = new ImageView();
-            ImageView ghost7V = new ImageView();
+                break;
 
-            ghost1V.setImage(ghost);
-            ghost2V.setImage(ghost);
-            ghost3V.setImage(ghost);
-            ghost4V.setImage(ghost);
-            ghost5V.setImage(ghost);
-            ghost6V.setImage(ghost);
-            ghost7V.setImage(ghost);
 
-            add(ghost2V,0,2);
-            add(ghost4V,0,4);
-            add(ghost1V,0,6);
-            add(ghost3V,0,8);
-            add(ghost5V,0,10);
-            add(ghost6V,0,12);
-            add(ghost7V,0,14);
+            case 5:
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),83, 125, -150, 65);
+                enemyController.setAnimation(enemy, 2, false);
+                add(enemy.getIcon(),6,6);
 
-            Rectangle rectangle = new Rectangle(570,0);
-            rectangle.setY(20);
-            rectangle.setX(20);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),0, 40, 65, -150);
+                enemyController.setAnimation(enemy, 1.5, true);
+                add(enemy.getIcon(),9,2);
 
-            Rectangle rectangle1 = new Rectangle(570,0);
-            rectangle1.setY(20);
-            rectangle1.setX(20);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),170, 87, 20, 20);
+                enemyController.setAnimation(enemy, 2.5, true);
+                add(enemy.getIcon(),9,7);
 
-            Rectangle rectangle2 = new Rectangle(570,0);
-            rectangle2.setY(20);
-            rectangle2.setX(20);
+                enemy = enemyController.createEnemy(enemyController.getIconFilePath("God"),getSquareSize(),170, 87, 20, 20);
+                enemyController.setAnimation(enemy, 3, true);
+                add(enemy.getIcon(),8,11);
 
-            Rectangle rectangle3 = new Rectangle(570,0);
-            rectangle3.setY(20);
-            rectangle3.setX(20);
+                break;
 
-            Rectangle rectangle4 = new Rectangle(570,0);
-            rectangle4.setY(20);
-            rectangle4.setX(20);
-
-            //Övre spöken
-
-            animation3 = new PathTransition();
-            animation3.setNode(ghost1V);
-            animation3.setDuration(Duration.seconds(4));
-            animation3.setCycleCount(Animation.INDEFINITE);
-            animation3.setPath(rectangle2);
-            animation3.setAutoReverse(true);
-            animation3.play();
-
-            animation4 = new PathTransition();
-            animation4.setNode(ghost3V);
-            animation4.setDuration(Duration.seconds(4));
-            animation4.setCycleCount(Animation.INDEFINITE);
-            animation4.setPath(rectangle3);
-            animation4.setAutoReverse(true);
-            animation4.play();
-
-            animation5 = new PathTransition();
-            animation5.setNode(ghost5V);
-            animation5.setDuration(Duration.seconds(4));
-            animation5.setCycleCount(Animation.INDEFINITE);
-            animation5.setPath(rectangle4);
-            animation5.setAutoReverse(true);
-            animation5.play();
-
-            //Undre spöken
-
-            animation = new PathTransition();
-            animation.setNode(ghost4V);
-            animation.setDuration(Duration.seconds(4));
-            animation.setCycleCount(Animation.INDEFINITE);
-            animation.setPath(rectangle);
-            animation.setAutoReverse(true);
-            animation.play();
-
-            animation2 = new PathTransition();
-            animation2.setNode(ghost2V);
-            animation2.setDuration(Duration.seconds(4));
-            animation2.setCycleCount(Animation.INDEFINITE);
-            animation2.setPath(rectangle1);
-            animation2.setAutoReverse(true);
-            animation2.play();
-
-            PathTransition animation6 = new PathTransition();
-            animation6.setNode(ghost6V);
-            animation6.setDuration(Duration.seconds(4));
-            animation6.setCycleCount(Animation.INDEFINITE);
-            animation6.setPath(rectangle1);
-            animation6.setAutoReverse(true);
-            animation6.play();
-
-            PathTransition animation7 = new PathTransition();
-            animation7.setNode(ghost7V);
-            animation7.setDuration(Duration.seconds(4));
-            animation7.setCycleCount(Animation.INDEFINITE);
-            animation7.setPath(rectangle1);
-            animation7.setAutoReverse(true);
-            animation7.play();
-
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost4V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost5V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost6V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost7V.setOnMouseEntered(e -> enteredGhost(e));
-
-        }
-        else if(currentLevel==5) {
-            ImageView ghost1V = new ImageView();
-            ImageView ghost2V = new ImageView();
-            ImageView ghost3V = new ImageView();
-            ImageView ghost4V = new ImageView();
-
-            ghost4V.setImage(ghost);
-            ghost3V.setImage(ghost);
-            ghost2V.setImage(ghost);
-            ghost1V.setImage(ghost);
-
-            add(ghost4V, 8, 11);
-            add(ghost1V, 8, 3);
-            add(ghost2V, 8, 8);
-            add(ghost3V, 8, 12);
-
-            Rectangle rectangle = new Rectangle(83, 125);
-            rectangle.setY(65);
-            rectangle.setX(-150);
-
-            Rectangle rectangle1 = new Rectangle(0, 125);
-            rectangle1.setY(65);
-            rectangle1.setX(-150);
-
-            Rectangle rectangle2 = new Rectangle(400, 0);
-            rectangle2.setY(20);
-            rectangle2.setX(-150);
-
-            Rectangle rectangle3 = new Rectangle(400, 0);
-            rectangle3.setY(20);
-            rectangle3.setX(-150);
-
-            animation4 = new PathTransition();
-            animation4.setNode(ghost4V);
-            animation4.setDuration(Duration.seconds(3));
-            animation4.setAutoReverse(true);
-            animation4.setCycleCount(Animation.INDEFINITE);
-            animation4.setPath(rectangle3);
-            animation4.play();
-
-            animation3 = new PathTransition();
-            animation3.setNode(ghost3V);
-            animation3.setDuration(Duration.seconds(2.5));
-            animation3.setAutoReverse(true);
-            animation3.setCycleCount(Animation.INDEFINITE);
-            animation3.setPath(rectangle2);
-            animation3.play();
-
-            animation2 = new PathTransition();
-            animation2.setNode(ghost2V);
-            animation2.setDuration(Duration.seconds(1.5));
-            animation2.setAutoReverse(true);
-            animation2.setCycleCount(Animation.INDEFINITE);
-            animation2.setPath(rectangle1);
-            animation2.play();
-
-            animation = new PathTransition();
-            animation.setNode(ghost1V);
-            animation.setDuration(Duration.seconds(2));
-            animation.setAutoReverse(true);
-            animation.setCycleCount(Animation.INDEFINITE);
-            animation.setPath(rectangle);
-            animation.play();
-
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost4V.setOnMouseEntered(e -> enteredGhost(e));
-
-        }
-
-        else if (currentLevel==6){
-            ImageView ghost1V = new ImageView();
-            ImageView ghost2V = new ImageView();
-            ImageView ghost3V = new ImageView();
-            ImageView ghost4V = new ImageView();
-
-            ghost4V.setImage(ghost);
-            ghost3V.setImage(ghost);
-            ghost2V.setImage(ghost);
-            ghost1V.setImage(ghost);
-
-            add(ghost4V, 8, 10);
-            add(ghost3V, 8, 6);
-            add(ghost1V, 7, 6);
-            add(ghost2V, 8, 2);
-
-            Rectangle rectangle = new Rectangle(83, 125);
-            rectangle.setY(65);
-            rectangle.setX(-150);
-
-            Rectangle rectangle1 = new Rectangle(0, 40);
-            rectangle1.setY(65);
-            rectangle1.setX(-150);
-
-            Rectangle rectangle2 = new Rectangle(170, 87);
-            rectangle2.setY(20);
-            rectangle2.setX(20);
-
-            Rectangle rectangle3 = new Rectangle(170, 87);
-            rectangle3.setY(20);
-            rectangle3.setX(20);
-
-            animation4 = new PathTransition();
-            animation4.setNode(ghost4V);
-            animation4.setDuration(Duration.seconds(3));
-            animation4.setAutoReverse(true);
-            animation4.setCycleCount(Animation.INDEFINITE);
-            animation4.setPath(rectangle3);
-            animation4.play();
-
-            animation3 = new PathTransition();
-            animation3.setNode(ghost3V);
-            animation3.setDuration(Duration.seconds(2.5));
-            animation3.setAutoReverse(true);
-            animation3.setCycleCount(Animation.INDEFINITE);
-            animation3.setPath(rectangle2);
-            animation3.play();
-
-            animation2 = new PathTransition();
-            animation2.setNode(ghost2V);
-            animation2.setDuration(Duration.seconds(1.5));
-            animation2.setAutoReverse(true);
-            animation2.setCycleCount(Animation.INDEFINITE);
-            animation2.setPath(rectangle1);
-            animation2.play();
-
-            animation = new PathTransition();
-            animation.setNode(ghost1V);
-            animation.setDuration(Duration.seconds(2));
-            animation.setAutoReverse(false);
-            animation.setCycleCount(Animation.INDEFINITE);
-            animation.setPath(rectangle);
-            animation.play();
-
-            ghost1V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost2V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost3V.setOnMouseEntered(e -> enteredGhost(e));
-            ghost4V.setOnMouseEntered(e -> enteredGhost(e));
-
+            default:
+                break;
         }
     }
 }

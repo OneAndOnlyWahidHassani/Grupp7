@@ -98,14 +98,12 @@ public class Menu extends Pane {
             campaignView.setTranslateY(200);
         });
         campaignView.setOnMouseClicked(e -> {
-            try {
-                mainProgram.changeToCampaign();
-                audioPlayer.playLevelMusic("forest");
-                panel.setTheTime(25);
-                panel.resetTimerLabel();
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
+            mainProgram.changeToCampaign();
+            /***
+             *            audioPlayer.playLevelMusic("forest");
+             *             panel.setTheTime(25);
+             *             panel.resetTimerLabel();
+             */
         });
 
         ImageView selectView = new ImageView(select);

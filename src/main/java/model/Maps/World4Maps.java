@@ -8,44 +8,47 @@ import java.util.List;
 /**
  * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
  */
-public class World4Maps {
-    FileManager fileManager = new FileManager();
-    private int[][] level41;
-    private int[][] level42;
-    private int[][] level43;
-    private int[][] level44;
-    private int[][] level45;
+public class World4Maps extends WorldMaps {
 
-    public World4Maps() throws IOException, ClassNotFoundException {
+    FileManager fileManager = new FileManager();
+    private int[][] level1;
+    private int[][] level2;
+    private int[][] level3;
+    private int[][] level4;
+    private int[][] level5;
+
+    public World4Maps(int world) throws IOException, ClassNotFoundException {
+        super(world);
         List<int[][]> world4Map = fileManager.read("worldMap4");
-        level41 = world4Map.get(0);
-        level42 = world4Map.get(1);
-        level43 = world4Map.get(2);
-        level44 = world4Map.get(3);
-        level45 = world4Map.get(4);
+        level1 = world4Map.get(0);
+        level2 = world4Map.get(1);
+        level3 = world4Map.get(2);
+        level4 = world4Map.get(3);
+        level5 = world4Map.get(4);
     }
 
     /**
      * Returnerar en array som representerar en nivå i spelet.
      * @return returnerar en array av siffror.
      */
-    public int[][] getLevel41(){
-        return level41;
+    @Override
+    public int[][] getLevel1(){
+        return level1;
     }
-
-    public int[][] getLevel42(){
-        return level42;
+    @Override
+    public int[][] getLevel2(){
+        return level2;
     }
-
-    public int[][] getLevel43(){
-        return level43;
+    @Override
+    public int[][] getLevel3(){
+        return level3;
     }
-
-    public int[][] getLevel44(){
-        return level44;
+    @Override
+    public int[][] getLevel4(){
+        return level4;
     }
-
-    public int[][] getLevel45() {
-        return level45;
+    @Override
+    public int[][] getLevel5() {
+        return level5;
     }
 }

@@ -16,7 +16,11 @@ public class FileManager {
 
     public List<int[][]> read(String mapName) throws IOException, ClassNotFoundException {
         List<int[][]> map;
-        String fileName = "maps\\" + mapName + ".dat";
+        //For Windows
+        //String fileName = "maps\\" + mapName + ".dat";
+        
+        //For Mac
+        String fileName = "maps/" + mapName + ".dat";
         try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(fileName))) )
         {
             map = (List<int[][]>) ois.readObject();
