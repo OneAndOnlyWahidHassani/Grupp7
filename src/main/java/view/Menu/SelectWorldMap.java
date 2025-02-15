@@ -100,7 +100,7 @@ public class SelectWorldMap extends Pane {
             map1View.setTranslateY(150);
         });
         map1View.setOnMouseClicked(e -> {
-            mainProgram.selectLevelMap();
+            mainProgram.selectLevelMap(1);
             audioPlayer.playButtonSound();
         });
 
@@ -121,7 +121,7 @@ public class SelectWorldMap extends Pane {
             map2View.setTranslateY(200);
         });
         map2View.setOnMouseClicked(e -> {
-            mainProgram.selectLevelMap();
+            mainProgram.selectLevelMap(2);
             audioPlayer.playButtonSound();
         });
 
@@ -142,7 +142,7 @@ public class SelectWorldMap extends Pane {
             map3View.setTranslateY(250);
         });
         map3View.setOnMouseClicked(e -> {
-            mainProgram.selectLevelMap();
+            mainProgram.selectLevelMap(3);
             audioPlayer.playButtonSound();
         });
 
@@ -163,7 +163,7 @@ public class SelectWorldMap extends Pane {
             map4View.setTranslateY(300);
         });
         map4View.setOnMouseClicked(e -> {
-            mainProgram.selectLevelMap();
+            mainProgram.selectLevelMap(4);
             audioPlayer.playButtonSound();
         });
 
@@ -184,7 +184,7 @@ public class SelectWorldMap extends Pane {
             map5View.setTranslateY(350);
         });
         map5View.setOnMouseClicked(e -> {
-            mainProgram.selectLevelMap();
+            mainProgram.selectLevelMap(5);
             audioPlayer.playButtonSound();
         });
 
@@ -205,7 +205,7 @@ public class SelectWorldMap extends Pane {
             map6View.setTranslateY(400);
         });
         map6View.setOnMouseClicked(e -> {
-            mainProgram.selectLevelMap();
+            mainProgram.selectLevelMap(6);
             audioPlayer.playButtonSound();
         });
 

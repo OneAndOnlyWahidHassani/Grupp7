@@ -102,7 +102,7 @@ public class SelectLevel extends Pane{
             level1View.setTranslateY(150);
         });
         level1View.setOnMouseClicked(e -> {
-                mainProgram.changeToCampaign();
+                mainProgram.changeToSpecifiedCampaign(selectedMap, 1);
                 audioPlayer.playButtonSound();
         });
 
@@ -123,6 +123,7 @@ public class SelectLevel extends Pane{
             level2View.setTranslateY(200);
         });
         level2View.setOnMouseClicked(e -> {
+            mainProgram.changeToSpecifiedCampaign(selectedMap, 2);
             audioPlayer.playButtonSound();
         });
 
@@ -143,6 +144,7 @@ public class SelectLevel extends Pane{
             level3View.setTranslateY(250);
         });
         level3View.setOnMouseClicked(e -> {
+            mainProgram.changeToSpecifiedCampaign(selectedMap, 3);
             audioPlayer.playButtonSound();
         });
 
@@ -163,6 +165,7 @@ public class SelectLevel extends Pane{
             level4View.setTranslateY(300);
         });
         level4View.setOnMouseClicked(e -> {
+            mainProgram.changeToSpecifiedCampaign(selectedMap, 4);
             audioPlayer.playButtonSound();
         });
 
@@ -183,6 +186,7 @@ public class SelectLevel extends Pane{
             level5View.setTranslateY(350);
         });
         level5View.setOnMouseClicked(e -> {
+            mainProgram.changeToSpecifiedCampaign(selectedMap, 5);
             audioPlayer.playButtonSound();
         });
 

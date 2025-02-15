@@ -86,12 +86,10 @@ public class MainProgram extends Application {
         highscoreView = new HighscoreView(this, audioPlayer, 1, highscoreList);
         chooseDimension = new ChooseDimension(this, audioPlayer);
         selectWorldMap = new SelectWorldMap(this, audioPlayer);
-        selectLevel = new SelectLevel(this, audioPlayer, 1);
         introScene = new Scene(intro, 800, 600);
         menuScene = new Scene(menu, 800, 600);
         helpScene = new Scene(help, 800, 600);
         selectMapScene = new Scene(selectWorldMap, 800, 600);
-        selectLevelScene = new Scene(selectLevel, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
         highscoreScene = new Scene(highscoreView, 800, 600);
 
@@ -167,7 +165,7 @@ public class MainProgram extends Application {
      * @throws FileNotFoundException
      */
     public void changeToCampaign() {
-        gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign);
+        gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, 1, 1);
         try {
             gameController.campaignWorldManager();
         } catch (InterruptedException e) {
@@ -186,6 +184,22 @@ public class MainProgram extends Application {
     public GameController getCampaignController(){
         return gameController;
     }
+
+    public void changeToSpecifiedCampaign(int world, int level)
+    {
+        gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, world, level);
+        try {
+            gameController.campaignWorldManager();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        mainWindow.setScene(campaignScene);
+        gameController.setUpNewWorldAnimation();
+    }
     /**
      * Byter scen till den del av menyn där användaren får välja dimension på labyrinten.
      */
@@ -198,8 +212,10 @@ public class MainProgram extends Application {
         mainWindow.setScene(selectMapScene);
     }
 
-    public void selectLevelMap()
+    public void selectLevelMap(int map)
     {
+        selectLevel = new SelectLevel(this, audioPlayer, map);
+        selectLevelScene = new Scene(selectLevel, 800, 600);
         mainWindow.setScene(selectLevelScene);
     }
 

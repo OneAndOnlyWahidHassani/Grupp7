@@ -47,7 +47,7 @@ public class GameController {
     private boolean totalTimeStarted = false;
 
 
-    public GameController(MainProgram mainProgram, RightPanel rightPanel, AudioPlayer audioPlayer, GameOverScreen gameOverScreen, BorderPane mainPaneCampaign) {
+    public GameController(MainProgram mainProgram, RightPanel rightPanel, AudioPlayer audioPlayer, GameOverScreen gameOverScreen, BorderPane mainPaneCampaign, int world, int level) {
         this.mainProgram = mainProgram;
         this.rightPanel = rightPanel;
         this.audioPlayer = audioPlayer;
@@ -56,8 +56,8 @@ public class GameController {
         enemyController = new EnemyController(this);
         totTime = new TotalTime(false);
         time = null;
-        world = 5;
-        level = 5;
+        this.world = world;
+        this.level = level;
         heartCrystals = 3;
     }
 
