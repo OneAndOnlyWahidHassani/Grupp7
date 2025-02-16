@@ -17,7 +17,7 @@ import control.MainProgram;
 import java.io.FileNotFoundException;
 
 @ExtendWith(ApplicationExtension.class)
-class MenuTest {
+class MenuButtonsTest {
 
     private Menu menu;
     private MainProgram mainProgram;
