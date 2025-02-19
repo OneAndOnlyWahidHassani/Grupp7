@@ -1,5 +1,6 @@
 package control;
 
+import LevelEditor.controller.LevelEditorController;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -63,6 +64,8 @@ public class MainProgram extends Application {
     private Image cursorImage;
     private GameController gameController;
     private HighscoreList highscoreList;
+    private LevelEditorController levelEditorController;
+
 
     /**
      * En metod som startar programmet.
@@ -236,9 +239,9 @@ public class MainProgram extends Application {
      *
      */
     public void changeToLevelEditor() {
-        gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, 1, 1);
+        levelEditorController = new LevelEditorController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, 1, 1);
         try {
-            gameController.campaignWorldManager();
+            levelEditorController.campaignWorldManager();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (FileNotFoundException e) {
