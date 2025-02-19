@@ -232,6 +232,27 @@ public class MainProgram extends Application {
 
 
     /**
+     * Kopierat från "changeToCampaign()"
+     *
+     */
+    public void changeToLevelEditor() {
+        gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, 1, 1);
+        try {
+            gameController.campaignWorldManager();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        } catch (ClassNotFoundException e){
+            e.printStackTrace();
+        }
+        mainWindow.setScene(campaignScene);
+        gameController.setUpNewWorldAnimation();
+    }
+
+    /**
      * Main startar programmet.
      * @param args
      */

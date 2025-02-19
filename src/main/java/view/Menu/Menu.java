@@ -25,6 +25,8 @@ public class Menu extends Pane {
 
     private Image highscore;
     private Image highscoreResize;
+    private Image levelEditor;
+    private Image levelEditorResize;
     private Image mazegen;
     private AudioPlayer audioPlayer;
     private RightPanel panel;
@@ -32,11 +34,12 @@ public class Menu extends Pane {
     /**
      * Konstruktor som tar emot mainProgram, audioPlayer och panel
      * Kör sedan metoder för att länka Image-objekten med png-filer
+     *
      * @param mainProgram tas emot och sätts
      * @param audioPlayer tas emot och sätts
-     * @param panel tas emot och sätts
+     * @param panel       tas emot och sätts
      */
-    public Menu(MainProgram mainProgram, AudioPlayer audioPlayer, RightPanel panel){
+    public Menu(MainProgram mainProgram, AudioPlayer audioPlayer, RightPanel panel) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         this.panel = panel;
@@ -48,8 +51,8 @@ public class Menu extends Pane {
     /**
      * Metod som länkar Image-objekten till png-filer
      */
-    public void setupImages(){
-        mazegen = new Image("file:files/texts/MazegenTitel.png", 800, 600, false,false);
+    public void setupImages() {
+        mazegen = new Image("file:files/texts/MazegenTitel.png", 800, 600, false, false);
         campaign = new Image("file:files/texts/Campaign.png", 250, 30, false, false);
         campaignResize = new Image("file:files/texts/Campaign.png", 255, 33, false, false);
         randomize = new Image("file:files/texts/Randomize.png", 250, 30, false, false);
@@ -60,13 +63,15 @@ public class Menu extends Pane {
         selectResize = new Image("file:files/texts/Select.png", 255, 33, false, false);
         highscore = new Image("file:files/texts/Highscore.png", 250, 30, false, false);
         highscoreResize = new Image("file:files/texts/Highscore.png", 255, 33, false, false);
+        levelEditor = new Image("file:files/texts/lvl.png", 250, 30, false, false);
+        levelEditorResize = new Image("file:files/texts/lvl.png", 255, 33, false, false);
     }
 
     /**
      * Metod som sätter bakgrundsbilden
      */
-    public void setBackground(){
-        BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg",800,600,false,true),
+    public void setBackground() {
+        BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg", 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         this.setBackground(new Background(menuBackground));
@@ -76,7 +81,7 @@ public class Menu extends Pane {
      * Metod som lägger till klickbara ImageViews i scenen
      * Imageviews förstoras när man hovrar och byter scen när man klickar på dem
      */
-    public void addButtons(){
+    public void addButtons() {
         ImageView mazegenView = new ImageView(mazegen);
         mazegenView.setStyle("fx-background-color: transparent;");
 
@@ -191,7 +196,28 @@ public class Menu extends Pane {
             audioPlayer.playButtonSound();
         });
 
-        this.getChildren().addAll(campaignView,randomizeView,selectView, helpView,highscoreView, mazegenView);
+        ImageView levelEditorView = new ImageView(levelEditor);
+        levelEditorView.setStyle("fx-background-color: transparent;");
+        levelEditorView.setTranslateX(275);
+        levelEditorView.setTranslateY(450);
+        levelEditorView.toFront();
+        levelEditorView.setPickOnBounds(true);
+        levelEditorView.setOnMouseEntered(e -> {
+            levelEditorView.setImage(levelEditorResize);
+            levelEditorView.setTranslateX(273);
+            levelEditorView.setTranslateY(447);
+        });
+        levelEditorView.setOnMouseExited(e -> {
+            levelEditorView.setImage(levelEditor);
+            levelEditorView.setTranslateX(275);
+            levelEditorView.setTranslateY(450);
+        });
+        levelEditorView.setOnMouseClicked(e -> {
+            mainProgram.changeToLevelEditor();
+            audioPlayer.playButtonSound();
+        });
+
+        this.getChildren().addAll(campaignView, randomizeView, selectView, helpView, highscoreView, mazegenView, levelEditorView);
     }
 
 }
