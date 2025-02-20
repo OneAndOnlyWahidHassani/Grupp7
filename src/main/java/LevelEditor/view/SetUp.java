@@ -60,7 +60,7 @@ public class SetUp extends Pane {
      * Metod som länkar Image-objekten till png-filer
      */
     public void setupImages() {
-        chooseDimension = new Image("file:files/texts/ChooseDimension.png", 800, 600, false, false);
+        chooseDimension = new Image("file:files/texts/ChooseDimension.png", 400, 300, false, false);
         tenByTen = new Image("file:files/texts/10x10.png", 250, 30, false, false);
         tenByTenResize = new Image("file:files/texts/10x10.png", 255, 33, false, false);
         fourteen = new Image("file:files/texts/14x14.png", 250, 30, false, false);
@@ -115,22 +115,24 @@ public class SetUp extends Pane {
 
         ImageView dimensionView = new ImageView(chooseDimension);
         dimensionView.setStyle("fx-background-color: transparent;");
+        dimensionView.setTranslateX(350);
+        dimensionView.setTranslateY(150);
 
 
         ImageView tenByTenView = new ImageView(tenByTen);
         tenByTenView.setStyle("fx-background-color: transparent;");
-        tenByTenView.setTranslateX(275);
+        tenByTenView.setTranslateX(400);
         tenByTenView.setTranslateY(200);
         tenByTenView.toFront();
         tenByTenView.setPickOnBounds(true);
         tenByTenView.setOnMouseEntered(e -> {
             tenByTenView.setImage(tenByTenResize);
-            tenByTenView.setTranslateX(273);
+            tenByTenView.setTranslateX(400);
             tenByTenView.setTranslateY(198);
         });
         tenByTenView.setOnMouseExited(e -> {
             tenByTenView.setImage(tenByTen);
-            tenByTenView.setTranslateX(275);
+            tenByTenView.setTranslateX(400);
             tenByTenView.setTranslateY(200);
         });
         tenByTenView.setOnMouseClicked(e -> {
@@ -144,18 +146,18 @@ public class SetUp extends Pane {
 
         ImageView fourteenView = new ImageView(fourteen);
         fourteenView.setStyle("fx-background-color: transparent;");
-        fourteenView.setTranslateX(275);
+        fourteenView.setTranslateX(400);
         fourteenView.setTranslateY(250);
         fourteenView.toFront();
         fourteenView.setPickOnBounds(true);
         fourteenView.setOnMouseEntered(e -> {
             fourteenView.setImage(fourteenResize);
-            fourteenView.setTranslateX(273);
+            fourteenView.setTranslateX(400);
             fourteenView.setTranslateY(248);
         });
         fourteenView.setOnMouseExited(e -> {
             fourteenView.setImage(fourteen);
-            fourteenView.setTranslateX(275);
+            fourteenView.setTranslateX(400);
             fourteenView.setTranslateY(250);
         });
         fourteenView.setOnMouseClicked(e -> {
@@ -169,18 +171,18 @@ public class SetUp extends Pane {
 
         ImageView eighteenView = new ImageView(eighteen);
         eighteenView.setStyle("fx-background-color: transparent;");
-        eighteenView.setTranslateX(275);
+        eighteenView.setTranslateX(400);
         eighteenView.setTranslateY(300);
         eighteenView.toFront();
         eighteenView.setPickOnBounds(true);
         eighteenView.setOnMouseEntered(e -> {
             eighteenView.setImage(eighteenResize);
-            eighteenView.setTranslateX(273);
+            eighteenView.setTranslateX(400);
             eighteenView.setTranslateY(298);
         });
         eighteenView.setOnMouseExited(e -> {
             eighteenView.setImage(eighteen);
-            eighteenView.setTranslateX(275);
+            eighteenView.setTranslateX(400);
             eighteenView.setTranslateY(300);
         });
         eighteenView.setOnMouseClicked(e -> {
@@ -192,23 +194,24 @@ public class SetUp extends Pane {
             }
         });
 
-        ImageView painView = new ImageView(Theme);
-        painView.setStyle("fx-background-color: transparent;");
-        painView.setTranslateX(275);
-        painView.setTranslateY(350);
-        painView.toFront();
-        painView.setPickOnBounds(true);
-        painView.setOnMouseEntered(e -> {
-            painView.setImage(ThemeResize);
-            painView.setTranslateX(273);
-            painView.setTranslateY(348);
+        //CLOUD
+        ImageView cloudView = new ImageView(cloud);
+        cloudView.setStyle("fx-background-color: transparent;");
+        cloudView.setTranslateX(100);
+        cloudView.setTranslateY(200);
+        cloudView.toFront();
+        cloudView.setPickOnBounds(true);
+        cloudView.setOnMouseEntered(e -> {
+            cloudView.setImage(cloudResize);
+            cloudView.setTranslateX(100);
+            cloudView.setTranslateY(200);
         });
-        painView.setOnMouseExited(e -> {
-            painView.setImage(Theme);
-            painView.setTranslateX(275);
-            painView.setTranslateY(350);
+        cloudView.setOnMouseExited(e -> {
+            cloudView.setImage(cloud);
+            cloudView.setTranslateX(100);
+            cloudView.setTranslateY(200);
         });
-        painView.setOnMouseClicked(e -> {
+        cloudView.setOnMouseClicked(e -> {
             try {
                 mainProgram.changeToRandomize(28);
                 audioPlayer.playButtonSound();
@@ -217,21 +220,156 @@ public class SetUp extends Pane {
             }
         });
 
+        //Dessert
+        ImageView dessertView = new ImageView(desert);
+        dessertView.setStyle("fx-background-color: transparent;");
+        dessertView.setTranslateX(100);
+        dessertView.setTranslateY(250);
+        dessertView.toFront();
+        dessertView.setPickOnBounds(true);
+        dessertView.setOnMouseEntered(e -> {
+            dessertView.setImage(desertResize);
+            dessertView.setTranslateX(100);
+            dessertView.setTranslateY(250);
+        });
+        dessertView.setOnMouseExited(e -> {
+            dessertView.setImage(desert);
+            dessertView.setTranslateX(100);
+            dessertView.setTranslateY(250);
+        });
+        dessertView.setOnMouseClicked(e -> {
+            try {
+                mainProgram.changeToRandomize(28);
+                audioPlayer.playButtonSound();
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
+
+        //Forest
+        ImageView forestView = new ImageView(forest);
+        forestView.setStyle("fx-background-color: transparent;");
+        forestView.setTranslateX(100);
+        forestView.setTranslateY(300);
+        forestView.toFront();
+        forestView.setPickOnBounds(true);
+        forestView.setOnMouseEntered(e -> {
+            forestView.setImage(forestResize);
+            forestView.setTranslateX(100);
+            forestView.setTranslateY(300);
+        });
+        forestView.setOnMouseExited(e -> {
+            forestView.setImage(forest);
+            forestView.setTranslateX(100);
+            forestView.setTranslateY(300);
+        });
+        forestView.setOnMouseClicked(e -> {
+            try {
+                mainProgram.changeToRandomize(28);
+                audioPlayer.playButtonSound();
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
+
+        //Lava
+        ImageView lavaView = new ImageView(lava);
+        lavaView.setStyle("fx-background-color: transparent;");
+        lavaView.setTranslateX(100);
+        lavaView.setTranslateY(350);
+        lavaView.toFront();
+        lavaView.setPickOnBounds(true);
+        lavaView.setOnMouseEntered(e -> {
+            lavaView.setImage(lavaResize);
+            lavaView.setTranslateX(100);
+            lavaView.setTranslateY(350);
+        });
+        lavaView.setOnMouseExited(e -> {
+            lavaView.setImage(lava);
+            lavaView.setTranslateX(100);
+            lavaView.setTranslateY(350);
+        });
+        lavaView.setOnMouseClicked(e -> {
+            try {
+                mainProgram.changeToRandomize(28);
+                audioPlayer.playButtonSound();
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
+
+        //Space
+
+        ImageView spaceView = new ImageView(space);
+        spaceView.setStyle("fx-background-color: transparent;");
+        spaceView.setTranslateX(100);
+        spaceView.setTranslateY(400);
+        spaceView.toFront();
+        spaceView.setPickOnBounds(true);
+        spaceView.setOnMouseEntered(e -> {
+            spaceView.setImage(spaceResize);
+            spaceView.setTranslateX(100);
+            spaceView.setTranslateY(400);
+        });
+        spaceView.setOnMouseExited(e -> {
+            spaceView.setImage(space);
+            spaceView.setTranslateX(100);
+            spaceView.setTranslateY(400);
+        });
+        spaceView.setOnMouseClicked(e -> {
+            try {
+                mainProgram.changeToRandomize(28);
+                audioPlayer.playButtonSound();
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
+        //Underground
+        ImageView undergroundView = new ImageView(underground);
+        undergroundView.setStyle("fx-background-color: transparent;");
+        undergroundView.setTranslateX(100);
+        undergroundView.setTranslateY(450);
+        undergroundView.toFront();
+        undergroundView.setPickOnBounds(true);
+        undergroundView.setOnMouseEntered(e -> {
+            undergroundView.setImage(undergroundResize);
+            undergroundView.setTranslateX(100);
+            undergroundView.setTranslateY(450);
+        });
+        undergroundView.setOnMouseExited(e -> {
+            undergroundView.setImage(underground);
+            undergroundView.setTranslateX(100);
+            undergroundView.setTranslateY(450);
+        });
+        undergroundView.setOnMouseClicked(e -> {
+            try {
+                mainProgram.changeToRandomize(28);
+                audioPlayer.playButtonSound();
+            } catch (FileNotFoundException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+
+
         ImageView returnView = new ImageView(returnImage);
         returnView.setStyle("fx-background-color: transparent;");
-        returnView.setTranslateX(300);
-        returnView.setTranslateY(450);
+        returnView.setTranslateX(500);
+        returnView.setTranslateY(550);
         returnView.toFront();
         returnView.setPickOnBounds(true);
         returnView.setOnMouseEntered(e -> {
             returnView.setImage(returnResize);
-            returnView.setTranslateX(298);
-            returnView.setTranslateY(448);
+            returnView.setTranslateX(498);
+            returnView.setTranslateY(548);
         });
         returnView.setOnMouseExited(e -> {
             returnView.setImage(returnImage);
-            returnView.setTranslateX(300);
-            returnView.setTranslateY(450);
+            returnView.setTranslateX(500);
+            returnView.setTranslateY(550);
         });
         returnView.setOnMouseClicked(e -> {
             mainProgram.changeToMenu();
@@ -239,47 +377,9 @@ public class SetUp extends Pane {
         });
 
 
-    /*    ImageView painView = new ImageView(Theme);
-        painView.setStyle("fx-background-color: transparent;");
-        painView.setTranslateX(275);
-        painView.setTranslateY(350);
-        painView.toFront();
-        painView.setPickOnBounds(true);
-
-        // Set up the arrow buttons (left and right)
-        ImageView leftArrow = new ImageView(new Image("file:files/texts/leftArrow.png", 50, 50, false, false));
-        leftArrow.setStyle("fx-background-color: transparent;");
-        leftArrow.setTranslateX(220);  // Position the left arrow to the left of the theme
-        leftArrow.setTranslateY(350);
-        leftArrow.toFront();
-        leftArrow.setPickOnBounds(true);
-
-        leftArrow.setOnMouseClicked(e -> {
-            currentThemeIndex--;  // Move to the previous theme
-            if (currentThemeIndex < 0) {
-                currentThemeIndex = themes.length - 1;  // Loop back to the last theme
-            }
-            painView.setImage(themes[currentThemeIndex]);
-            audioPlayer.playButtonSound();
-        });
-
-        ImageView rightArrow = new ImageView(new Image("file:files/texts/rightArrow.png", 50, 50, false, false));
-        rightArrow.setStyle("fx-background-color: transparent;");
-        rightArrow.setTranslateX(330);  // Position the right arrow to the right of the theme
-        rightArrow.setTranslateY(350);
-        rightArrow.toFront();
-        rightArrow.setPickOnBounds(true);
-
-        rightArrow.setOnMouseClicked(e -> {
-            currentThemeIndex++;  // Move to the next theme
-            if (currentThemeIndex >= themes.length) {
-                currentThemeIndex = 0;  // Loop back to the first theme
-            }
-            painView.setImage(themes[currentThemeIndex]);
-            audioPlayer.playButtonSound();
-        }); */
 
 
-        getChildren().addAll(dimensionView, tenByTenView, fourteenView, eighteenView, painView, returnView);
+
+        getChildren().addAll(dimensionView, tenByTenView, fourteenView, eighteenView, cloudView, dessertView, forestView, lavaView, spaceView, undergroundView,  returnView);
     }
 }
