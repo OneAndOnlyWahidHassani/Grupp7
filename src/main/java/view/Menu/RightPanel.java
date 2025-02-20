@@ -150,6 +150,7 @@ public class RightPanel extends GridPane {
         add(menuView,0,0);
 
         totTime = new TotalTime(false);
+
     }
     /**
      * Slår på/av spelljud
@@ -295,7 +296,8 @@ public class RightPanel extends GridPane {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                mainProgram.getCampaignController().gameOver();
+
+                mainProgram.gameOver();
                 audioPlayer.playGameOverSound();
                 audioPlayer.stopMusic();
                 totTime.setGameOver(true);

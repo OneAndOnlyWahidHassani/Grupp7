@@ -16,6 +16,7 @@ import view.AudioPlayer;
  */
 
 public class Help extends VBox {
+
     private MainProgram mainProgram;
     private Image pressMouse;
     private AudioPlayer audioPlayer;

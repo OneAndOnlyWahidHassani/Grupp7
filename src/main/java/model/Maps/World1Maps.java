@@ -1,55 +1,77 @@
 package model.Maps;
 
-import model.ReaderWriter.FileManager;
-
-import java.io.IOException;
-import java.util.List;
-
 /**
  * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
  */
 
-public class World1Maps extends WorldMaps {
-    FileManager fileManager = new FileManager();
-    private int[][] level1;
-    private int[][] level2;
-    private int[][] level3;
-    private int[][] level4;
-    private int[][] level5;
+public class World1Maps {
 
-    public World1Maps(int world) throws IOException, ClassNotFoundException
-    {
-        super(world);
-        List<int[][]> world1Map = fileManager.read("worldMap1");
-        level1 = world1Map.get(0);
-        level2 = world1Map.get(1);
-        level3 = world1Map.get(2);
-        level4 = world1Map.get(3);
-        level5 = world1Map.get(4);
-    }
+    private int[][] level11 = {{0, 0, 0, 0, 0, 0, 1, 3},
+                               {0, 0, 1, 1, 4, 1, 1, 1},
+                               {0, 0, 1, 0, 0, 0, 0, 0},
+                               {0, 4, 1, 1, 1, 0, 0, 0},
+                               {0, 0, 0, 0, 1, 0, 0, 0},
+                               {0, 0, 0, 1, 1, 1, 4, 0},
+                               {1, 4, 1, 1, 0, 0, 0, 0},
+                               {2, 1, 1, 0, 0, 0, 0, 0}};
+
+    private int[][] level12 = {{0, 0, 0, 0, 0, 0, 1, 2},
+                               {0, 4, 1, 0, 1, 1, 1, 0},
+                               {0, 0, 1, 1, 1, 0, 1, 0},
+                               {0, 0, 0, 0, 0, 1, 4, 0},
+                               {0, 0, 1, 1, 1, 1, 0, 0},
+                               {0, 0, 1, 0, 0, 0, 0, 0},
+                               {0, 4, 1, 0, 1, 1, 4, 1},
+                               {0, 0, 1, 1, 4, 0, 0, 3}};
+
+    private int[][] level13 = {{4, 0, 0, 0, 0, 0, 0, 4},
+                               {1, 0, 1, 1, 4, 1, 1, 1},
+                               {1, 1, 1, 0, 0, 1, 0, 0},
+                               {0, 1, 0, 4, 0, 1, 1, 0},
+                               {0, 1, 0, 1, 0, 0, 1, 0},
+                               {0, 1, 1, 1, 4, 0, 1, 0},
+                               {0, 0, 0, 0, 1, 0, 4, 1},
+                               {0, 3, 1, 4, 1, 0, 0, 2}};
+
+    private int[][] level14 = {{0, 0, 0, 0, 0, 0, 0, 0},
+                               {4, 1, 0, 1, 4, 1, 0, 4},
+                               {0, 1, 0, 1, 0, 1, 0, 1},
+                               {1, 1, 1, 1, 0, 4, 1, 1},
+                               {4, 0, 0, 0, 0, 0, 0, 1},
+                               {1, 1, 0, 1, 4, 1, 0, 4},
+                               {0, 1, 0, 1, 0, 1, 4, 0},
+                               {0, 2, 1, 1, 0, 0, 1, 3}};
+
+    private int[][] level15 = {{0, 0, 0, 0, 0, 4, 0, 0},
+                               {0, 4, 1, 5, 0, 1, 1, 1},
+                               {0, 1, 0, 0, 0, 4, 0, 1},
+                               {0, 1, 0, 0, 0, 0, 1, 1},
+                               {0, 1, 1, 1, 1, 1, 1, 0},
+                               {0, 6, 0, 1, 1, 0, 0, 0},
+                               {4, 7, 4, 0, 1, 1, 1, 0},
+                               {4, 3, 4, 0, 0, 0, 1, 2}};
 
     /**
      * Returnerar en array som representerar en nivå i spelet.
      * @return returnerar en array av siffror.
      */
-    @Override
-    public int[][] getLevel1(){
-        return level1;
+    public int[][] getLevel11(){
+        return level11;
     }
-    @Override
-    public int[][] getLevel2(){
-        return level2;
+
+    public int[][] getLevel12(){
+        return level12;
     }
-    @Override
-    public int[][] getLevel3(){
-        return level3;
+
+    public int[][] getLevel13(){
+        return level13;
     }
-    @Override
-    public int[][] getLevel4(){
-        return level4;
+
+    public int[][] getLevel14(){
+        return level14;
     }
-    @Override
-    public int[][] getLevel5() {
-        return level5;
+
+    public int[][] getLevel15() {
+        return level15;
     }
 }

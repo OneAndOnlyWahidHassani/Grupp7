@@ -23,6 +23,7 @@ public class TotalTime extends Thread{
      * Inkrementerar int variabeln med 1
      */
     public void run(){
+
         while(!gameOver){
             try {
                 Thread.sleep(1000);

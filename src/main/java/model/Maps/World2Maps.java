@@ -1,59 +1,89 @@
 package model.Maps;
 
-import model.ReaderWriter.FileManager;
-
-import java.io.IOException;
-import java.util.List;
-
 /**
  * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
  */
 
-public class World2Maps extends WorldMaps {
+public class World2Maps {
+
+    private int[][] level21 = new int[][]{{0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+                                          {4, 0, 4, 1, 1, 0, 0, 0, 3, 0},
+                                          {1, 1, 1, 0, 1, 0, 0, 0, 4, 0},
+                                          {0, 0, 0, 1, 1, 1, 1, 1, 1, 0},
+                                          {1, 1, 1, 1, 0, 1, 0, 0, 0, 0},
+                                          {1, 0, 0, 0, 0, 4, 1, 1, 0, 0},
+                                          {1, 0, 4, 1, 0, 0, 0, 1, 0, 0},
+                                          {1, 0, 0, 1, 1, 4, 0, 1, 1, 4},
+                                          {1, 0, 1, 1, 0, 1, 0, 0, 0, 1},
+                                          {7, 0, 2, 0, 0, 1, 1, 1, 1, 4}};
+
+    private int[][] level22 = new int[][]{{0, 5, 1, 4, 0, 0, 4, 1, 1, 0},
+                                          {1, 0, 0, 1, 1, 0, 1, 0, 2, 0},
+                                          {1, 4, 1, 0, 1, 1, 1, 0, 0, 0},
+                                          {1, 0, 1, 1, 1, 0, 1, 1, 0, 0},
+                                          {1, 0, 0, 1, 0, 0, 0, 1, 0, 0},
+                                          {4, 1, 0, 1, 1, 4, 0, 1, 4, 0},
+                                          {0, 1, 0, 6, 0, 1, 1, 0, 1, 0},
+                                          {0, 1, 1, 4, 0, 0, 1, 0, 1, 0},
+                                          {0, 0, 0, 1, 0, 1, 4, 0, 1, 0},
+                                          {1, 4, 1, 1, 0, 3, 0, 0, 1, 4}};
 
 
+    private int[][] level23 = new int[][]{{0, 1, 1, 4, 0, 0, 1, 0, 0, 0},
+                                          {1, 4, 0, 1, 0, 0, 1, 4, 6, 4},
+                                          {4, 0, 1, 1, 0, 1, 1, 0, 0, 1},
+                                          {1, 0, 4, 0, 0, 1, 0, 0, 0, 4},
+                                          {4, 0, 1, 0, 0, 4, 1, 1, 0, 1},
+                                          {1, 0, 4, 1, 0, 1, 0, 0, 0, 4},
+                                          {4, 0, 0, 1, 1, 1, 0, 1, 1, 1},
+                                          {1, 1, 0, 0, 0, 4, 1, 4, 0, 0},
+                                          {0, 1, 0, 0, 0, 1, 0, 1, 1, 1},
+                                          {5, 4, 1, 1, 1, 2, 0, 0, 0, 3}};
 
-    FileManager fileManager = new FileManager();
-    private int[][] level1;
-    private int[][] level2;
-    private int[][] level3;
-    private int[][] level4;
-    private int[][] level5;
+    private int[][] level24 = new int[][] {{0, 1, 4, 6, 1, 0, 0, 0, 1, 1},
+                                           {0, 1, 0, 0, 1, 0, 1, 1, 1, 3},
+                                           {0, 1, 1, 0, 1, 0, 1, 0, 0, 0},
+                                           {0, 0, 1, 0, 1, 4, 1, 1, 1, 4},
+                                           {5, 1, 1, 1, 1, 0, 0, 0, 0, 1},
+                                           {0, 0, 1, 0, 0, 0, 0, 0, 0 ,4},
+                                           {0, 1, 4, 0, 0, 4, 1, 4, 0 ,1},
+                                           {0, 4, 0, 0, 0, 1, 0, 1, 0 ,4},
+                                           {0, 1, 1, 4, 0, 1, 0, 1, 0 ,1},
+                                           {0, 0, 0, 1, 1, 1, 0, 1, 1 ,2}};
 
-
-    public World2Maps(int world) throws IOException, ClassNotFoundException
-    {
-        super(world);
-        List<int[][]> world2Map = fileManager.read("worldMap2");
-        level1 = world2Map.get(0);
-        level2 = world2Map.get(1);
-        level3 = world2Map.get(2);
-        level4 = world2Map.get(3);
-        level5 = world2Map.get(4);
-    }
+    private int[][] level25 = new int[][] {{0, 0, 0, 0, 0, 3, 0, 0, 5, 0, 0},
+                                           {0, 5, 0, 0, 0, 7, 0, 0, 1, 0, 0},
+                                           {4, 1, 1, 0, 0, 1, 0, 0, 4, 1, 2},
+                                           {1, 0, 1, 4, 0, 6, 0, 0, 1, 0, 0},
+                                           {4, 1, 0, 1, 0, 1, 0, 0, 1, 4, 0},
+                                           {0, 1, 0, 1, 0, 1, 0, 0, 0, 1, 0},
+                                           {4, 1, 0, 1, 0, 1, 0, 1, 1, 1, 0},
+                                           {1, 0, 0, 1, 1, 4, 0, 1, 0, 0, 0},
+                                           {1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0},
+                                           {1, 0, 4, 1, 1, 0, 1, 0, 0, 1, 4},
+                                           {4, 1, 1 ,0 ,1 ,6 ,1 ,1 ,4 ,1 ,0}};
 
     /**
      * Returnerar en array som representerar en nivå i spelet.
      * @return returnerar en array av siffror.
      */
-    @Override
-    public int[][] getLevel1(){
-        return level1;
+    public int[][] getLevel21(){
+        return level21;
     }
-    @Override
-    public int[][] getLevel2(){
-        return level2;
+
+    public int[][] getLevel22(){
+        return level22;
     }
-    @Override
-    public int[][] getLevel3(){
-        return level3;
+
+    public int[][] getLevel23(){
+        return level23;
     }
-    @Override
-    public int[][] getLevel4(){
-        return level4;
+
+    public int[][] getLevel24(){
+        return level24;
     }
-    @Override
-    public int[][] getLevel5() {
-        return level5;
+
+    public int[][] getLevel25() {
+        return level25;
     }
 }
