@@ -1,6 +1,7 @@
 package control;
 
 import LevelEditor.controller.LevelEditorController;
+import LevelEditor.view.SetUp;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -43,12 +44,14 @@ public class MainProgram extends Application {
     private Scene helpScene;
     private Scene highscoreScene;
     private Scene chooseDimensionScene;
+    private Scene menuLEScene;
     private Scene selectMapScene;
     private Scene selectLevelScene;
     private Intro intro;
     private Menu menu;
     private Help help;
     private ChooseDimension chooseDimension;
+    private SetUp menuLE;
     private SelectWorldMap selectWorldMap;
     private SelectLevel selectLevel;
     private HighscoreView highscoreView;
@@ -89,12 +92,14 @@ public class MainProgram extends Application {
         highscoreView = new HighscoreView(this, audioPlayer, 1, highscoreList);
         chooseDimension = new ChooseDimension(this, audioPlayer);
         selectWorldMap = new SelectWorldMap(this, audioPlayer);
+        menuLE = new SetUp(this, audioPlayer);
         introScene = new Scene(intro, 800, 600);
         menuScene = new Scene(menu, 800, 600);
         helpScene = new Scene(help, 800, 600);
         selectMapScene = new Scene(selectWorldMap, 800, 600);
         chooseDimensionScene = new Scene(chooseDimension, 800, 600);
         highscoreScene = new Scene(highscoreView, 800, 600);
+        menuLEScene = new Scene(menuLE, 800, 600);
 
         mainPaneRandomMaze = new BorderPane();
         mainPaneCampaign = new BorderPane();
@@ -126,6 +131,8 @@ public class MainProgram extends Application {
         chooseDimensionScene.setCursor(new ImageCursor(cursorImage));
         helpScene.setCursor(new ImageCursor(cursorImage));
         randomScene.setCursor(new ImageCursor(cursorImage));
+        menuLEScene.setCursor(new ImageCursor(cursorImage));
+
 
         //Körs när användaren stänger programmet
         //Används för att spara Highscore listan
@@ -239,7 +246,9 @@ public class MainProgram extends Application {
      *
      */
     public void changeToLevelEditor() {
-        levelEditorController = new LevelEditorController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, 1, 1);
+        setDimensionLevelEditor();
+
+        /* levelEditorController = new LevelEditorController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, 1, 1);
         try {
             levelEditorController.campaignWorldManager();
         } catch (InterruptedException e) {
@@ -252,7 +261,12 @@ public class MainProgram extends Application {
             e.printStackTrace();
         }
         mainWindow.setScene(campaignScene);
-        gameController.setUpNewWorldAnimation();
+        gameController.setUpNewWorldAnimation();*/
+    }
+
+
+    public void setDimensionLevelEditor() {
+        mainWindow.setScene(menuLEScene);
     }
 
     /**
