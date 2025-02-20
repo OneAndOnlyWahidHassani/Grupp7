@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 public class SetUp extends Pane {
 
     private MainProgram mainProgram;
+    private Image titel;
     private Image chooseDimension;
     private Image tenByTen;
     private Image tenByTenResize;
@@ -25,14 +26,29 @@ public class SetUp extends Pane {
     private AudioPlayer audioPlayer;
 
 
+    //Themes
+    private Image cloud;
+    private Image cloudResize;
+    private Image desert;
+    private Image desertResize;
+    private Image forest;
+    private Image forestResize;
+    private Image lava;
+    private Image lavaResize;
+    private Image space;
+    private Image spaceResize;
+    private Image underground;
+    private Image undergroundResize;
+
 
     /**
      * Konstruktor som tar emot mainProgram och audioPlayer och kör några metoder för att
      * sätta bilder och knappar
+     *
      * @param mainProgram tas emot och instansvariabeln sätts
      * @param audioPlayer tas emot och instansvariabeln sätts
      */
-    public SetUp(MainProgram mainProgram, AudioPlayer audioPlayer){
+    public SetUp(MainProgram mainProgram, AudioPlayer audioPlayer) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         setBackground();
@@ -43,37 +59,60 @@ public class SetUp extends Pane {
     /**
      * Metod som länkar Image-objekten till png-filer
      */
-    public void setupImages(){
-        chooseDimension = new Image("file:files/texts/ChooseDimension.png", 800, 600, false,false);
+    public void setupImages() {
+        chooseDimension = new Image("file:files/texts/ChooseDimension.png", 800, 600, false, false);
         tenByTen = new Image("file:files/texts/10x10.png", 250, 30, false, false);
         tenByTenResize = new Image("file:files/texts/10x10.png", 255, 33, false, false);
         fourteen = new Image("file:files/texts/14x14.png", 250, 30, false, false);
         fourteenResize = new Image("file:files/texts/14x14.png", 255, 33, false, false);
         eighteen = new Image("file:files/texts/18x18.png", 250, 30, false, false);
         eighteenResize = new Image("file:files/texts/18x18.png", 255, 33, false, false);
-        Theme = new Image("file:files/texts/Pain.png", 250, 30, false, false);
-        ThemeResize = new Image("file:files/texts/Pain.png", 255, 33, false, false);
 
+        Theme = new Image("file:files/texts/Level1.png", 250, 30, false, false);
+        ThemeResize = new Image("file:files/texts/Level1.png", 255, 33, false, false);
 
-        returnImage = new Image("file:files/texts/return.png", 250,30,false,false);
-        returnResize = new Image("file:files/texts/return.png", 255,33,false,false);
+        //Themes
+        cloud = new Image("file:files/texts/Level1.png", 250, 30, false, false);
+        cloudResize = new Image("file:files/texts/Level1.png", 255, 33, false, false);
+
+        desert = new Image("file:files/texts/Level2.png", 250, 30, false, false);
+        desertResize = new Image("file:files/texts/Level2.png", 255, 33, false, false);
+
+        forest = new Image("file:files/texts/Level3.png", 250, 30, false, false);
+        forestResize = new Image("file:files/texts/Level3.png", 255, 33, false, false);
+
+        lava = new Image("file:files/texts/Level4.png", 250, 30, false, false);
+        lavaResize = new Image("file:files/texts/Level4.png", 255, 33, false, false);
+
+        space = new Image("file:files/texts/Level5.png", 250, 30, false, false);
+        spaceResize = new Image("file:files/texts/Level5.png", 255, 33, false, false);
+
+        underground = new Image("file:files/texts/Level1.png", 250, 30, false, false);
+        undergroundResize = new Image("file:files/texts/Level1.png", 255, 33, false, false);
+
+        returnImage = new Image("file:files/texts/return.png", 250, 30, false, false);
+        returnResize = new Image("file:files/texts/return.png", 255, 33, false, false);
+
     }
 
     /**
      * Metod som sätter bakgrundsbilden
      */
-    public void setBackground(){
-        BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg",800,600,false,true),
+    public void setBackground() {
+        BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg", 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         this.setBackground(new Background(menuBackground));
     }
 
+
+
     /**
      * Metod som placerar bilderna som klickbara ImageViews i scenen med events för knapptryck och hovering.
      * Bilderna förstoras när man hovrar över dem och scenen byts när man trycker på dem.
      */
-    public void addButtons(){
+    public void addButtons() {
+
         ImageView dimensionView = new ImageView(chooseDimension);
         dimensionView.setStyle("fx-background-color: transparent;");
 
@@ -200,7 +239,47 @@ public class SetUp extends Pane {
         });
 
 
+    /*    ImageView painView = new ImageView(Theme);
+        painView.setStyle("fx-background-color: transparent;");
+        painView.setTranslateX(275);
+        painView.setTranslateY(350);
+        painView.toFront();
+        painView.setPickOnBounds(true);
 
-        getChildren().addAll(dimensionView,tenByTenView,fourteenView,eighteenView,painView,returnView);
+        // Set up the arrow buttons (left and right)
+        ImageView leftArrow = new ImageView(new Image("file:files/texts/leftArrow.png", 50, 50, false, false));
+        leftArrow.setStyle("fx-background-color: transparent;");
+        leftArrow.setTranslateX(220);  // Position the left arrow to the left of the theme
+        leftArrow.setTranslateY(350);
+        leftArrow.toFront();
+        leftArrow.setPickOnBounds(true);
+
+        leftArrow.setOnMouseClicked(e -> {
+            currentThemeIndex--;  // Move to the previous theme
+            if (currentThemeIndex < 0) {
+                currentThemeIndex = themes.length - 1;  // Loop back to the last theme
+            }
+            painView.setImage(themes[currentThemeIndex]);
+            audioPlayer.playButtonSound();
+        });
+
+        ImageView rightArrow = new ImageView(new Image("file:files/texts/rightArrow.png", 50, 50, false, false));
+        rightArrow.setStyle("fx-background-color: transparent;");
+        rightArrow.setTranslateX(330);  // Position the right arrow to the right of the theme
+        rightArrow.setTranslateY(350);
+        rightArrow.toFront();
+        rightArrow.setPickOnBounds(true);
+
+        rightArrow.setOnMouseClicked(e -> {
+            currentThemeIndex++;  // Move to the next theme
+            if (currentThemeIndex >= themes.length) {
+                currentThemeIndex = 0;  // Loop back to the first theme
+            }
+            painView.setImage(themes[currentThemeIndex]);
+            audioPlayer.playButtonSound();
+        }); */
+
+
+        getChildren().addAll(dimensionView, tenByTenView, fourteenView, eighteenView, painView, returnView);
     }
 }
