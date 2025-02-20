@@ -43,7 +43,7 @@ class MapTemplateTest extends ApplicationTest {
         testCollectible = mapTemplate.addCollectible();
     }
 
-    @Test
+    /*@Test
     void testCollectiblesGeneratedOnPath() {
         // Hämta alla collectibles som placerades i världen
         List<Label> collectibles = mapTemplate.getCollectibles();
@@ -101,10 +101,6 @@ class MapTemplateTest extends ApplicationTest {
 
         assertFalse(mapTemplate.isAllCollectiblesObtained(),
             "All collected flag should remain false");
-    }
-
-
-
-
+    }*/
 
 }

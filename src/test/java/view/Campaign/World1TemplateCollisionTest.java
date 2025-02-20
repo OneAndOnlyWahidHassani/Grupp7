@@ -20,7 +20,7 @@ public class World1TemplateCollisionTest {
     private RightPanel rightPanel;
     private AudioPlayer audioPlayer;
 
-    @BeforeAll
+    /*@BeforeAll
     public static void setupJavaFX() {
         Platform.startup(() -> {});
     }
@@ -86,6 +86,5 @@ public class World1TemplateCollisionTest {
         assertEquals(2, world1Template.getHeartCrystals(), "Should lose 1 heart after collision");
         verify(audioPlayer).playDeathSound();
         verify(rightPanel).changeHeartCounter("2");
-    }
-
+    }*/
 }

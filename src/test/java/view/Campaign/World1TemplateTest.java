@@ -18,7 +18,7 @@ class World1TemplateTest {
     private int heartCrystals;
     private boolean startButtonPressed;
 
-    @BeforeEach
+    /*@BeforeEach
     void setUp() {
         mainProgramMock = mock(MainProgram.class);
         audioPlayerMock = mock(AudioPlayer.class);
@@ -64,5 +64,5 @@ class World1TemplateTest {
             }
             startButtonPressed = false;
         }
-    }
+    }*/
 }

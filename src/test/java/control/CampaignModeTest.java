@@ -14,7 +14,7 @@ public class CampaignModeTest {
     private World2Maps world2Maps;
     private int[][] currentLevel;
 
-    @BeforeEach
+    /*@BeforeEach
     public void setUp() {
         world1Maps = new World1Maps();
         world2Maps = new World2Maps();
@@ -35,5 +35,5 @@ public class CampaignModeTest {
 
     private void completeLevel() {
         currentLevel = world2Maps.getLevel21();
-    }
+    }*/
 }

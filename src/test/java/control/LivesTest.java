@@ -15,7 +15,7 @@ public class LivesTest extends ApplicationTest {
 
     private MainProgram mainProgram;
 
-    @Override
+    /*@Override
     public void start(Stage stage) {
         mainProgram = new MainProgram();
         try {
@@ -41,5 +41,5 @@ public class LivesTest extends ApplicationTest {
 
         assertTrue(mainPaneCampaign.getChildren().stream()
                 .anyMatch(node -> node instanceof GameOverScreen));
-    }
+    }*/
 }

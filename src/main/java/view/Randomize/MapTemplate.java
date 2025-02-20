@@ -22,7 +22,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.List;
 
 /**
  * @author André Eklund
@@ -336,19 +335,5 @@ public class MapTemplate extends GridPane {
                 }
             }
         }
-    }
-
-    public List<Label> getCollectibles() {
-        return collectibles;
-    }
-
-    public boolean isAllCollectiblesObtained() {
-        return allCollectiblesObtained;
-    }
-    int getCollectiblesObtained() {
-        return collectiblesObtained;
-    }
-    MouseListener getMouseListener(){
-        return mouseListener;
     }
 }
