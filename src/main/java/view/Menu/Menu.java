@@ -20,6 +20,11 @@ public class Menu extends Pane {
     private Image randomizeResize;
     private Image help;
     private Image helpResize;
+    private Image select;
+    private Image selectResize;
+
+    private Image highscore;
+    private Image highscoreResize;
     private Image mazegen;
     private AudioPlayer audioPlayer;
     private RightPanel panel;
@@ -51,6 +56,10 @@ public class Menu extends Pane {
         randomizeResize = new Image("file:files/texts/Randomize.png", 255, 33, false, false);
         help = new Image("file:files/texts/Help.png", 250, 30, false, false);
         helpResize = new Image("file:files/texts/Help.png", 255, 33, false, false);
+        select = new Image("file:files/texts/Select.png", 250, 30, false, false);
+        selectResize = new Image("file:files/texts/Select.png", 255, 33, false, false);
+        highscore = new Image("file:files/texts/Highscore.png", 250, 30, false, false);
+        highscoreResize = new Image("file:files/texts/Highscore.png", 255, 33, false, false);
     }
 
     /**
@@ -89,31 +98,50 @@ public class Menu extends Pane {
             campaignView.setTranslateY(200);
         });
         campaignView.setOnMouseClicked(e -> {
-            try {
-                mainProgram.changeToCampaign();
-                audioPlayer.playLevelMusic("forest");
-                panel.setTheTime(25);
-                panel.resetTimerLabel();
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
+            mainProgram.changeToCampaign();
+            /***
+             *            audioPlayer.playLevelMusic("forest");
+             *             panel.setTheTime(25);
+             *             panel.resetTimerLabel();
+             */
+        });
+
+        ImageView selectView = new ImageView(select);
+        selectView.setStyle("fx-background-color: transparent;");
+        selectView.setTranslateX(275);
+        selectView.setTranslateY(250);
+        selectView.toFront();
+        selectView.setPickOnBounds(true);
+        selectView.setOnMouseEntered(e -> {
+            selectView.setImage(selectResize);
+            selectView.setTranslateX(273);
+            selectView.setTranslateY(247);
+        });
+        selectView.setOnMouseExited(e -> {
+            selectView.setImage(select);
+            selectView.setTranslateX(275);
+            selectView.setTranslateY(250);
+        });
+        selectView.setOnMouseClicked(e -> {
+            mainProgram.selectWorldMap();
+            audioPlayer.playButtonSound();
         });
 
         ImageView randomizeView = new ImageView(randomize);
         randomizeView.setStyle("fx-background-color: transparent;");
         randomizeView.setTranslateX(275);
-        randomizeView.setTranslateY(250);
+        randomizeView.setTranslateY(300);
         randomizeView.toFront();
         randomizeView.setPickOnBounds(true);
         randomizeView.setOnMouseEntered(e -> {
             randomizeView.setImage(randomizeResize);
             randomizeView.setTranslateX(273);
-            randomizeView.setTranslateY(247);
+            randomizeView.setTranslateY(297);
         });
         randomizeView.setOnMouseExited(e -> {
             randomizeView.setImage(randomize);
             randomizeView.setTranslateX(275);
-            randomizeView.setTranslateY(250);
+            randomizeView.setTranslateY(300);
         });
         randomizeView.setOnMouseClicked(e -> {
             mainProgram.chooseDimension();
@@ -123,25 +151,47 @@ public class Menu extends Pane {
         ImageView helpView = new ImageView(help);
         helpView.setStyle("fx-background-color: transparent;");
         helpView.setTranslateX(275);
-        helpView.setTranslateY(300);
+        helpView.setTranslateY(350);
         helpView.toFront();
         helpView.setPickOnBounds(true);
         helpView.setOnMouseEntered(e -> {
             helpView.setImage(helpResize);
             helpView.setTranslateX(273);
-            helpView.setTranslateY(297);
+            helpView.setTranslateY(347);
         });
         helpView.setOnMouseExited(e -> {
             helpView.setImage(help);
             helpView.setTranslateX(275);
-            helpView.setTranslateY(300);
+            helpView.setTranslateY(350);
         });
         helpView.setOnMouseClicked(e -> {
             mainProgram.changeToHelp();
             audioPlayer.playButtonSound();
         });
 
-        this.getChildren().addAll(campaignView,randomizeView,helpView,mazegenView);
+
+        ImageView highscoreView = new ImageView(highscore);
+        highscoreView.setStyle("fx-background-color: transparent;");
+        highscoreView.setTranslateX(275);
+        highscoreView.setTranslateY(400);
+        highscoreView.toFront();
+        highscoreView.setPickOnBounds(true);
+        highscoreView.setOnMouseEntered(e -> {
+            highscoreView.setImage(highscoreResize);
+            highscoreView.setTranslateX(273);
+            highscoreView.setTranslateY(397);
+        });
+        highscoreView.setOnMouseExited(e -> {
+            highscoreView.setImage(highscore);
+            highscoreView.setTranslateX(275);
+            highscoreView.setTranslateY(400);
+        });
+        highscoreView.setOnMouseClicked(e -> {
+            mainProgram.showHighscore();
+            audioPlayer.playButtonSound();
+        });
+
+        this.getChildren().addAll(campaignView,randomizeView,selectView, helpView,highscoreView, mazegenView);
     }
 
 }
