@@ -62,6 +62,8 @@ public class SetUp extends Pane {
         setBackground();
         setupImages();
         addButtons();
+        addTextField();
+        addTitles();
     }
 
     /**
@@ -117,17 +119,16 @@ public class SetUp extends Pane {
      * Bilderna förstoras när man hovrar över dem och scenen byts när man trycker på dem.
      */
     public void addButtons() {
-        addTextField();
 
         ImageView titelImageView = new ImageView(titel);
         titelImageView.setStyle("fx-background-color: transparent;");
         titelImageView.setTranslateX(250);
         titelImageView.setTranslateY(50);
 
-        ImageView chooseDimensionView = new ImageView(chooseDimension);
+       /* ImageView chooseDimensionView = new ImageView(chooseDimension);
         chooseDimensionView.setStyle("fx-background-color: transparent;");
         chooseDimensionView.setTranslateX(210);
-        chooseDimensionView.setTranslateY(200);
+        chooseDimensionView.setTranslateY(200);*/
 
 
         ImageView rDButtonView = new ImageView(dRButton);
@@ -260,7 +261,7 @@ public class SetUp extends Pane {
         });
 
 
-        getChildren().addAll(titelImageView,chooseDimensionView, dimensionView, rDButtonView, lDButtonView, RButtonView, themeView, LButtonView, returnView);
+        getChildren().addAll(titelImageView, dimensionView, rDButtonView, lDButtonView, RButtonView, themeView, LButtonView, returnView);
     }
 
     private void nextDimension() {
@@ -313,6 +314,35 @@ public class SetUp extends Pane {
 
             // Lägg till i scenen
             getChildren().add(textField);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Fontfilen hittades inte!");
+        }
+    }
+
+    public void addTitles() {
+        try {
+            // Ladda font från fil
+            Font customFont = Font.loadFont(new FileInputStream("files/fonts/PressStart2P.ttf"), 20);
+
+
+            // Skapa andra titeln
+            Text title2 = new Text("CHOOSE DIMENSION");
+            title2.setFont(customFont);
+            title2.setFill(javafx.scene.paint.Color.RED); // Sätt färg till röd
+            title2.setTranslateX(250);  // Justera X-position
+            title2.setTranslateY(250);  // Justera Y-position
+
+
+            // Skapa första titeln
+            Text title1 = new Text("CHOOSE THEME");
+            title1.setFont(customFont);
+            title1.setFill(javafx.scene.paint.Color.RED); // Sätt färg till röd
+            title1.setTranslateX(280);  // Justera X-position
+            title1.setTranslateY(380);   // Justera Y-position
+
+            // Lägg till titlarna i scenen
+            getChildren().addAll(title1, title2);
 
         } catch (FileNotFoundException e) {
             System.out.println("Fontfilen hittades inte!");
