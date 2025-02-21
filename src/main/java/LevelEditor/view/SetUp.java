@@ -1,5 +1,6 @@
 package LevelEditor.view;
 
+import LevelEditor.controller.MainLE;
 import control.MainProgram;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -7,31 +8,23 @@ import javafx.scene.layout.*;
 import view.AudioPlayer;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-import java.io.FileNotFoundException;
 
 public class SetUp extends Pane {
 
     private MainProgram mainProgram;
+    private MainLE mainLE;
     private Image titel;
-    private Image chooseDimension;
-    private Image tenByTen;
-    private Image tenByTenResize;
-    private Image fourteen;
-    private Image fourteenResize;
-    private Image eighteen;
-    private Image eighteenResize;
     private Image returnImage;
     private Image selectImage;
     private AudioPlayer audioPlayer;
-    private Font customFont;
+    private TextField levelNameField;
 
-    //Button Dimension
+    
     private Image dRButton;
     private Image dLButton;
 
@@ -39,11 +32,9 @@ public class SetUp extends Pane {
     private int currentDimensionIndex = 0;
     private ImageView dimensionView;
 
-    //Button Theme
     private Image RightButton;
     private Image LeftButton;
 
-    //Themes
     private Image[] themes;
     private int currentThemeIndex = 0;
     private ImageView themeView;
@@ -59,6 +50,7 @@ public class SetUp extends Pane {
     public SetUp(MainProgram mainProgram, AudioPlayer audioPlayer) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
+        this.mainLE = new MainLE();
         setBackground();
         setupImages();
         addButtons();
@@ -71,9 +63,7 @@ public class SetUp extends Pane {
      */
     public void setupImages() {
         titel = new Image("file:files/texts/lvl.png", 300, 80, false, true);
-        chooseDimension = new Image("file:files/texts/ChooseDimension.png", 400, 300, false, false);
 
-        //Button Dimension
         dRButton = new Image("file:files/texts/RB.png", 430, 300, false, false);
         dLButton = new Image("file:files/texts/LB.png", 430, 300, false, false);
 
@@ -85,7 +75,6 @@ public class SetUp extends Pane {
         };
 
 
-        //Button Theme
         RightButton = new Image("file:files/texts/RB.png", 430, 300, false, false);
         LeftButton = new Image("file:files/texts/LB.png", 430, 300, false, false);
 
@@ -97,7 +86,6 @@ public class SetUp extends Pane {
                 new Image("file:files/theme/space.png", 140, 90, false, false),
                 new Image("file:files/theme/underground.png", 125, 100, false, false)
         };
-
 
 
         returnImage = new Image("file:files/texts/return.png", 250, 30, false, false);
@@ -126,12 +114,6 @@ public class SetUp extends Pane {
         titelImageView.setStyle("fx-background-color: transparent;");
         titelImageView.setTranslateX(250);
         titelImageView.setTranslateY(50);
-
-       /* ImageView chooseDimensionView = new ImageView(chooseDimension);
-        chooseDimensionView.setStyle("fx-background-color: transparent;");
-        chooseDimensionView.setTranslateX(210);
-        chooseDimensionView.setTranslateY(200);*/
-
 
         ImageView rDButtonView = new ImageView(dRButton);
         rDButtonView.setStyle("fx-background-color: transparent;");
@@ -162,7 +144,7 @@ public class SetUp extends Pane {
         lDButtonView.toFront();
         lDButtonView.setOnMouseEntered(e -> {
             lDButtonView.setImage(dLButton);
-           lDButtonView.setTranslateX(50);
+            lDButtonView.setTranslateX(50);
             lDButtonView.setTranslateY(220);
         });
         lDButtonView.setOnMouseExited(e -> {
@@ -177,14 +159,12 @@ public class SetUp extends Pane {
         });
 
 
-
         dimensionView = new ImageView(dimensions[currentDimensionIndex]);
         dimensionView.setStyle("fx-background-color: transparent;");
         dimensionView.setTranslateX(270);
         dimensionView.setTranslateY(270);
         dimensionView.toFront();
         dimensionView.setPickOnBounds(true);
-
 
 
         ImageView RButtonView = new ImageView(RightButton);
@@ -279,7 +259,16 @@ public class SetUp extends Pane {
             selectView.setTranslateY(550);
         });
         selectView.setOnMouseClicked(e -> {
+            String levelName = levelNameField.getText().trim();
+            if (levelName.isEmpty()) {
+                System.out.println("Vänligen ange ett nivånamn innan du sparar.");
+                return;
+            }
 
+            String selectedTheme = themes[currentThemeIndex].getUrl().replace("file:files/theme/", "").replace(".png", "");
+            String selectedDimension = dimensions[currentDimensionIndex].getUrl().replace("file:files/texts/", "").replace(".png", "");
+
+            mainLE.saveLevel(levelName, selectedTheme, selectedDimension);
             audioPlayer.playButtonSound();
         });
 
@@ -311,33 +300,24 @@ public class SetUp extends Pane {
 
     public void addTextField() {
         try {
-            // Ladda font från fil
             Font customFont = Font.loadFont(new FileInputStream("files/fonts/PressStart2P.ttf"), 20);
 
-            // Skapa ett textfält
-            TextField textField = new TextField();
-            textField.setFont(customFont);
-            textField.setPromptText("LEVEL NAME...");
-            textField.setTranslateX(250);
-            textField.setTranslateY(150);
-            textField.setPrefWidth(300);
-
-            // Styla textfältet med CSS
-            textField.setStyle(
-                    "-fx-background-color: white; " +  // Bakgrundsfärg
-                            "-fx-text-fill: blue; " +          // Textfärg (blå)
-                            "-fx-font-weight: bold; " +        // Fet text
-                            "-fx-border-color: black; " +      // Svart kant
-                            "-fx-border-width: 2px; " +        // Tjocklek på kanten
-                            "-fx-prompt-text-fill: blue;"      // Gör att prompt-texten alltid syns i blått
+            levelNameField = new TextField();
+            levelNameField.setFont(customFont);
+            levelNameField.setPromptText("LEVEL NAME...");
+            levelNameField.setTranslateX(250);
+            levelNameField.setTranslateY(150);
+            levelNameField.setPrefWidth(300);
+            levelNameField.setStyle(
+                    "-fx-background-color: white; " +
+                            "-fx-text-fill: blue; " +
+                            "-fx-font-weight: bold; " +
+                            "-fx-border-color: black; " +
+                            "-fx-border-width: 2px; " +
+                            "-fx-prompt-text-fill: blue;"
             );
-
-            // Se till att prompt-texten inte försvinner förrän man skriver
-            textField.setFocusTraversable(false);
-
-            // Lägg till i scenen
-            getChildren().add(textField);
-
+            levelNameField.setFocusTraversable(false);
+            getChildren().add(levelNameField);
         } catch (FileNotFoundException e) {
             System.out.println("Fontfilen hittades inte!");
         }
@@ -345,26 +325,20 @@ public class SetUp extends Pane {
 
     public void addTitles() {
         try {
-            // Ladda font från fil
             Font customFont = Font.loadFont(new FileInputStream("files/fonts/PressStart2P.ttf"), 20);
 
-
-            // Skapa andra titeln
             Text title2 = new Text("CHOOSE DIMENSION");
             title2.setFont(customFont);
-            title2.setFill(javafx.scene.paint.Color.RED); // Sätt färg till röd
-            title2.setTranslateX(250);  // Justera X-position
-            title2.setTranslateY(250);  // Justera Y-position
+            title2.setFill(javafx.scene.paint.Color.RED);
+            title2.setTranslateX(250);
+            title2.setTranslateY(250);
 
-
-            // Skapa första titeln
             Text title1 = new Text("CHOOSE THEME");
             title1.setFont(customFont);
-            title1.setFill(javafx.scene.paint.Color.RED); // Sätt färg till röd
-            title1.setTranslateX(280);  // Justera X-position
-            title1.setTranslateY(380);   // Justera Y-position
+            title1.setFill(javafx.scene.paint.Color.RED);
+            title1.setTranslateX(280);
+            title1.setTranslateY(380);
 
-            // Lägg till titlarna i scenen
             getChildren().addAll(title1, title2);
 
         } catch (FileNotFoundException e) {
