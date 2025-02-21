@@ -5,6 +5,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import view.AudioPlayer;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import java.io.FileNotFoundException;
 
@@ -22,8 +29,17 @@ public class SetUp extends Pane {
     private Image returnImage;
     private Image returnResize;
     private AudioPlayer audioPlayer;
+    private Font customFont;
 
-    //Button
+    //Button Dimension
+    private Image dRButton;
+    private Image dLButton;
+
+    private Image[] dimensions;
+    private int currentDimensionIndex = 0;
+    private ImageView dimensionView;
+
+    //Button Theme
     private Image RightButton;
     private Image LeftButton;
 
@@ -54,14 +70,20 @@ public class SetUp extends Pane {
     public void setupImages() {
         titel = new Image("file:files/texts/lvl.png", 300, 80, false, true);
         chooseDimension = new Image("file:files/texts/ChooseDimension.png", 400, 300, false, false);
-        tenByTen = new Image("file:files/texts/10x10.png", 200, 30, false, false);
-        tenByTenResize = new Image("file:files/texts/10x10.png", 205, 33, false, false);
-        fourteen = new Image("file:files/texts/14x14.png", 200, 30, false, false);
-        fourteenResize = new Image("file:files/texts/14x14.png", 205, 33, false, false);
-        eighteen = new Image("file:files/texts/18x18.png", 200, 30, false, false);
-        eighteenResize = new Image("file:files/texts/18x18.png", 205, 33, false, false);
 
-        //Button Choode
+        //Button Dimension
+        dRButton = new Image("file:files/texts/RB.png", 430, 300, false, false);
+        dLButton = new Image("file:files/texts/LB.png", 430, 300, false, false);
+
+
+        dimensions = new Image[]{
+                new Image("file:files/texts/10x10.png", 250, 50, false, false),
+                new Image("file:files/texts/14x14.png", 250, 50, false, false),
+                new Image("file:files/texts/18x18.png", 250, 50, false, false)
+        };
+
+
+        //Button Theme
         RightButton = new Image("file:files/texts/RB.png", 430, 300, false, false);
         LeftButton = new Image("file:files/texts/LB.png", 430, 300, false, false);
 
@@ -75,10 +97,7 @@ public class SetUp extends Pane {
         };
 
 
-
         returnImage = new Image("file:files/texts/return.png", 250, 30, false, false);
-
-
     }
 
     /**
@@ -89,6 +108,7 @@ public class SetUp extends Pane {
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         this.setBackground(new Background(menuBackground));
+
     }
 
 
@@ -97,92 +117,71 @@ public class SetUp extends Pane {
      * Bilderna förstoras när man hovrar över dem och scenen byts när man trycker på dem.
      */
     public void addButtons() {
+        addTextField();
 
         ImageView titelImageView = new ImageView(titel);
         titelImageView.setStyle("fx-background-color: transparent;");
         titelImageView.setTranslateX(250);
         titelImageView.setTranslateY(50);
 
-        ImageView dimensionView = new ImageView(chooseDimension);
+        ImageView chooseDimensionView = new ImageView(chooseDimension);
+        chooseDimensionView.setStyle("fx-background-color: transparent;");
+        chooseDimensionView.setTranslateX(210);
+        chooseDimensionView.setTranslateY(200);
+
+
+        ImageView rDButtonView = new ImageView(dRButton);
+        rDButtonView.setStyle("fx-background-color: transparent;");
+        rDButtonView.setTranslateX(350);
+        rDButtonView.setTranslateY(220);
+        rDButtonView.toFront();
+        rDButtonView.setOnMouseEntered(e -> {
+            rDButtonView.setImage(dRButton);
+            rDButtonView.setTranslateX(350);
+            rDButtonView.setTranslateY(220);
+        });
+        rDButtonView.setOnMouseExited(e -> {
+            rDButtonView.setImage(dRButton);
+            rDButtonView.setTranslateX(350);
+            rDButtonView.setTranslateY(220);
+        });
+        rDButtonView.setOnMouseClicked(e -> {
+            nextDimension();
+            audioPlayer.playButtonSound();
+
+        });
+
+
+        ImageView lDButtonView = new ImageView(dLButton);
+        lDButtonView.setStyle("fx-background-color: transparent;");
+        lDButtonView.setTranslateX(50);
+        lDButtonView.setTranslateY(220);
+        lDButtonView.toFront();
+        lDButtonView.setOnMouseEntered(e -> {
+            lDButtonView.setImage(dLButton);
+           lDButtonView.setTranslateX(50);
+            lDButtonView.setTranslateY(220);
+        });
+        lDButtonView.setOnMouseExited(e -> {
+            lDButtonView.setImage(dLButton);
+            lDButtonView.setTranslateX(50);
+            lDButtonView.setTranslateY(220);
+        });
+        lDButtonView.setOnMouseClicked(e -> {
+            previousDimension();
+            audioPlayer.playButtonSound();
+
+        });
+
+
+
+        dimensionView = new ImageView(dimensions[currentDimensionIndex]);
         dimensionView.setStyle("fx-background-color: transparent;");
-        dimensionView.setTranslateX(200);
-        dimensionView.setTranslateY(150);
+        dimensionView.setTranslateX(270);
+        dimensionView.setTranslateY(270);
+        dimensionView.toFront();
+        dimensionView.setPickOnBounds(true);
 
-
-        ImageView tenByTenView = new ImageView(tenByTen);
-        tenByTenView.setStyle("fx-background-color: transparent;");
-        tenByTenView.setTranslateX(275);
-        tenByTenView.setTranslateY(200);
-        tenByTenView.toFront();
-        tenByTenView.setPickOnBounds(true);
-        tenByTenView.setOnMouseEntered(e -> {
-            tenByTenView.setImage(tenByTenResize);
-            tenByTenView.setTranslateX(273);
-            tenByTenView.setTranslateY(198);
-        });
-        tenByTenView.setOnMouseExited(e -> {
-            tenByTenView.setImage(tenByTen);
-            tenByTenView.setTranslateX(275);
-            tenByTenView.setTranslateY(200);
-        });
-        tenByTenView.setOnMouseClicked(e -> {
-            try {
-                mainProgram.changeToRandomize(10);
-                audioPlayer.playButtonSound();
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
-
-        ImageView fourteenView = new ImageView(fourteen);
-        fourteenView.setStyle("fx-background-color: transparent;");
-        fourteenView.setTranslateX(275);
-        fourteenView.setTranslateY(250);
-        fourteenView.toFront();
-        fourteenView.setPickOnBounds(true);
-        fourteenView.setOnMouseEntered(e -> {
-            fourteenView.setImage(fourteenResize);
-            fourteenView.setTranslateX(273);
-            fourteenView.setTranslateY(248);
-        });
-        fourteenView.setOnMouseExited(e -> {
-            fourteenView.setImage(fourteen);
-            fourteenView.setTranslateX(275);
-            fourteenView.setTranslateY(250);
-        });
-        fourteenView.setOnMouseClicked(e -> {
-            try {
-                mainProgram.changeToRandomize(14);
-                audioPlayer.playButtonSound();
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
-
-        ImageView eighteenView = new ImageView(eighteen);
-        eighteenView.setStyle("fx-background-color: transparent;");
-        eighteenView.setTranslateX(275);
-        eighteenView.setTranslateY(300);
-        eighteenView.toFront();
-        eighteenView.setPickOnBounds(true);
-        eighteenView.setOnMouseEntered(e -> {
-            eighteenView.setImage(eighteenResize);
-            eighteenView.setTranslateX(273);
-            eighteenView.setTranslateY(298);
-        });
-        eighteenView.setOnMouseExited(e -> {
-            eighteenView.setImage(eighteen);
-            eighteenView.setTranslateX(275);
-            eighteenView.setTranslateY(300);
-        });
-        eighteenView.setOnMouseClicked(e -> {
-            try {
-                mainProgram.changeToRandomize(18);
-                audioPlayer.playButtonSound();
-            } catch (FileNotFoundException fileNotFoundException) {
-                fileNotFoundException.printStackTrace();
-            }
-        });
 
 
         ImageView RButtonView = new ImageView(RightButton);
@@ -202,8 +201,8 @@ public class SetUp extends Pane {
             RButtonView.setTranslateY(350);
         });
         RButtonView.setOnMouseClicked(e -> {
-                nextTheme();
-                audioPlayer.playButtonSound();
+            nextTheme();
+            audioPlayer.playButtonSound();
 
         });
 
@@ -225,8 +224,8 @@ public class SetUp extends Pane {
             LButtonView.setTranslateY(350);
         });
         LButtonView.setOnMouseClicked(e -> {
-                previousTheme();
-                audioPlayer.playButtonSound();
+            previousTheme();
+            audioPlayer.playButtonSound();
 
         });
 
@@ -247,8 +246,8 @@ public class SetUp extends Pane {
         returnView.setPickOnBounds(true);
         returnView.setOnMouseEntered(e -> {
             returnView.setImage(returnResize);
-            returnView.setTranslateX(498);
-            returnView.setTranslateY(548);
+            returnView.setTranslateX(500);
+            returnView.setTranslateY(550);
         });
         returnView.setOnMouseExited(e -> {
             returnView.setImage(returnImage);
@@ -261,8 +260,19 @@ public class SetUp extends Pane {
         });
 
 
-        getChildren().addAll(titelImageView, dimensionView, tenByTenView, fourteenView, eighteenView, RButtonView, themeView, LButtonView, returnView);
+        getChildren().addAll(titelImageView,chooseDimensionView, dimensionView, rDButtonView, lDButtonView, RButtonView, themeView, LButtonView, returnView);
     }
+
+    private void nextDimension() {
+        currentDimensionIndex = (currentDimensionIndex + 1) % dimensions.length;
+        dimensionView.setImage(dimensions[currentDimensionIndex]);
+    }
+
+    private void previousDimension() {
+        currentDimensionIndex = (currentDimensionIndex - 1 + dimensions.length) % dimensions.length;
+        dimensionView.setImage(dimensions[currentDimensionIndex]);
+    }
+
 
     private void nextTheme() {
         currentThemeIndex = (currentThemeIndex + 1) % themes.length;
@@ -273,4 +283,41 @@ public class SetUp extends Pane {
         currentThemeIndex = (currentThemeIndex - 1 + themes.length) % themes.length;
         themeView.setImage(themes[currentThemeIndex]);
     }
+
+
+    public void addTextField() {
+        try {
+            // Ladda font från fil
+            Font customFont = Font.loadFont(new FileInputStream("files/fonts/PressStart2P.ttf"), 20);
+
+            // Skapa ett textfält
+            TextField textField = new TextField();
+            textField.setFont(customFont);
+            textField.setPromptText("LEVEL NAME...");
+            textField.setTranslateX(250);
+            textField.setTranslateY(150);
+            textField.setPrefWidth(300);
+
+            // Styla textfältet med CSS
+            textField.setStyle(
+                    "-fx-background-color: white; " +  // Bakgrundsfärg
+                            "-fx-text-fill: blue; " +          // Textfärg (blå)
+                            "-fx-font-weight: bold; " +        // Fet text
+                            "-fx-border-color: black; " +      // Svart kant
+                            "-fx-border-width: 2px; " +        // Tjocklek på kanten
+                            "-fx-prompt-text-fill: blue;"      // Gör att prompt-texten alltid syns i blått
+            );
+
+            // Se till att prompt-texten inte försvinner förrän man skriver
+            textField.setFocusTraversable(false);
+
+            // Lägg till i scenen
+            getChildren().add(textField);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Fontfilen hittades inte!");
+        }
+    }
+
+
 }
