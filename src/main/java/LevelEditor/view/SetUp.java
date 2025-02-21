@@ -27,7 +27,7 @@ public class SetUp extends Pane {
     private Image eighteen;
     private Image eighteenResize;
     private Image returnImage;
-    private Image returnResize;
+    private Image selectImage;
     private AudioPlayer audioPlayer;
     private Font customFont;
 
@@ -99,7 +99,9 @@ public class SetUp extends Pane {
         };
 
 
+
         returnImage = new Image("file:files/texts/return.png", 250, 30, false, false);
+        selectImage = new Image("file:files/texts/Select.png", 250, 30, false, false);
     }
 
     /**
@@ -241,18 +243,18 @@ public class SetUp extends Pane {
 
         ImageView returnView = new ImageView(returnImage);
         returnView.setStyle("fx-background-color: transparent;");
-        returnView.setTranslateX(500);
+        returnView.setTranslateX(5);
         returnView.setTranslateY(550);
         returnView.toFront();
         returnView.setPickOnBounds(true);
         returnView.setOnMouseEntered(e -> {
-            returnView.setImage(returnResize);
-            returnView.setTranslateX(500);
+            returnView.setImage(returnImage);
+            returnView.setTranslateX(5);
             returnView.setTranslateY(550);
         });
         returnView.setOnMouseExited(e -> {
             returnView.setImage(returnImage);
-            returnView.setTranslateX(500);
+            returnView.setTranslateX(5);
             returnView.setTranslateY(550);
         });
         returnView.setOnMouseClicked(e -> {
@@ -260,8 +262,29 @@ public class SetUp extends Pane {
             audioPlayer.playButtonSound();
         });
 
+        ImageView selectView = new ImageView(selectImage);
+        selectView.setStyle("fx-background-color: transparent;");
+        selectView.setTranslateX(550);
+        selectView.setTranslateY(550);
+        selectView.toFront();
+        selectView.setPickOnBounds(true);
+        selectView.setOnMouseEntered(e -> {
+            selectView.setImage(selectImage);
+            selectView.setTranslateX(550);
+            selectView.setTranslateY(550);
+        });
+        selectView.setOnMouseExited(e -> {
+            selectView.setImage(selectImage);
+            selectView.setTranslateX(550);
+            selectView.setTranslateY(550);
+        });
+        selectView.setOnMouseClicked(e -> {
 
-        getChildren().addAll(titelImageView, dimensionView, rDButtonView, lDButtonView, RButtonView, themeView, LButtonView, returnView);
+            audioPlayer.playButtonSound();
+        });
+
+
+        getChildren().addAll(titelImageView, dimensionView, rDButtonView, lDButtonView, RButtonView, themeView, LButtonView, returnView, selectView);
     }
 
     private void nextDimension() {
