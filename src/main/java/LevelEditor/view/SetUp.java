@@ -268,15 +268,24 @@ public class SetUp extends Pane {
             String selectedTheme = themes[currentThemeIndex].getUrl().replace("file:files/theme/", "").replace(".png", "");
             String selectedDimension = dimensions[currentDimensionIndex].getUrl().replace("file:files/texts/", "").replace(".png", "");
 
+            String selectedDimensionPrefix = selectedDimension.substring(0, 2); // Hämtar de två första bokstäverna
+            int selectedDimensionInt = 0;
+            selectedDimensionInt = Integer.parseInt(selectedDimensionPrefix);
+            System.out.println(selectedDimensionInt);
+
             mainLE.saveLevel(levelName, selectedTheme, selectedDimension);
+
+
             try {
-                mainProgram.enterLevelEditor();
+                mainProgram.enterLevelEditor(selectedDimensionInt);
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
 
             audioPlayer.playButtonSound();
         });
+
+
 
 
         getChildren().addAll(titelImageView, dimensionView, rDButtonView, lDButtonView, RButtonView, themeView, LButtonView, returnView, selectView);

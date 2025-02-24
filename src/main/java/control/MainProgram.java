@@ -1,6 +1,7 @@
 package control;
 
 import LevelEditor.controller.MainLE;
+import LevelEditor.view.MapTemplateLE;
 import LevelEditor.view.SetUp;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -34,7 +35,9 @@ public class MainProgram extends Application {
     private Stage mainWindow;
     private BorderPane mainPaneRandomMaze;
     private BorderPane mainPaneCampaign;
+
     private MapTemplate mapTemplate;
+    private MapTemplateLE mapTemplateLE;
     private Scene menuScene;
     private Scene introScene;
     private Scene helpScene;
@@ -162,7 +165,7 @@ public class MainProgram extends Application {
     /**
      * Enters the special Level Editor mode with a custom layout and larger right panel.
      */
-    public void enterLevelEditor() throws FileNotFoundException {
+    public void enterLevelEditor(int dimension) throws FileNotFoundException {
         // Create a new BorderPane for the level editor.
         BorderPane levelEditorPane = new BorderPane();
 
@@ -190,8 +193,21 @@ public class MainProgram extends Application {
         levelEditorScene = new Scene(levelEditorPane, editorSceneWidth, editorSceneHeight, Color.BLACK);
         levelEditorScene.setCursor(new ImageCursor(cursorImage));
 
-        // Switch to the level editor scene.
+
+
+        mazeGenerator = new MazeGenerator(dimension, true);
+        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension);
+        mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel);
+        levelEditorPane.setCenter(mapTemplate); // Set mapTemplateLE instead of mapTemplate
         mainWindow.setScene(levelEditorScene);
+
+/*
+        mazeGenerator = new MazeGenerator(dimension, true);
+        generateNextLevel = new GenerateNextLevel(this, mainPaneRandomMaze, mazeGenerator, rightPanel, dimension);
+        mapTemplate = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel);
+        mainPaneRandomMaze.setCenter(mapTemplate);
+        mainWindow.setScene(randomScene);
+*/
     }
 
     /**
@@ -219,6 +235,7 @@ public class MainProgram extends Application {
         mainPaneRandomMaze.setCenter(mapTemplate);
         mainWindow.setScene(randomScene);
     }
+
 
     /**
      * Switches to the Campaign scene.

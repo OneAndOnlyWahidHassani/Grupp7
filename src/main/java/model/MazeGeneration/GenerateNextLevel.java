@@ -1,8 +1,10 @@
 package model.MazeGeneration;
 
+import LevelEditor.view.MapTemplateLE;
 import control.MainProgram;
 import javafx.scene.layout.BorderPane;
 import view.Randomize.MapTemplate;
+
 import view.Menu.RightPanel;
 
 import java.io.FileNotFoundException;
@@ -20,6 +22,7 @@ public class GenerateNextLevel {
     private MainProgram mainProgram;
     private RightPanel rightPanel;
     private int dimension;
+
 
     /**
      * Initializes the objects.
@@ -60,6 +63,7 @@ public class GenerateNextLevel {
         }
         nextMaze[new Random().nextBoolean() ? 0 : nextMaze.length - 1][col] = 3;
         mainPane.setCenter(new MapTemplate(checkStartAndGoalNeighbors(nextMaze), mainProgram, this));
+        mainPane.setCenter(new MapTemplateLE(checkStartAndGoalNeighbors(nextMaze), mainProgram, this));
         this.mazeGenerator = newMazegenerator;
     }
 
