@@ -1,5 +1,7 @@
 package control;
 
+import LevelEditor.controller.MainLE;
+import LevelEditor.view.SetUp;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -41,9 +43,11 @@ public class MainProgram extends Application {
     private Scene selectMapScene;
     private Scene selectLevelScene;
     private Scene levelEditorScene; // new scene for level editor
+    private Scene menuLEScene;
     private Intro intro;
     private Menu menu;
     private Help help;
+    private SetUp setUp;
     private ChooseDimension chooseDimension;
     private SelectWorldMap selectWorldMap;
     private SelectLevel selectLevel;
@@ -83,6 +87,9 @@ public class MainProgram extends Application {
         highscoreView = new HighscoreView(this, audioPlayer, 1, highscoreList);
         chooseDimension = new ChooseDimension(this, audioPlayer);
         selectWorldMap = new SelectWorldMap(this, audioPlayer);
+        setUp = new SetUp(this, audioPlayer);
+
+
 
         // Create scaled scenes using our helper method.
         introScene = createScaledScene(intro);
@@ -91,6 +98,8 @@ public class MainProgram extends Application {
         selectMapScene = createScaledScene(selectWorldMap);
         chooseDimensionScene = createScaledScene(chooseDimension);
         highscoreScene = createScaledScene(highscoreView);
+        menuLEScene = createScaledScene(setUp);
+
 
         mainPaneRandomMaze = new BorderPane();
         mainPaneCampaign = new BorderPane();
@@ -190,6 +199,14 @@ public class MainProgram extends Application {
      */
     public void changeToMenu() {
         mainWindow.setScene(menuScene);
+    }
+
+    public void changeToLevelEditor() {
+        setDimensionLevelEditor();
+    }
+
+    public void setDimensionLevelEditor() {
+        mainWindow.setScene(menuLEScene);
     }
 
     /**

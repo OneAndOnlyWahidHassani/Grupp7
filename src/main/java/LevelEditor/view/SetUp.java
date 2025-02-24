@@ -269,6 +269,12 @@ public class SetUp extends Pane {
             String selectedDimension = dimensions[currentDimensionIndex].getUrl().replace("file:files/texts/", "").replace(".png", "");
 
             mainLE.saveLevel(levelName, selectedTheme, selectedDimension);
+            try {
+                mainProgram.enterLevelEditor();
+            } catch (FileNotFoundException ex) {
+                throw new RuntimeException(ex);
+            }
+
             audioPlayer.playButtonSound();
         });
 
