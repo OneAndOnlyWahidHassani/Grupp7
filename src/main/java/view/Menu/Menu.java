@@ -213,11 +213,7 @@ public class Menu extends Pane {
             levelEditorView.setTranslateY(450);
         });
         levelEditorView.setOnMouseClicked(e -> {
-            try {
-                mainProgram.enterLevelEditor();
-            } catch (FileNotFoundException ex) {
-                throw new RuntimeException(ex);
-            }
+            mainProgram.changeToLevelEditor();
             audioPlayer.playButtonSound();
         });
 
