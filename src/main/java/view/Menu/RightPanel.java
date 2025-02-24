@@ -122,13 +122,17 @@ public class RightPanel extends GridPane {
         musicLabel.setGraphic(musicView);
 
         //Hearts only in Campaign
-        if(gameMode!="Random"){
+        if (gameMode == "Editor") {
+
+        }
+       else if(gameMode!="Random"){
             heart = new Image("file:files/hearts/3heart.png", 90, 30, false, false);
             currentHeartView = new ImageView(heart);
             heartLabel = new Label();
             heartLabel.setGraphic(currentHeartView);
             add(heartLabel,0,2);
         }
+
 
         timerLabel.textProperty().bind(timeSeconds.asString());
         timerLabel.setTextFill(Color.WHITE);
