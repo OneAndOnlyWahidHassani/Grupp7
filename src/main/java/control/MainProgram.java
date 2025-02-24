@@ -169,14 +169,14 @@ public class MainProgram extends Application {
 
         // Create a special right panel for the level editor, with a larger preferred width.
         RightPanel levelEditorRightPanel = new RightPanel(this, "Editor", audioPlayer, null);
-        levelEditorRightPanel.setPrefWidth(300); // Make this area proportionally bigger.
+        levelEditorRightPanel.setPrefWidth(400); // Make this area proportionally bigger.
         levelEditorRightPanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         levelEditorPane.setRight(levelEditorRightPanel);
 
         // Choose a special resolution for the level editor.
         // For example, add extra width to accommodate the larger right panel.
         double editorScaleFactor = scaleFactor; // You can modify this if needed.
-        double editorSceneWidth = designWidth * editorScaleFactor + 100; // Extra width for the right panel.
+        double editorSceneWidth = designWidth * editorScaleFactor + 200; // Extra width for the right panel.
         double editorSceneHeight = designHeight * editorScaleFactor;
         levelEditorScene = new Scene(levelEditorPane, editorSceneWidth, editorSceneHeight, Color.BLACK);
         levelEditorScene.setCursor(new ImageCursor(cursorImage));
