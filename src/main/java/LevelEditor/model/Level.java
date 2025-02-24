@@ -7,7 +7,8 @@ public class Level {
     private MainLE mainLE;
     private String levelName;
     private String theme;
-    private int size;
+    private String dimension;
+
 
     public Level(MainLE mainLE) {
         this.mainLE = mainLE;
@@ -44,29 +45,17 @@ public class Level {
     /**
      * Sätter storleken för banan.
      */
-    public void setSize(int size) {
-        this.size = size;
+    public void setDimension(String dimension) {
+        this.dimension = dimension;
     }
 
     /**
      * Hämtar storleken för banan.
      */
-    public int getSize() {
-        return size;
+    public String getDimension() {
+        return dimension;
     }
 
-    /**
-     * Sparar nivåns information (namn, tema, storlek).
-     */
-    public void saveLevel() {
-        mainLE.saveLevel(levelName, theme);
-    }
 
-    /**
-     * Byter till editor-scenen.
-     */
-    public void changeToEditor() {
-        mainLE.changeToEditor();
-    }
 }
 
