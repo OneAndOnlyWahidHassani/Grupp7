@@ -121,9 +121,20 @@ public class RightPanel extends GridPane {
         musicLabel.setTranslateY(440);
         musicLabel.setGraphic(musicView);
 
+        timerLabel.textProperty().bind(timeSeconds.asString());
+        timerLabel.setTextFill(Color.WHITE);
+        timerLabel.setFont(font);
+        timerLabel.setTranslateY(200);
+        timerLabel.setTranslateX(8);
+
         //Hearts only in Campaign
         if (gameMode == "Editor") {
-
+            soundLabel.setTranslateX(340);
+            soundLabel.setTranslateY(608);
+            musicLabel.setTranslateX(370);
+            musicLabel.setTranslateY(608);
+            timerLabel.setTranslateX(320);
+            menuView.setTranslateX(310);
         }
        else if(gameMode!="Random"){
             heart = new Image("file:files/hearts/3heart.png", 90, 30, false, false);
@@ -133,12 +144,6 @@ public class RightPanel extends GridPane {
             add(heartLabel,0,2);
         }
 
-
-        timerLabel.textProperty().bind(timeSeconds.asString());
-        timerLabel.setTextFill(Color.WHITE);
-        timerLabel.setFont(font);
-        timerLabel.setTranslateY(200);
-        timerLabel.setTranslateX(8);
 
         add(timerLabel, 0, 4);
         add(levelLabel,0,1);
@@ -155,6 +160,7 @@ public class RightPanel extends GridPane {
 
         totTime = new TotalTime(false);
     }
+
     /**
      * Slår på/av spelljud
      */

@@ -279,6 +279,8 @@ public class SetUp extends Pane {
         });
 
 
+
+
         getChildren().addAll(titelImageView, dimensionView, rDButtonView, lDButtonView, RButtonView, themeView, LButtonView, returnView, selectView);
     }
 
