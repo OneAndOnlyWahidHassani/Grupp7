@@ -213,7 +213,7 @@ public class Menu extends Pane {
             levelEditorView.setTranslateY(450);
         });
         levelEditorView.setOnMouseClicked(e -> {
-            mainProgram.changeToLevelEditor();
+            mainProgram.changeToLevelEditorMenu();
             audioPlayer.playButtonSound();
         });
 

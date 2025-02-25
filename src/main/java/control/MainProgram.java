@@ -2,6 +2,7 @@ package control;
 
 
 import LevelEditor.view.MapTemplateLE;
+import LevelEditor.view.MenuLE;
 import LevelEditor.view.SetUp;
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -47,11 +48,13 @@ public class MainProgram extends Application {
     private Scene selectMapScene;
     private Scene selectLevelScene;
     private Scene levelEditorScene; // new scene for level editor
+    private Scene LEScene;
     private Scene menuLEScene;
     private Intro intro;
     private Menu menu;
     private Help help;
     private SetUp setUp;
+    private MenuLE menuLE;
     private ChooseDimension chooseDimension;
     private SelectWorldMap selectWorldMap;
     private SelectLevel selectLevel;
@@ -92,6 +95,7 @@ public class MainProgram extends Application {
         chooseDimension = new ChooseDimension(this, audioPlayer);
         selectWorldMap = new SelectWorldMap(this, audioPlayer);
         setUp = new SetUp(this, audioPlayer);
+        menuLE = new MenuLE(this, audioPlayer);
 
 
 
@@ -102,7 +106,9 @@ public class MainProgram extends Application {
         selectMapScene = createScaledScene(selectWorldMap);
         chooseDimensionScene = createScaledScene(chooseDimension);
         highscoreScene = createScaledScene(highscoreView);
-        menuLEScene = createScaledScene(setUp);
+        LEScene = createScaledScene(setUp);
+        menuLEScene = createScaledScene(menuLE);
+
 
 
         mainPaneRandomMaze = new BorderPane();
@@ -271,8 +277,18 @@ public class MainProgram extends Application {
     }
 
     public void setDimensionLevelEditor() {
+        mainWindow.setScene(LEScene);
+    }
+
+    public void setDimensionLevelEditormenu() {
         mainWindow.setScene(menuLEScene);
     }
+
+    public void changeToLevelEditorMenu() {
+        setDimensionLevelEditormenu();
+    }
+
+
 
     /**
      * Switches to the Randomize scene (random maze).
