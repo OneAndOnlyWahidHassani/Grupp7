@@ -30,6 +30,14 @@ public class MazeGenerator {
         createStartAndGoal();
         System.out.println(getRawMaze());
     }
+    public MazeGenerator(int dim, boolean SetGoalAndStart, boolean editor) {
+        this.generateGoalAndStart = SetGoalAndStart;
+        maze = new int[dim][dim];
+        dimension = dim;
+        generateEmptyMaze();
+        createSetStartAndGoal();
+        System.out.println(getRawMaze());
+    }
 
     public void generateMaze() {
         stack.push(new Node(0,0));
@@ -108,6 +116,19 @@ public class MazeGenerator {
             maze[randomIndex()][maze.length - 1] = 3;
         }
     }
+    public void createSetStartAndGoal() {
+        if (generateGoalAndStart) {
+            maze[0][0] = 2;
+            maze[maze.length - 1][maze.length - 1] = 3;
+        }
+    }
+    public void generateEmptyMaze() {
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                maze[i][j] = 1;
+            }
+        }
+    }
 
     public int randomIndex() {
         return new Random().nextBoolean() ? 0 : maze.length - 1;
@@ -128,4 +149,5 @@ public class MazeGenerator {
     private Boolean pointNotNode(Node node, int x, int y) {
         return !(x == node.x && y == node.y);
     }
+
 }

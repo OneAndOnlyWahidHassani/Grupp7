@@ -244,8 +244,8 @@ public class MainProgram extends Application {
         levelEditorScene.setCursor(new ImageCursor(cursorImage));
 
         // 7. Generate your maze, create `mapTemplateLE`, and the code to manage the level logic.
-        mazeGenerator = new MazeGenerator(dimension, true);
-        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension);
+        mazeGenerator = new MazeGenerator(dimension, true, true);
+        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension, themeInt);
         mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel, themeInt);
 
         // 8. Add mapTemplateLE to the same group so it scales together with the editorContent.
