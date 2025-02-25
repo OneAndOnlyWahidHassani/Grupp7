@@ -83,6 +83,7 @@ public class Intro extends Pane {
     public void introAnimation() {
         ImageView introView = new ImageView(spaceImage);
         introView.setStyle("fx-background-color: transparent;");
+        introView.setId("introButton");
         FadeTransition ft = new FadeTransition(Duration.millis(3000), introView);
 
         getChildren().add(introView);
