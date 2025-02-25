@@ -6,6 +6,7 @@ import LevelEditor.view.SetUp;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -165,7 +166,7 @@ public class MainProgram extends Application {
     /**
      * Enters the special Level Editor mode with a custom layout and larger right panel.
      */
-    public void enterLevelEditor(int dimension) throws FileNotFoundException {
+  /* public void enterLevelEditor(int dimension) throws FileNotFoundException {
         // Create a new BorderPane for the level editor.
         BorderPane levelEditorPane = new BorderPane();
 
@@ -198,16 +199,64 @@ public class MainProgram extends Application {
         mazeGenerator = new MazeGenerator(dimension, true);
         generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension);
         mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel);
-        levelEditorPane.setCenter(mapTemplate); // Set mapTemplateLE instead of mapTemplate
+        levelEditorPane.setCenter(mapTemplateLE); // Set mapTemplateLE instead of mapTemplate
         mainWindow.setScene(levelEditorScene);
 
-/*
+
         mazeGenerator = new MazeGenerator(dimension, true);
         generateNextLevel = new GenerateNextLevel(this, mainPaneRandomMaze, mazeGenerator, rightPanel, dimension);
         mapTemplate = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel);
         mainPaneRandomMaze.setCenter(mapTemplate);
         mainWindow.setScene(randomScene);
-*/
+
+    }*/
+    public void enterLevelEditor(int dimension) throws FileNotFoundException {
+        // 1. Create a new BorderPane for the level editor.
+        BorderPane levelEditorPane = new BorderPane();
+
+        // 2. Create your editor pane/content (initially empty or customized as you wish).
+        Pane editorContent = new Pane();
+        // ...Add any setup for editorContent here...
+
+        // 3. Optionally apply scaling to everything in the center.
+        //    Wrap your editor content in a Group so the scale transform is applied to both
+        //    the editor content AND the map template.
+        Group editorGroup = new Group(editorContent);
+
+        Scale scale = new Scale(scaleFactor, scaleFactor);
+        editorGroup.getTransforms().add(scale);
+
+        // 4. Create the larger right panel for the level editor.
+        RightPanel levelEditorRightPanel = new RightPanel(this, "Editor", audioPlayer, null);
+        levelEditorRightPanel.setPrefWidth(400);
+        levelEditorRightPanel.setBackground(
+                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
+        );
+        levelEditorPane.setRight(levelEditorRightPanel);
+
+        // 5. Pick a custom resolution for the scene (slightly wider to accommodate the bigger right panel).
+        double editorScaleFactor = scaleFactor;
+        double editorSceneWidth = designWidth * editorScaleFactor + 150;
+        double editorSceneHeight = designHeight * editorScaleFactor;
+        levelEditorScene = new Scene(levelEditorPane, editorSceneWidth, editorSceneHeight, Color.BLACK);
+
+        // 6. Set a custom cursor if needed.
+        levelEditorScene.setCursor(new ImageCursor(cursorImage));
+
+        // 7. Generate your maze, create `mapTemplateLE`, and the code to manage the level logic.
+        mazeGenerator = new MazeGenerator(dimension, true);
+        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension);
+        mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel);
+
+        // 8. Add mapTemplateLE to the same group so it scales together with the editorContent.
+        editorGroup.getChildren().add(mapTemplateLE);
+
+        // 9. Set the center just once, with the group containing both editor content and the map template.
+        BorderPane.setAlignment(editorGroup, Pos.TOP_LEFT);
+        levelEditorPane.setCenter(editorGroup);
+
+        // 10. Finally, show this scene in your primary stage/window.
+        mainWindow.setScene(levelEditorScene);
     }
 
     /**
