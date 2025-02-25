@@ -70,6 +70,11 @@ public class RightPanel extends GridPane {
     private IntegerProperty stackedSeconds = new SimpleIntegerProperty();
     private Font font = Font.loadFont("file:files/fonts/PressStart2P.ttf", 35);
 
+    private Image pathImage;
+    private ImageView pathView;
+    private Label pathLabel;
+
+    private int themeInt;
     private AudioPlayer audioPlayer;
     private TimeThread time;
     private TotalTime totTime;
@@ -133,7 +138,6 @@ public class RightPanel extends GridPane {
             soundLabel.setTranslateY(608);
             musicLabel.setTranslateX(370);
             musicLabel.setTranslateY(608);
-            timerLabel.setTranslateX(320);
             menuView.setTranslateX(310);
         }
        else if(gameMode!="Random"){
@@ -142,10 +146,13 @@ public class RightPanel extends GridPane {
             heartLabel = new Label();
             heartLabel.setGraphic(currentHeartView);
             add(heartLabel,0,2);
+            add(timerLabel, 0, 4);
+        }
+        else {
+            add(timerLabel, 0, 4);
         }
 
 
-        add(timerLabel, 0, 4);
         add(levelLabel,0,1);
         add(pickaxeLabel, 0, 3);
 
@@ -161,6 +168,88 @@ public class RightPanel extends GridPane {
         totTime = new TotalTime(false);
     }
 
+    //rightPanel for leveleditor
+    public RightPanel(MainProgram mainProgram, AudioPlayer audioPlayer, int themeInt) throws FileNotFoundException {
+        this.mainProgram = mainProgram;
+        this.audioPlayer = audioPlayer;
+        this.themeInt = themeInt;
+
+
+        soundOn = true;
+        musicOn = true;
+
+        imageMenu = new Image("file:files/texts/Menu.png", 90, 30, false, false);
+        menuView = new ImageView(imageMenu);
+
+        emptySprite = new Image("file:files/emptySprite.png", 30, 30, false, false);
+        emptyView = new ImageView(emptySprite);
+
+
+        levelNumber = new Image("file:files/levelcounter/"+ gameMode +".png", 90, 30, false, false);
+        currentLevelView = new ImageView(levelNumber);
+        levelLabel = new Label();
+        levelLabel.setGraphic(currentLevelView);
+
+        soundImage = new Image("file:files/soundbuttons/soundon.png", 30,30,false,false);
+        soundView = new ImageView(soundImage);
+        soundLabel = new Label();
+        soundLabel.setTranslateX(340);
+        soundLabel.setTranslateY(660);
+        soundLabel.setGraphic(soundView);
+
+        musicImage = new Image("file:files/soundbuttons/musicon.png", 30,30,false,false);
+        musicView = new ImageView(musicImage);
+        musicLabel = new Label();
+        musicLabel.setTranslateX(370);
+        musicLabel.setTranslateY(660);
+        musicLabel.setGraphic(musicView);
+
+
+        menuView.setTranslateX(310);
+
+
+        soundLabel.setOnMouseClicked(e -> soundLabelClicked());
+        musicLabel.setOnMouseClicked(e -> musicLabelClicked());
+
+        add(soundLabel,0,4);
+        add(musicLabel,0,4);
+
+        menuView.setOnMouseClicked(e -> MainMenuClicked(e));
+        add(menuView,0,0);
+        setupObjectButtons();
+
+
+    }
+    public String getThemeString() {
+        switch (themeInt) {
+            case 0:
+                return "forest";
+            case 1:
+                return "lava";
+            case 2:
+                return "underground";
+            case 3:
+                return "cloud";
+            case 4:
+                return "desert";
+            case 5:
+                return "space";
+            default:
+                return "forest";
+        }
+    }
+
+    public void setupObjectButtons() {
+        String theme = getThemeString();
+        pathImage = new Image ("file:files/" + theme + "/path.png", 60, 60, false, false);
+        pathView = new ImageView(pathImage);
+        pathLabel = new Label();
+        pathLabel.setGraphic(pathView);
+        pathLabel.setTranslateX(100);
+        pathLabel.setTranslateY(100);
+        add(pathLabel, 0, 1);
+
+    }
     /**
      * Slår på/av spelljud
      */
