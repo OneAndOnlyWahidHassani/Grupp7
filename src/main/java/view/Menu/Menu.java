@@ -87,6 +87,7 @@ public class Menu extends Pane {
         campaignView.setTranslateY(200);
         campaignView.toFront();
         campaignView.setPickOnBounds(true);
+        campaignView.setId("campaignButton");
         campaignView.setOnMouseEntered(e -> {
             campaignView.setImage(campaignResize);
             campaignView.setTranslateX(273);
