@@ -26,5 +26,8 @@ public class MainLE {
         System.out.println("Nivå sparad: " + levelName + " med tema: " + selectedTheme + "Dimension: " + dimension);
 
     }
+    public int getThemeInt() {
+        return level.getThemeInt();
+    }
 
 }

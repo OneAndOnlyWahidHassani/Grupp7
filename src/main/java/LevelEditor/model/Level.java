@@ -41,6 +41,22 @@ public class Level {
     public String getTheme() {
         return theme;
     }
+    public int getThemeInt() {
+        if (theme.equals("forest")) {
+            return 0;
+        } else if (theme.equals("lava")) {
+            return 1;
+        } else if (theme.equals("underground")) {
+            return 2;
+        } else if (theme.equals("cloud")) {
+            return 3;
+        } else if (theme.equals("desert")) {
+            return 4;
+        } else if (theme.equals("space")) {
+            return 5;
+        }
+        return 0;
+    }
 
     /**
      * Sätter storleken för banan.
