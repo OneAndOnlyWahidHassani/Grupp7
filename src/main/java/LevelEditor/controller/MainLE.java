@@ -39,28 +39,32 @@ public class MainLE {
         return level.getThemeInt();
     }
 
-    private void updateMazeFile() {
+
+    public void updateMazeFile() {
         Path mazeFilePath = Paths.get("createdLevels", "maze.dat");
 
-
         if (Files.exists(mazeFilePath)) {
-            System.out.println("exits");
-            try {
+            System.out.println("Maze file exists.");
 
+            try {
                 String content = new String(Files.readAllBytes(mazeFilePath));
+
+
                 File newMazeFile = new File("createdLevels", currentLevelName + ".dat");
 
 
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(newMazeFile))) {
+
                     writer.write(level.getLevelName() + "\n");
                     writer.write(level.getTheme() + "\n");
-                    writer.write(level.getDimension());
-                    writer.write("\n");
+                    writer.write(level.getDimension() + "\n");
+
                     writer.write(content);
                     writer.write("\n");
+
+
                     System.out.println("Maze file updated and saved as: " + newMazeFile.getAbsolutePath());
                 }
-
 
             } catch (IOException e) {
                 e.printStackTrace();
