@@ -1,5 +1,6 @@
 package LevelEditor.view;
 
+import LevelEditor.controller.LevelEditorController;
 import LevelEditor.controller.MainLE;
 import control.MainProgram;
 import javafx.scene.image.Image;

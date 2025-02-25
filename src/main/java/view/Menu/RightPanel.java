@@ -1,5 +1,6 @@
 package view.Menu;
 
+import LevelEditor.controller.LevelEditorController;
 import control.MainProgram;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -9,9 +10,13 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -27,7 +32,7 @@ import java.io.FileNotFoundException;
  * @edit Viktor Näslund, Sebastian Helin
  */
 
-public class RightPanel extends GridPane {
+public class RightPanel extends Pane {
 
     private MainProgram mainProgram;
     private String gameMode;
@@ -74,6 +79,26 @@ public class RightPanel extends GridPane {
     private ImageView pathView;
     private Label pathLabel;
 
+    // ====== Wall variables ======
+    private Image wallImage;
+    private ImageView wallView;
+    private Label wallLabel;
+
+    // ====== Collectible variables ======
+    private Image collectibleImage;
+    private ImageView collectibleView;
+    private Label collectibleLabel;
+
+    // ====== Start variables ======
+    private Image startImage;
+    private ImageView startView;
+    private Label startLabel;
+
+    // ====== Goal variables ======
+    private Image goalImage;
+    private ImageView goalView;
+    private Label goalLabel;
+
     private int themeInt;
     private AudioPlayer audioPlayer;
     private TimeThread time;
@@ -115,55 +140,72 @@ public class RightPanel extends GridPane {
         soundImage = new Image("file:files/soundbuttons/soundon.png", 30,30,false,false);
         soundView = new ImageView(soundImage);
         soundLabel = new Label();
-        soundLabel.setTranslateX(30);
-        soundLabel.setTranslateY(440);
         soundLabel.setGraphic(soundView);
 
         musicImage = new Image("file:files/soundbuttons/musicon.png", 30,30,false,false);
         musicView = new ImageView(musicImage);
         musicLabel = new Label();
-        musicLabel.setTranslateX(60);
-        musicLabel.setTranslateY(440);
         musicLabel.setGraphic(musicView);
 
         timerLabel.textProperty().bind(timeSeconds.asString());
         timerLabel.setTextFill(Color.WHITE);
         timerLabel.setFont(font);
-        timerLabel.setTranslateY(200);
-        timerLabel.setTranslateX(8);
+
+        // Add everything to the Pane (absolute positioning)
+        getChildren().addAll(menuView, levelLabel, pickaxeLabel,
+                soundLabel, musicLabel);
+
+        // Position them with setLayoutX/Y:
+        menuView.setLayoutX(310);
+        menuView.setLayoutY(0);
+
+        // Example layout positions (adjust to taste)
+        levelLabel.setLayoutX(0);
+        levelLabel.setLayoutY(40);
+
+        pickaxeLabel.setLayoutX(0);
+        pickaxeLabel.setLayoutY(80);
+
+        soundLabel.setLayoutX(30);
+        soundLabel.setLayoutY(440);
+
+        musicLabel.setLayoutX(60);
+        musicLabel.setLayoutY(440);
+
+        timerLabel.setLayoutX(8);
+        timerLabel.setLayoutY(200);
+
 
         //Hearts only in Campaign
         if (gameMode == "Editor") {
-            soundLabel.setTranslateX(340);
-            soundLabel.setTranslateY(608);
-            musicLabel.setTranslateX(370);
-            musicLabel.setTranslateY(608);
-            menuView.setTranslateX(310);
+            soundLabel.setLayoutX(340);
+            soundLabel.setLayoutY(608);
+            musicLabel.setLayoutX(370);
+            musicLabel.setLayoutY(608);
+            menuView.setLayoutX(310);
         }
        else if(gameMode!="Random"){
             heart = new Image("file:files/hearts/3heart.png", 90, 30, false, false);
             currentHeartView = new ImageView(heart);
             heartLabel = new Label();
             heartLabel.setGraphic(currentHeartView);
-            add(heartLabel,0,2);
-            add(timerLabel, 0, 4);
+            getChildren().add(heartLabel);
+            getChildren().add(timerLabel);
+            heartLabel.setLayoutX(0);
+            heartLabel.setLayoutY(120);
         }
         else {
-            add(timerLabel, 0, 4);
+            getChildren().add(timerLabel);
         }
 
 
-        add(levelLabel,0,1);
-        add(pickaxeLabel, 0, 3);
 
         soundLabel.setOnMouseClicked(e -> soundLabelClicked());
         musicLabel.setOnMouseClicked(e -> musicLabelClicked());
 
-        add(soundLabel,0,4);
-        add(musicLabel,0,4);
+
 
         menuView.setOnMouseClicked(e -> MainMenuClicked(e));
-        add(menuView,0,0);
 
         totTime = new TotalTime(false);
     }
@@ -193,29 +235,29 @@ public class RightPanel extends GridPane {
         soundImage = new Image("file:files/soundbuttons/soundon.png", 30,30,false,false);
         soundView = new ImageView(soundImage);
         soundLabel = new Label();
-        soundLabel.setTranslateX(340);
-        soundLabel.setTranslateY(660);
+        soundLabel.setLayoutX(340);
+        soundLabel.setLayoutY(660);
         soundLabel.setGraphic(soundView);
 
         musicImage = new Image("file:files/soundbuttons/musicon.png", 30,30,false,false);
         musicView = new ImageView(musicImage);
         musicLabel = new Label();
-        musicLabel.setTranslateX(370);
-        musicLabel.setTranslateY(660);
+        musicLabel.setLayoutX(370);
+        musicLabel.setLayoutY(660);
         musicLabel.setGraphic(musicView);
 
 
-        menuView.setTranslateX(310);
+        menuView.setLayoutX(310);
 
 
         soundLabel.setOnMouseClicked(e -> soundLabelClicked());
         musicLabel.setOnMouseClicked(e -> musicLabelClicked());
 
-        add(soundLabel,0,4);
-        add(musicLabel,0,4);
+        getChildren().addAll(menuView, soundLabel, musicLabel);
+
 
         menuView.setOnMouseClicked(e -> MainMenuClicked(e));
-        add(menuView,0,0);
+
         setupObjectButtons();
 
 
@@ -241,14 +283,96 @@ public class RightPanel extends GridPane {
 
     public void setupObjectButtons() {
         String theme = getThemeString();
-        pathImage = new Image ("file:files/" + theme + "/path.png", 60, 60, false, false);
+        int x = 80;
+        int v = 45;
+        createPathButton(theme, x, v);
+        x += 50;
+        createWallButton(theme, x, v);
+        x += 50;
+        createStartButton(theme, x, v);
+        x += 50;
+        createGoalButton(theme, x, v);
+        x += 50;
+        createCollectibleButton(theme, x, v);
+
+    }
+    public void createPathButton(String theme, int x, int v) {
+        pathImage = new Image ("file:files/" + theme + "/path.png", v, v, false, false);
         pathView = new ImageView(pathImage);
         pathLabel = new Label();
         pathLabel.setGraphic(pathView);
-        pathLabel.setTranslateX(100);
-        pathLabel.setTranslateY(100);
-        add(pathLabel, 0, 1);
+        pathLabel.setLayoutX(x);
+        pathLabel.setLayoutY(150);
+        pathLabel.setOnMouseEntered(e -> {
+            pathLabel.setTooltip(new Tooltip("Path"));
+        });
+        LevelEditorController.makeDraggable(pathLabel, pathImage);
 
+        getChildren().add(pathLabel);
+    }
+
+    /**
+     * Creates the wall button.
+     */
+    public void createWallButton(String theme, int x, int v) {
+        wallImage = new Image("file:files/" + theme + "/wall.png", v, v, false, false);
+        wallView = new ImageView(wallImage);
+        wallLabel = new Label();
+        wallLabel.setGraphic(wallView);
+        wallLabel.setLayoutX(x);   // Slightly to the right of path
+        wallLabel.setLayoutY(150);
+        wallLabel.setOnMouseEntered(e -> {
+            wallLabel.setTooltip(new Tooltip("Wall"));
+        });
+        getChildren().add(wallLabel);
+    }
+
+    /**
+     * Creates the collectible button.
+     */
+    public void createCollectibleButton(String theme, int x, int v) {
+        collectibleImage = new Image("file:files/" + theme + "/collectible.png", v, v, false, false);
+        collectibleView = new ImageView(collectibleImage);
+        collectibleLabel = new Label();
+        collectibleLabel.setGraphic(collectibleView);
+        collectibleLabel.setLayoutX(x);  // Next to wall
+        collectibleLabel.setLayoutY(150);
+        collectibleLabel.setOnMouseEntered(e -> {
+            collectibleLabel.setTooltip(new Tooltip("Collectible"));
+        });
+        getChildren().add(collectibleLabel);
+    }
+
+    /**
+     * Creates the start button.
+     */
+    public void createStartButton(String theme, int x, int v) {
+        startImage = new Image("file:files/" + theme + "/start.png", v, v, false, false);
+        startView = new ImageView(startImage);
+        startLabel = new Label();
+        startLabel.setGraphic(startView);
+        startLabel.setLayoutX(x);  // Next to collectible
+        startLabel.setLayoutY(150);
+        startLabel.setOnMouseEntered(e -> {
+            startLabel.setTooltip(new Tooltip("Start"));
+        });
+        getChildren().add(startLabel);
+    }
+
+    /**
+     * Creates the goal button.
+     */
+    public void createGoalButton(String theme, int x, int v) {
+        goalImage = new Image("file:files/" + theme + "/goal.png", v, v, false, false);
+        goalView = new ImageView(goalImage);
+        goalLabel = new Label();
+        goalLabel.setGraphic(goalView);
+        goalLabel.setLayoutX(x);  // Next to start
+        goalLabel.setLayoutY(150);
+        goalLabel.setOnMouseEntered(e -> {
+            goalLabel.setTooltip(new Tooltip("Goal"));
+        });
+        getChildren().add(goalLabel);
     }
     /**
      * Slår på/av spelljud

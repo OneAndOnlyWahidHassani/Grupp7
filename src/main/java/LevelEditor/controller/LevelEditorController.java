@@ -6,8 +6,12 @@ import control.MainProgram;
 import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.input.TransferMode;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 import model.Maps.*;
@@ -274,6 +278,21 @@ public class LevelEditorController {
             }
         }
     }
+
+    public static void makeDraggable (Label label, Image image) {
+
+        // 1) OnDragDetected: initiate the drag
+        label.setOnDragDetected(event -> {
+            Dragboard db = label.startDragAndDrop(TransferMode.COPY_OR_MOVE);
+            ClipboardContent content = new ClipboardContent();
+            // Put the image on the dragboard
+            content.putImage(image);
+            db.setContent(content);
+
+            // Optionally: do some visual feedback or change cursor
+            event.consume();
+        });
+    }
     private class MouseListener implements EventHandler<MouseEvent> {
 
         @Override
@@ -307,6 +326,8 @@ public class LevelEditorController {
             }
         }
     }
+
+
 
     public EnemyController getEnemyController() {
         return enemyController;
