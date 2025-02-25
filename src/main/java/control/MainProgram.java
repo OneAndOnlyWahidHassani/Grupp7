@@ -227,7 +227,7 @@ public class MainProgram extends Application {
         editorGroup.getTransforms().add(scale);
 
         // 4. Create the larger right panel for the level editor.
-        RightPanel levelEditorRightPanel = new RightPanel(this, "Editor", audioPlayer, null);
+        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt);
         levelEditorRightPanel.setPrefWidth(400);
         levelEditorRightPanel.setBackground(
                 new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
