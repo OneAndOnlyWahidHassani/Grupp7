@@ -1,16 +1,22 @@
 package LevelEditor.view;
 
 import control.MainProgram;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import view.AudioPlayer;
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 
 public class MenuLE extends Pane {
     private MainProgram mainProgram;
@@ -69,7 +75,7 @@ public class MenuLE extends Pane {
         editButton.setOnMouseEntered(e -> editButton.setTextFill(Color.RED));
         editButton.setOnMouseExited(e -> editButton.setTextFill(Color.BLACK));
         editButton.setOnAction(e -> {
-            System.out.println("Edit Level clicked");
+            showLevelSelection();
             audioPlayer.playButtonSound();
         });
 
@@ -94,6 +100,37 @@ public class MenuLE extends Pane {
         });
 
         getChildren().addAll(titelImageView, createButton, editButton, returnView);
+    }
+
+    private void showLevelSelection() {
+        Stage popupStage = new Stage();
+        popupStage.setTitle("Select a Level");
+
+        ListView<String> levelList = new ListView<>();
+        File createdLevelsFolder = new File("createdLevels");
+        if (createdLevelsFolder.exists() && createdLevelsFolder.isDirectory()) {
+            String[] levelFiles = createdLevelsFolder.list((dir, name) -> name.endsWith(".dat"));
+            if (levelFiles != null) {
+                levelList.getItems().addAll(Arrays.asList(levelFiles));
+            }
+        }
+
+        Button selectButton = new Button("Load Level");
+        selectButton.setOnAction(e -> {
+            String selectedLevel = levelList.getSelectionModel().getSelectedItem();
+            if (selectedLevel != null) {
+                System.out.println("Loading level: " + selectedLevel);
+                // Implement logic to load selected level
+                popupStage.close();
+            }
+        });
+
+        VBox layout = new VBox(10, levelList, selectButton);
+        layout.setPadding(new Insets(10));
+
+        Scene scene = new Scene(layout, 300, 400);
+        popupStage.setScene(scene);
+        popupStage.show();
     }
 
 }
