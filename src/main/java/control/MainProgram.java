@@ -1,6 +1,6 @@
 package control;
 
-import LevelEditor.controller.MainLE;
+
 import LevelEditor.view.MapTemplateLE;
 import LevelEditor.view.SetUp;
 import javafx.application.Application;

@@ -3,6 +3,8 @@ package LevelEditor.view;
 import LevelEditor.controller.LevelEditorController;
 import LevelEditor.controller.MainLE;
 import control.MainProgram;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -11,6 +13,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -263,8 +266,22 @@ public class SetUp extends Pane {
             String levelName = levelNameField.getText().trim();
             if (levelName.isEmpty()) {
                 System.out.println("Vänligen ange ett nivånamn innan du sparar.");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Vänligen ange ett nivånamn innan du sparar.", ButtonType.OK);
+                alert.showAndWait();
                 return;
             }
+
+            // Kontrollera om filen redan finns i mappen "createdLevels"
+            File createdLevelsFolder = new File("createdLevels");
+            File levelFile = new File(createdLevelsFolder, levelName + ".dat");
+
+            if (levelFile.exists()) {
+                System.out.println("Detta nivånamn finns redan. Välj ett annat.");
+                Alert alert = new Alert(Alert.AlertType.ERROR, "Detta nivånamn finns redan. Välj ett annat.", ButtonType.OK);
+                alert.showAndWait();
+                return;
+            }
+
 
             String selectedTheme = themes[currentThemeIndex].getUrl().replace("file:files/theme/", "").replace(".png", "");
             String selectedDimension = dimensions[currentDimensionIndex].getUrl().replace("file:files/texts/", "").replace(".png", "");
