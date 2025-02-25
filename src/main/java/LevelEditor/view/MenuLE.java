@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.ReaderWriter.FileManager;
 import view.AudioPlayer;
 import javafx.scene.control.Button;
 import javafx.scene.text.Font;
@@ -22,11 +23,13 @@ public class MenuLE extends Pane {
     private MainProgram mainProgram;
     private AudioPlayer audioPlayer;
     private Font customFont;
+    private FileManager fileManager;
 
 
     public MenuLE(MainProgram mainProgram, AudioPlayer audioPlayer) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
+        this.fileManager = new FileManager();
         loadFont();
         setBackground();
         addButtons();
@@ -108,10 +111,16 @@ public class MenuLE extends Pane {
 
         ListView<String> levelList = new ListView<>();
         File createdLevelsFolder = new File("createdLevels");
+
         if (createdLevelsFolder.exists() && createdLevelsFolder.isDirectory()) {
             String[] levelFiles = createdLevelsFolder.list((dir, name) -> name.endsWith(".dat"));
+
             if (levelFiles != null) {
-                levelList.getItems().addAll(Arrays.asList(levelFiles));
+                // Ta bort ".dat" från varje filnamn innan de läggs till i listan
+                for (String levelFile : levelFiles) {
+                    String levelNameWithoutExtension = levelFile.replace(".dat", "");
+                    levelList.getItems().add(levelNameWithoutExtension);
+                }
             }
         }
 
@@ -120,7 +129,7 @@ public class MenuLE extends Pane {
             String selectedLevel = levelList.getSelectionModel().getSelectedItem();
             if (selectedLevel != null) {
                 System.out.println("Loading level: " + selectedLevel);
-                // Implement logic to load selected level
+                 // Ladda filen (eller utför relevant handling)
                 popupStage.close();
             }
         });
@@ -132,5 +141,6 @@ public class MenuLE extends Pane {
         popupStage.setScene(scene);
         popupStage.show();
     }
+
 
 }
