@@ -210,7 +210,7 @@ public class MainProgram extends Application {
         mainWindow.setScene(randomScene);
 
     }*/
-    public void enterLevelEditor(int dimension) throws FileNotFoundException {
+    public void enterLevelEditor(int dimension, int themeInt) throws FileNotFoundException {
         // 1. Create a new BorderPane for the level editor.
         BorderPane levelEditorPane = new BorderPane();
 
@@ -246,7 +246,7 @@ public class MainProgram extends Application {
         // 7. Generate your maze, create `mapTemplateLE`, and the code to manage the level logic.
         mazeGenerator = new MazeGenerator(dimension, true);
         generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension);
-        mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel);
+        mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel, themeInt);
 
         // 8. Add mapTemplateLE to the same group so it scales together with the editorContent.
         editorGroup.getChildren().add(mapTemplateLE);

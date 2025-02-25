@@ -63,7 +63,7 @@ public class GenerateNextLevel {
         }
         nextMaze[new Random().nextBoolean() ? 0 : nextMaze.length - 1][col] = 3;
         mainPane.setCenter(new MapTemplate(checkStartAndGoalNeighbors(nextMaze), mainProgram, this));
-        mainPane.setCenter(new MapTemplateLE(checkStartAndGoalNeighbors(nextMaze), mainProgram, this));
+   //     mainPane.setCenter(new MapTemplateLE(checkStartAndGoalNeighbors(nextMaze), mainProgram, this));
         this.mazeGenerator = newMazegenerator;
     }
 

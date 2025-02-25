@@ -274,10 +274,11 @@ public class SetUp extends Pane {
             System.out.println(selectedDimensionInt);
 
             mainLE.saveLevel(levelName, selectedTheme, selectedDimension);
+            int themeInt = mainLE.getThemeInt();
 
 
             try {
-                mainProgram.enterLevelEditor(selectedDimensionInt);
+                mainProgram.enterLevelEditor(selectedDimensionInt, themeInt);
             } catch (FileNotFoundException ex) {
                 throw new RuntimeException(ex);
             }
