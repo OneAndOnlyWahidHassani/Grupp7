@@ -16,7 +16,6 @@ import org.testfx.util.WaitForAsyncUtils;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -47,11 +46,6 @@ public class CampaignModeTest extends ApplicationTest {
     //Gå in i väggen 1 gång och gå in i 2 olika spöken och se ifall game over visas
 
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        world1Maps = new World1Maps(1);
-        world2Maps = new World2Maps(2);
-    }
 
     @Test
     public void testProgressionToNextWorld() {
@@ -70,28 +64,29 @@ public class CampaignModeTest extends ApplicationTest {
         currentLevelArray = world2Maps.getLevel1();
     }
 
+    @Test
+    public void verifyCampaignButtonExists(){
+
+    }
     //Ladda campaign och spela de 5 första Världarna
     //LG 6.0 - 6.1
     @Test
     public void startCampaign(){
         FxRobot robot = new FxRobot();
         WaitForAsyncUtils.waitForFxEvents();
+        sleep(1000);
         robot.moveTo("#introButton");
         robot.clickOn();
-        robot.moveTo("#campaignButton");
-        robot.clickOn();
-        assertNotNull(mainProgram.getCampaignController());
-    }
-    @Test
-    public void playCampaign() throws Exception {
-        FxRobot robot = new FxRobot();
-        WaitForAsyncUtils.waitForFxEvents();
-        robot.moveTo("#introButton");
-        robot.clickOn();
-        robot.moveTo("#campaignButton");
-        robot.clickOn();
-        currentLevelArray = mainProgram.getCampaignController().setUpLevel(mainProgram.getCampaignController().getLevel());
-        ArrayList<ArrayList<Integer>>
 
+        WaitForAsyncUtils.waitForFxEvents();
+        sleep(1000);
+        robot.moveTo("#campaignButton");
+        robot.clickOn();
+
+        WaitForAsyncUtils.waitForFxEvents();
+        sleep(1000);
+        GameController gameController = mainProgram.getCampaignController();
+        System.out.println(gameController.getLevel());
+        assertNotNull(mainProgram.getCampaignController());
     }
 }
