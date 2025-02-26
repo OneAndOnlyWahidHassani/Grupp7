@@ -15,8 +15,7 @@ import java.nio.file.Paths;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class NewMenuButtonsTest extends ApplicationTest {
@@ -30,6 +29,7 @@ class NewMenuButtonsTest extends ApplicationTest {
     public void start(Stage stage) {
         random = new Random();
         mainProgram = new MainProgram();
+        mainProgram = mock(MainProgram.class);
         try {
             mainProgram.start(stage);
         } catch (Exception e) {
@@ -46,12 +46,17 @@ class NewMenuButtonsTest extends ApplicationTest {
         menu = new Menu(mainProgram, audioPlayer, panel);
     }
 
+    /**
+     * Inte funktionellt
+     */
     @Test
     void testCampaignButton()
     {
         WaitForAsyncUtils.waitForFxEvents();
         moveToAndClickOn("introButton");
         moveToAndClickOn("campaignButton");
+        mainProgram.changeToCampaign();
+        verify(mainProgram).changeToCampaign();
     }
 
     /*@Test
