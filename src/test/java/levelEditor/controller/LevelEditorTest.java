@@ -63,6 +63,18 @@ class LevelEditorTest extends ApplicationTest {
         moveToAndClickOn("selectButtonLevelEditor");
         assertTrue(Files.exists(expectedFilePath));
     }
+    @Test
+    public void testCreatingLevelWithoutName(){
+        WaitForAsyncUtils.waitForFxEvents();
+        moveToAndClickOn("introButton");
+        moveToAndClickOn("levelEditorButton");
+        moveToAndClickOn("createLevelButton");
+        moveToAndClickOn("selectButtonLevelEditor");
+        sleep(5000);
+        /*För att kunna testa mainProgram.getSetUp().getMainLE().getLevel() för att
+        kontrollera att en lvl är null så länge inte någon fyllt i ett namn
+         */
+    }
 
     @Test
     public void testCreatingLevelWithEditor(){

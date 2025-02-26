@@ -371,6 +371,7 @@ public class MainProgram extends Application {
         mainWindow.setScene(highscoreScene);
     }
 
+
     public static void main(String[] args) {
         launch(args);
     }
