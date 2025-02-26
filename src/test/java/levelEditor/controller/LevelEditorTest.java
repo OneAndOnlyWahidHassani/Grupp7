@@ -4,8 +4,7 @@ import control.MainProgram;
 import javafx.stage.Stage;
 import model.Maps.World1Maps;
 import model.Maps.World2Maps;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
@@ -17,6 +16,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class LevelEditorTest extends ApplicationTest {
 
 
@@ -77,6 +77,7 @@ class LevelEditorTest extends ApplicationTest {
     }
 
     @Test
+    @Order(1)
     public void testCreatingLevelWithEditor(){
         Path expectedFilePath = Paths.get("createdLevels/TestLevel_Niv.dat");
         try {
