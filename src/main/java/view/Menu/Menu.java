@@ -118,6 +118,7 @@ public class Menu extends Pane {
         selectView.setTranslateY(250);
         selectView.toFront();
         selectView.setPickOnBounds(true);
+        selectView.setId("selectButton");
         selectView.setOnMouseEntered(e -> {
             selectView.setImage(selectResize);
             selectView.setTranslateX(273);
@@ -139,6 +140,7 @@ public class Menu extends Pane {
         randomizeView.setTranslateY(300);
         randomizeView.toFront();
         randomizeView.setPickOnBounds(true);
+        randomizeView.setId("randomizeButton");
         randomizeView.setOnMouseEntered(e -> {
             randomizeView.setImage(randomizeResize);
             randomizeView.setTranslateX(273);
@@ -160,6 +162,7 @@ public class Menu extends Pane {
         helpView.setTranslateY(350);
         helpView.toFront();
         helpView.setPickOnBounds(true);
+        helpView.setId("helpButton");
         helpView.setOnMouseEntered(e -> {
             helpView.setImage(helpResize);
             helpView.setTranslateX(273);
@@ -182,6 +185,7 @@ public class Menu extends Pane {
         highscoreView.setTranslateY(400);
         highscoreView.toFront();
         highscoreView.setPickOnBounds(true);
+        highscoreView.setId("highscoreButton");
         highscoreView.setOnMouseEntered(e -> {
             highscoreView.setImage(highscoreResize);
             highscoreView.setTranslateX(273);
