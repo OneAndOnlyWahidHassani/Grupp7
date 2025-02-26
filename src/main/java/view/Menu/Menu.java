@@ -203,6 +203,7 @@ public class Menu extends Pane {
         levelEditorView.setTranslateY(450);
         levelEditorView.toFront();
         levelEditorView.setPickOnBounds(true);
+        levelEditorView.setId("levelEditorButton");
         levelEditorView.setOnMouseEntered(e -> {
             levelEditorView.setImage(levelEditorResize);
             levelEditorView.setTranslateX(273);

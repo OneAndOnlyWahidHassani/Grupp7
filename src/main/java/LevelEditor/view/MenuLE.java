@@ -63,6 +63,7 @@ public class MenuLE extends Pane {
         createButton.setFont(customFont);
         createButton.setTranslateX(250);
         createButton.setTranslateY(220);
+        createButton.setId("createLevelButton");
         createButton.setOnMouseEntered(e -> createButton.setTextFill(Color.RED));
         createButton.setOnMouseExited(e -> createButton.setTextFill(Color.BLACK));
         createButton.setOnAction(e -> {
