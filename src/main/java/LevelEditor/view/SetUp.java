@@ -247,6 +247,7 @@ public class SetUp extends Pane {
         });
 
         ImageView selectView = new ImageView(selectImage);
+        selectView.setId("selectButtonLevelEditor");
         selectView.setStyle("fx-background-color: transparent;");
         selectView.setTranslateX(550);
         selectView.setTranslateY(550);
@@ -337,6 +338,7 @@ public class SetUp extends Pane {
             Font customFont = Font.loadFont(new FileInputStream("files/fonts/PressStart2P.ttf"), 20);
 
             levelNameField = new TextField();
+            levelNameField.setId("textFieldLevelEditor");
             levelNameField.setFont(customFont);
             levelNameField.setPromptText("LEVEL NAME...");
             levelNameField.setTranslateX(250);

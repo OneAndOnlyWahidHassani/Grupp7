@@ -84,14 +84,5 @@ public class CampaignModeTest extends ApplicationTest {
     }
     @Test
     public void playCampaign() throws Exception {
-        FxRobot robot = new FxRobot();
-        WaitForAsyncUtils.waitForFxEvents();
-        robot.moveTo("#introButton");
-        robot.clickOn();
-        robot.moveTo("#campaignButton");
-        robot.clickOn();
-        currentLevelArray = mainProgram.getCampaignController().setUpLevel(mainProgram.getCampaignController().getLevel());
-        ArrayList<ArrayList<Integer>>
-
     }
 }
