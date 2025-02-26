@@ -311,26 +311,7 @@ public class MapTemplateLE extends GridPane {
             startButtonPressed = false;
         }
     }
-    /**
-     * Om spelrundan är aktiverad och spelaren har plockat upp alla collectibles startas nästa nivå.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
-     */
-    public void enteredGoal() throws FileNotFoundException, InterruptedException {
-        if (startButtonPressed && allCollectiblesObtained) {
-            goalPlayer.play();
-            goalPlayer.seek(Duration.ZERO);
-            generateNextLevel.generateNewMaze();
-        }
-    }
-    /**
-     * Startar spelrundan och timern.
-     */
-    public void startLevel() {
-        startPlayer.play();
-        startPlayer.seek(Duration.ZERO);
-        startButtonPressed = true;
-    }
+
     /**
      * När muspekaren lämnar en label slutar den att highlightas.
      * @param e Används för att hitta rätt label.

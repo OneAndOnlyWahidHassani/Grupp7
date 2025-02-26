@@ -1,6 +1,6 @@
 package view.Menu;
 
-import LevelEditor.controller.LevelEditorController;
+
 import control.MainProgram;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -103,7 +103,7 @@ public class RightPanel extends Pane {
     private AudioPlayer audioPlayer;
     private TimeThread time;
     private TotalTime totTime;
-    private LevelEditorController levelEditorController;
+
 
     /**
      * Instansierar objekten och lägger till bilder och labels på scenen
@@ -157,46 +157,36 @@ public class RightPanel extends Pane {
                 soundLabel, musicLabel);
 
         // Position them with setLayoutX/Y:
-        menuView.setLayoutX(310);
-        menuView.setLayoutY(0);
+        menuView.setLayoutX(100);
+        menuView.setLayoutY(5);
 
         // Example layout positions (adjust to taste)
-        levelLabel.setLayoutX(0);
-        levelLabel.setLayoutY(40);
+        levelLabel.setLayoutX(100);
+        levelLabel.setLayoutY(60);
 
-        pickaxeLabel.setLayoutX(0);
+        pickaxeLabel.setLayoutX(100);
         pickaxeLabel.setLayoutY(80);
 
-        soundLabel.setLayoutX(30);
-        soundLabel.setLayoutY(440);
+        soundLabel.setLayoutX(140);
+        soundLabel.setLayoutY(570);
 
-        musicLabel.setLayoutX(60);
-        musicLabel.setLayoutY(440);
+        musicLabel.setLayoutX(170);
+        musicLabel.setLayoutY(570);
 
-        timerLabel.setLayoutX(8);
-        timerLabel.setLayoutY(200);
+        timerLabel.setLayoutX(120);
+        timerLabel.setLayoutY(250);
+        getChildren().add(timerLabel);
 
 
         //Hearts only in Campaign
-        if (gameMode == "Editor") {
-            soundLabel.setLayoutX(340);
-            soundLabel.setLayoutY(608);
-            musicLabel.setLayoutX(370);
-            musicLabel.setLayoutY(608);
-            menuView.setLayoutX(310);
-        }
-       else if(gameMode!="Random"){
+        if(gameMode!="Random"){
             heart = new Image("file:files/hearts/3heart.png", 90, 30, false, false);
             currentHeartView = new ImageView(heart);
             heartLabel = new Label();
             heartLabel.setGraphic(currentHeartView);
             getChildren().add(heartLabel);
-            getChildren().add(timerLabel);
-            heartLabel.setLayoutX(0);
-            heartLabel.setLayoutY(120);
-        }
-        else {
-            getChildren().add(timerLabel);
+            heartLabel.setLayoutX(100);
+            heartLabel.setLayoutY(140);
         }
 
 
@@ -307,7 +297,7 @@ public class RightPanel extends Pane {
         pathLabel.setOnMouseEntered(e -> {
             pathLabel.setTooltip(new Tooltip("Path"));
         });
-        LevelEditorController.makeDraggable(pathLabel, pathImage, 1);
+        makeDraggable(pathLabel, pathImage, 1);
 
         getChildren().add(pathLabel);
     }
@@ -325,7 +315,7 @@ public class RightPanel extends Pane {
         wallLabel.setOnMouseEntered(e -> {
             wallLabel.setTooltip(new Tooltip("Wall"));
         });
-        LevelEditorController.makeDraggable(wallLabel, wallImage, 0);
+        makeDraggable(wallLabel, wallImage, 0);
         getChildren().add(wallLabel);
     }
 
@@ -342,7 +332,7 @@ public class RightPanel extends Pane {
         collectibleLabel.setOnMouseEntered(e -> {
             collectibleLabel.setTooltip(new Tooltip("Collectible"));
         });
-            LevelEditorController.makeDraggable(collectibleLabel, collectibleImage, 4);
+            makeDraggable(collectibleLabel, collectibleImage, 4);
         getChildren().add(collectibleLabel);
     }
 
@@ -359,7 +349,7 @@ public class RightPanel extends Pane {
         startLabel.setOnMouseEntered(e -> {
             startLabel.setTooltip(new Tooltip("Start"));
         });
-        LevelEditorController.makeDraggable(startLabel, startImage, 2);
+        makeDraggable(startLabel, startImage, 2);
         getChildren().add(startLabel);
     }
 
@@ -376,8 +366,25 @@ public class RightPanel extends Pane {
         goalLabel.setOnMouseEntered(e -> {
             goalLabel.setTooltip(new Tooltip("Goal"));
         });
-        LevelEditorController.makeDraggable(goalLabel, goalImage, 3);
+        makeDraggable(goalLabel, goalImage, 3);
         getChildren().add(goalLabel);
+    }
+
+    //för att kunna dra objekten
+    public void makeDraggable (Label label, Image image, int type) {
+
+        // 1) OnDragDetected: initiate the drag
+        label.setOnDragDetected(event -> {
+            Dragboard db = label.startDragAndDrop(TransferMode.COPY_OR_MOVE);
+            ClipboardContent content = new ClipboardContent();
+            // Put the image on the dragboard
+            content.putImage(image);
+            content.putString(String.valueOf(type));
+            db.setContent(content);
+
+            // Optionally: do some visual feedback or change cursor
+            event.consume();
+        });
     }
     /**
      * Slår på/av spelljud
