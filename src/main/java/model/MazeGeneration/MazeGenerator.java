@@ -30,7 +30,6 @@ public class MazeGenerator {
         generateMaze();
         createStartAndGoal();
         System.out.println(getRawMaze());
-        saveMazeToFile("maze.dat"); // Spara med levelName
     }
 
     public MazeGenerator(int dim, boolean SetGoalAndStart, boolean editor) {
@@ -40,7 +39,6 @@ public class MazeGenerator {
         generateEmptyMaze();
         createSetStartAndGoal();
         System.out.println(getRawMaze());
-        saveMazeToFile("maze.dat");
     }
 
     public void generateMaze() {
@@ -149,7 +147,7 @@ public class MazeGenerator {
         return !(x == node.x && y == node.y);
     }
 
-    public void saveMazeToFile(String fileName) {
+  /*  public void saveMazeToFile(String fileName) {
 
         File dir = new File("createdLevels");
         if (!dir.exists()) {
@@ -163,6 +161,10 @@ public class MazeGenerator {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }*/
+
+    public int[][] getRawMazeArray() {
+        return maze;
     }
 
 }
