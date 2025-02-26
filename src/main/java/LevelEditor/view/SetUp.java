@@ -120,6 +120,7 @@ public class SetUp extends Pane {
         titelImageView.setTranslateY(50);
 
         ImageView rDButtonView = new ImageView(dRButton);
+        rDButtonView.setId("RightButtonDimension");
         rDButtonView.setStyle("fx-background-color: transparent;");
         rDButtonView.setTranslateX(350);
         rDButtonView.setTranslateY(220);
@@ -142,6 +143,7 @@ public class SetUp extends Pane {
 
 
         ImageView lDButtonView = new ImageView(dLButton);
+        lDButtonView.setId("LeftButtonDimension");
         lDButtonView.setStyle("fx-background-color: transparent;");
         lDButtonView.setTranslateX(50);
         lDButtonView.setTranslateY(220);
@@ -172,6 +174,7 @@ public class SetUp extends Pane {
 
 
         ImageView RButtonView = new ImageView(RightButton);
+        RButtonView.setId("RightButtonThem");
         RButtonView.setStyle("fx-background-color: transparent;");
         RButtonView.setTranslateX(350);
         RButtonView.setTranslateY(350);
@@ -195,6 +198,7 @@ public class SetUp extends Pane {
 
 
         ImageView LButtonView = new ImageView(LeftButton);
+        LButtonView.setId("LeftButtonThem");
         LButtonView.setStyle("fx-background-color: transparent;");
         LButtonView.setTranslateX(50);
         LButtonView.setTranslateY(350);
