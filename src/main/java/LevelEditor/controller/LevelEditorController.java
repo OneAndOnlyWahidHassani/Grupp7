@@ -25,6 +25,7 @@ import view.Menu.RightPanel;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import LevelEditor.view.MapTemplateLE;
 
 public class LevelEditorController {
     private MainProgram mainProgram;
@@ -52,6 +53,7 @@ public class LevelEditorController {
     private TimeThread time;
     private TotalTime totTime;
     private boolean totalTimeStarted = false;
+    private MapTemplateLE mapTemplateLE;
 
 
     public LevelEditorController(MainProgram mainProgram, RightPanel rightPanel, AudioPlayer audioPlayer, GameOverScreen gameOverScreen, BorderPane mainPaneCampaign, int world, int level) {
@@ -279,7 +281,7 @@ public class LevelEditorController {
         }
     }
 
-    public static void makeDraggable (Label label, Image image) {
+    public static void makeDraggable (Label label, Image image, int type) {
 
         // 1) OnDragDetected: initiate the drag
         label.setOnDragDetected(event -> {
@@ -287,6 +289,7 @@ public class LevelEditorController {
             ClipboardContent content = new ClipboardContent();
             // Put the image on the dragboard
             content.putImage(image);
+            content.putString(String.valueOf(type));
             db.setContent(content);
 
             // Optionally: do some visual feedback or change cursor

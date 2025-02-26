@@ -103,6 +103,7 @@ public class RightPanel extends Pane {
     private AudioPlayer audioPlayer;
     private TimeThread time;
     private TotalTime totTime;
+    private LevelEditorController levelEditorController;
 
     /**
      * Instansierar objekten och lägger till bilder och labels på scenen
@@ -306,7 +307,7 @@ public class RightPanel extends Pane {
         pathLabel.setOnMouseEntered(e -> {
             pathLabel.setTooltip(new Tooltip("Path"));
         });
-        LevelEditorController.makeDraggable(pathLabel, pathImage);
+        LevelEditorController.makeDraggable(pathLabel, pathImage, 1);
 
         getChildren().add(pathLabel);
     }
@@ -324,6 +325,7 @@ public class RightPanel extends Pane {
         wallLabel.setOnMouseEntered(e -> {
             wallLabel.setTooltip(new Tooltip("Wall"));
         });
+        LevelEditorController.makeDraggable(wallLabel, wallImage, 0);
         getChildren().add(wallLabel);
     }
 
@@ -340,6 +342,7 @@ public class RightPanel extends Pane {
         collectibleLabel.setOnMouseEntered(e -> {
             collectibleLabel.setTooltip(new Tooltip("Collectible"));
         });
+            LevelEditorController.makeDraggable(collectibleLabel, collectibleImage, 4);
         getChildren().add(collectibleLabel);
     }
 
@@ -356,6 +359,7 @@ public class RightPanel extends Pane {
         startLabel.setOnMouseEntered(e -> {
             startLabel.setTooltip(new Tooltip("Start"));
         });
+        LevelEditorController.makeDraggable(startLabel, startImage, 2);
         getChildren().add(startLabel);
     }
 
@@ -372,6 +376,7 @@ public class RightPanel extends Pane {
         goalLabel.setOnMouseEntered(e -> {
             goalLabel.setTooltip(new Tooltip("Goal"));
         });
+        LevelEditorController.makeDraggable(goalLabel, goalImage, 3);
         getChildren().add(goalLabel);
     }
     /**
