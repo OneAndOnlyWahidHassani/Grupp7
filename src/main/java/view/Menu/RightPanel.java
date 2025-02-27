@@ -239,6 +239,7 @@ public class RightPanel extends Pane {
         soundLabel.setLayoutX(340);
         soundLabel.setLayoutY(660);
         soundLabel.setGraphic(soundView);
+        soundLabel.setId("soundLabel");
 
         musicImage = new Image("file:files/soundbuttons/musicon.png", 30,30,false,false);
         musicView = new ImageView(musicImage);
@@ -436,6 +437,7 @@ public class RightPanel extends Pane {
         levelNumber = new Image("file:files/levelcounter/" + number + ".png", 90, 30, false, false);
         currentLevelView.setImage(levelNumber);
         levelLabel.setGraphic(currentLevelView);
+        levelLabel.setId("levelLabel");
     }
     /**
      * Byter scen till menyn

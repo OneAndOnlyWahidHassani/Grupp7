@@ -371,6 +371,11 @@ public class MainProgram extends Application {
         mainWindow.setScene(highscoreScene);
     }
 
+    public RightPanel getRightPanel()
+    {
+        return rightPanel;
+    }
+
 
     public static void main(String[] args) {
         launch(args);

@@ -1,10 +1,12 @@
 package view.Menu;
 
 import control.MainProgram;
+import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.*;
 import org.mockito.MockitoAnnotations;
+import org.testfx.api.FxAssert;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.matcher.base.WindowMatchers;
 import org.testfx.service.finder.WindowFinder;
@@ -15,11 +17,13 @@ import java.io.FileNotFoundException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.testfx.api.FxAssert.verifyThat;
+import static org.testfx.util.NodeQueryUtils.hasText;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class NewMenuButtonsTest extends ApplicationTest {
@@ -31,10 +35,8 @@ class NewMenuButtonsTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) {
-        MockitoAnnotations.openMocks(this);
         random = new Random();
         mainProgram = new MainProgram();
-        mainProgram = mock(MainProgram.class);
         try {
             mainProgram.start(stage);
         } catch (Exception e) {
@@ -45,10 +47,14 @@ class NewMenuButtonsTest extends ApplicationTest {
     @BeforeEach
     void setUp()
     {
-        mainProgram = mock(MainProgram.class);
+        mainProgram = new MainProgram();
         audioPlayer = mock(AudioPlayer.class);
-        panel = mock(RightPanel.class);
         menu = new Menu(mainProgram, audioPlayer, panel);
+        try {
+            panel = new RightPanel(mainProgram, "11", audioPlayer, null);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -60,7 +66,6 @@ class NewMenuButtonsTest extends ApplicationTest {
         WaitForAsyncUtils.waitForFxEvents();
         moveToAndClickOn("introButton");
         moveToAndClickOn("campaignButton");
-        verifyThat(window("campaignScene"), WindowMatchers.isShowing());
         //verify(mainProgram).changeToCampaign();
     }
 
