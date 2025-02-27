@@ -4,7 +4,10 @@ import control.MainProgram;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.junit.jupiter.api.*;
+import org.mockito.MockitoAnnotations;
 import org.testfx.framework.junit5.ApplicationTest;
+import org.testfx.matcher.base.WindowMatchers;
+import org.testfx.service.finder.WindowFinder;
 import org.testfx.util.WaitForAsyncUtils;
 import view.AudioPlayer;
 
@@ -16,6 +19,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.testfx.api.FxAssert.verifyThat;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class NewMenuButtonsTest extends ApplicationTest {
@@ -27,6 +31,7 @@ class NewMenuButtonsTest extends ApplicationTest {
 
     @Override
     public void start(Stage stage) {
+        MockitoAnnotations.openMocks(this);
         random = new Random();
         mainProgram = new MainProgram();
         mainProgram = mock(MainProgram.class);
@@ -55,8 +60,8 @@ class NewMenuButtonsTest extends ApplicationTest {
         WaitForAsyncUtils.waitForFxEvents();
         moveToAndClickOn("introButton");
         moveToAndClickOn("campaignButton");
-        mainProgram.changeToCampaign();
-        verify(mainProgram).changeToCampaign();
+        verifyThat(window("campaignScene"), WindowMatchers.isShowing());
+        //verify(mainProgram).changeToCampaign();
     }
 
     /*@Test

@@ -118,6 +118,7 @@ public class RightPanel extends Pane {
         this.gameMode = gameMode;
         this.audioPlayer = audioPlayer;
         this.time = time;
+        this.setId("campaignScene");
 
         soundOn = true;
         musicOn = true;
