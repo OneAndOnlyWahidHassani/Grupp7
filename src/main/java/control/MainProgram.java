@@ -1,42 +1,45 @@
 package control;
 
+
+import LevelEditor.view.MapTemplateLE;
+import LevelEditor.view.MenuLE;
+import LevelEditor.view.SetUp;
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.transform.Scale;
 import javafx.stage.Stage;
-
 import javafx.stage.WindowEvent;
 import model.HighscoreList;
-import model.Maps.*;
 import model.MazeGeneration.GenerateNextLevel;
+import model.MazeGeneration.MazeGenerator;
 import view.AudioPlayer;
 import view.GameOverScreen;
-import view.Randomize.MapTemplate;
-import model.MazeGeneration.MazeGenerator;
 import view.Menu.*;
+import view.Randomize.MapTemplate;
 import view.WorldIntroAnimation;
-
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- * @author André Eklund
- * @edit Filip Örnling, Viktor Näslund, Sebastian Helin
+ * Updated MainProgram implementing a scalable UI with a special layout for the Level Editor.
  */
-
 public class MainProgram extends Application {
 
     private Stage mainWindow;
     private BorderPane mainPaneRandomMaze;
     private BorderPane mainPaneCampaign;
+
     private MapTemplate mapTemplate;
+    private MapTemplateLE mapTemplateLE;
     private Scene menuScene;
     private Scene introScene;
     private Scene helpScene;
@@ -44,9 +47,14 @@ public class MainProgram extends Application {
     private Scene chooseDimensionScene;
     private Scene selectMapScene;
     private Scene selectLevelScene;
+    private Scene levelEditorScene; // new scene for level editor
+    private Scene LEScene;
+    private Scene menuLEScene;
     private Intro intro;
     private Menu menu;
     private Help help;
+    private SetUp setUp;
+    private MenuLE menuLE;
     private ChooseDimension chooseDimension;
     private SelectWorldMap selectWorldMap;
     private SelectLevel selectLevel;
@@ -64,12 +72,12 @@ public class MainProgram extends Application {
     private GameController gameController;
     private HighscoreList highscoreList;
 
-    /**
-     * En metod som startar programmet.
-     * Metoden instanierar även de olika komponenterna.
-     * @param primaryStage JavaFX top Container, huvudkomponenten till programmet.
-     * @throws Exception
-     */
+    // Base dimensions your UI was designed for.
+    private final double designWidth = 800;
+    private final double designHeight = 600;
+
+    // Scale factor for the main UI scenes.
+    private double scaleFactor = 1.2;
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -86,12 +94,22 @@ public class MainProgram extends Application {
         highscoreView = new HighscoreView(this, audioPlayer, 1, highscoreList);
         chooseDimension = new ChooseDimension(this, audioPlayer);
         selectWorldMap = new SelectWorldMap(this, audioPlayer);
-        introScene = new Scene(intro, 800, 600);
-        menuScene = new Scene(menu, 800, 600);
-        helpScene = new Scene(help, 800, 600);
-        selectMapScene = new Scene(selectWorldMap, 800, 600);
-        chooseDimensionScene = new Scene(chooseDimension, 800, 600);
-        highscoreScene = new Scene(highscoreView, 800, 600);
+        setUp = new SetUp(this, audioPlayer);
+        menuLE = new MenuLE(this, audioPlayer);
+
+
+
+        // Create scaled scenes using our helper method.
+        introScene = createScaledScene(intro);
+        menuScene = createScaledScene(menu);
+        helpScene = createScaledScene(help);
+        selectMapScene = createScaledScene(selectWorldMap);
+        chooseDimensionScene = createScaledScene(chooseDimension);
+        highscoreScene = createScaledScene(highscoreView);
+        LEScene = createScaledScene(setUp);
+        menuLEScene = createScaledScene(menuLE);
+
+
 
         mainPaneRandomMaze = new BorderPane();
         mainPaneCampaign = new BorderPane();
@@ -101,22 +119,22 @@ public class MainProgram extends Application {
         cursorImage = new Image("file:files/imagecursor.png");
 
         mainWindow.setTitle("Mazegen");
+        // Prevent user from resizing the window manually.
         mainWindow.setResizable(false);
-        mainWindow.setOnCloseRequest(windowEvent -> System.exit(0));
-        //world1Maps = new World1Maps();
+
         mainPaneCampaign.setRight(rightPanel);
 
         rightPnlRndm = new RightPanel(this, "Random", audioPlayer, null);
         rightPnlRndm.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-
         mainPaneRandomMaze.setRight(rightPnlRndm);
 
-        campaignScene = new Scene(mainPaneCampaign, 800, 600);
-        randomScene = new Scene(mainPaneRandomMaze, 800, 600);
+        campaignScene = createScaledScene(mainPaneCampaign);
+        randomScene = createScaledScene(mainPaneRandomMaze);
 
         mainWindow.setScene(introScene);
         mainWindow.show();
 
+        // Set custom cursors
         introScene.setCursor(new ImageCursor(cursorImage));
         menuScene.setCursor(new ImageCursor(cursorImage));
         campaignScene.setCursor(new ImageCursor(cursorImage));
@@ -124,8 +142,6 @@ public class MainProgram extends Application {
         helpScene.setCursor(new ImageCursor(cursorImage));
         randomScene.setCursor(new ImageCursor(cursorImage));
 
-        //Körs när användaren stänger programmet
-        //Används för att spara Highscore listan
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent windowEvent) {
@@ -140,17 +156,95 @@ public class MainProgram extends Application {
     }
 
     /**
-     * Byter scen till huvudmenyn.
+     * Helper method that wraps a given Pane in a Group,
+     * applies a fixed Scale transform, and returns a new Scene with a black background.
      */
-    public void changeToMenu()
-    {
-        mainWindow.setScene(menuScene);
+    private Scene createScaledScene(Pane rootPane) {
+        Group group = new Group(rootPane);
+        double sceneWidth = designWidth * scaleFactor;
+        double sceneHeight = designHeight * scaleFactor;
+        Scene scene = new Scene(group, sceneWidth, sceneHeight, Color.BLACK);
+        Scale scale = new Scale(scaleFactor, scaleFactor);
+        group.getTransforms().add(scale);
+        return scene;
+    }
+
+    public void enterLevelEditor(int dimension, int themeInt) throws FileNotFoundException {
+        // 1. Create a new BorderPane for the level editor.
+        BorderPane levelEditorPane = new BorderPane();
+
+        // 2. Create your editor pane/content (initially empty or customized as you wish).
+        Pane editorContent = new Pane();
+        // ...Add any setup for editorContent here...
+
+        // 3. Optionally apply scaling to everything in the center.
+        //    Wrap your editor content in a Group so the scale transform is applied to both
+        //    the editor content AND the map template.
+        Group editorGroup = new Group(editorContent);
+
+        Scale scale = new Scale(scaleFactor, scaleFactor);
+        editorGroup.getTransforms().add(scale);
+
+        // 4. Create the larger right panel for the level editor.
+        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt);
+        levelEditorRightPanel.setPrefWidth(400);
+        levelEditorRightPanel.setBackground(
+                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
+        );
+        levelEditorPane.setRight(levelEditorRightPanel);
+
+        // 5. Pick a custom resolution for the scene (slightly wider to accommodate the bigger right panel).
+        double editorScaleFactor = scaleFactor;
+        double editorSceneWidth = designWidth * editorScaleFactor + 150;
+        double editorSceneHeight = designHeight * editorScaleFactor;
+        levelEditorScene = new Scene(levelEditorPane, editorSceneWidth, editorSceneHeight, Color.BLACK);
+
+        // 6. Set a custom cursor if needed.
+        levelEditorScene.setCursor(new ImageCursor(cursorImage));
+
+        // 7. Generate your maze, create `mapTemplateLE`, and the code to manage the level logic.
+        mazeGenerator = new MazeGenerator(dimension, true, true);
+        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension, themeInt);
+        mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel, themeInt);
+
+        // 8. Add mapTemplateLE to the same group so it scales together with the editorContent.
+        editorGroup.getChildren().add(mapTemplateLE);
+
+        // 9. Set the center just once, with the group containing both editor content and the map template.
+        BorderPane.setAlignment(editorGroup, Pos.TOP_LEFT);
+        levelEditorPane.setCenter(editorGroup);
+
+        // 10. Finally, show this scene in your primary stage/window.
+        mainWindow.setScene(levelEditorScene);
     }
 
     /**
-     * Byter scen till Randomize.
-     * @param dimension Storleken på labyrinten som ska genereras.
-     * @throws FileNotFoundException
+     * Switches to the menu scene.
+     */
+    public void changeToMenu() {
+        mainWindow.setScene(menuScene);
+    }
+
+    public void changeToLevelEditor() {
+        setDimensionLevelEditor();
+    }
+
+    public void setDimensionLevelEditor() {
+        mainWindow.setScene(LEScene);
+    }
+
+    public void setDimensionLevelEditormenu() {
+        mainWindow.setScene(menuLEScene);
+    }
+
+    public void changeToLevelEditorMenu() {
+        setDimensionLevelEditormenu();
+    }
+
+
+
+    /**
+     * Switches to the Randomize scene (random maze).
      */
     public void changeToRandomize(int dimension) throws FileNotFoundException {
         mazeGenerator = new MazeGenerator(dimension, true);
@@ -160,83 +254,77 @@ public class MainProgram extends Application {
         mainWindow.setScene(randomScene);
     }
 
+
     /**
-     * Byter scen till kampanjläget.
-     * @throws FileNotFoundException
+     * Switches to the Campaign scene.
      */
     public void changeToCampaign() {
         gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, 1, 1);
         try {
             gameController.campaignWorldManager();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e){
-            e.printStackTrace();
-        } catch (ClassNotFoundException e){
+        } catch (InterruptedException | IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         mainWindow.setScene(campaignScene);
         gameController.setUpNewWorldAnimation();
     }
 
-    public GameController getCampaignController(){
+    public GameController getCampaignController() {
         return gameController;
     }
 
-    public void changeToSpecifiedCampaign(int world, int level)
-    {
+    /**
+     * Switches to a specified campaign level.
+     */
+    public void changeToSpecifiedCampaign(int world, int level) {
         gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, world, level);
         try {
             gameController.campaignWorldManager();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (InterruptedException | IOException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
         mainWindow.setScene(campaignScene);
         gameController.setUpNewWorldAnimation();
     }
+
     /**
-     * Byter scen till den del av menyn där användaren får välja dimension på labyrinten.
+     * Switches to the dimension selection scene.
      */
     public void chooseDimension() {
         mainWindow.setScene(chooseDimensionScene);
     }
 
-    public void selectWorldMap()
-    {
+    /**
+     * Switches to the world map selection scene.
+     */
+    public void selectWorldMap() {
         mainWindow.setScene(selectMapScene);
     }
 
-    public void selectLevelMap(int map)
-    {
+    /**
+     * Switches to the level selection scene.
+     */
+    public void selectLevelMap(int map) {
         selectLevel = new SelectLevel(this, audioPlayer, map);
-        selectLevelScene = new Scene(selectLevel, 800, 600);
+        selectLevelScene = createScaledScene(selectLevel);
         mainWindow.setScene(selectLevelScene);
     }
 
     /**
-     * Byter scen till hjälpfönstret.
+     * Switches to the help scene.
      */
     public void changeToHelp() {
         mainWindow.setScene(helpScene);
     }
 
+    /**
+     * Switches to the highscore scene.
+     */
     public void showHighscore() {
         mainWindow.setScene(highscoreScene);
     }
 
-
-    /**
-     * Main startar programmet.
-     * @param args
-     */
     public static void main(String[] args) {
         launch(args);
     }
 }
-
