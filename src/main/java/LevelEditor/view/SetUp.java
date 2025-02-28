@@ -242,7 +242,7 @@ public class SetUp extends Pane {
             returnView.setTranslateY(550);
         });
         returnView.setOnMouseClicked(e -> {
-            mainProgram.changeToMenu();
+            mainProgram.changeToLevelEditorMenu();
             audioPlayer.playButtonSound();
         });
 
