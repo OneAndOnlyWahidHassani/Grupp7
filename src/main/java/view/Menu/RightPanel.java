@@ -169,12 +169,15 @@ public class RightPanel extends Pane {
 
         soundLabel.setLayoutX(30);
         soundLabel.setLayoutY(440);
+        soundLabel.setId("soundLabel");
 
         musicLabel.setLayoutX(60);
         musicLabel.setLayoutY(440);
+        musicLabel.setId("musicLabel");
 
         timerLabel.setLayoutX(8);
         timerLabel.setLayoutY(200);
+
 
 
         //Hearts only in Campaign
@@ -194,6 +197,7 @@ public class RightPanel extends Pane {
             getChildren().add(timerLabel);
             heartLabel.setLayoutX(0);
             heartLabel.setLayoutY(120);
+            heartLabel.setId("heartLabel");
         }
         else {
             getChildren().add(timerLabel);
@@ -371,6 +375,7 @@ public class RightPanel extends Pane {
         goalLabel.setGraphic(goalView);
         goalLabel.setLayoutX(x);  // Next to start
         goalLabel.setLayoutY(150);
+        goalLabel.setId("goalLabel");
         goalLabel.setOnMouseEntered(e -> {
             goalLabel.setTooltip(new Tooltip("Goal"));
         });
