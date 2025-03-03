@@ -38,7 +38,6 @@ public class ChooseDimension extends Pane {
     public ChooseDimension(MainProgram mainProgram, AudioPlayer audioPlayer){
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
-        this.setId("chooseDimension");
         setBackground();
         setupImages();
         addButtons();
@@ -86,7 +85,6 @@ public class ChooseDimension extends Pane {
         tenByTenView.setTranslateY(200);
         tenByTenView.toFront();
         tenByTenView.setPickOnBounds(true);
-        tenByTenView.setId("tenByTenView");
         tenByTenView.setOnMouseEntered(e -> {
             tenByTenView.setImage(tenByTenResize);
             tenByTenView.setTranslateX(273);

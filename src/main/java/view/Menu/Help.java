@@ -29,7 +29,6 @@ public class Help extends VBox {
         pressMouse = new Image("file:files/menuImages/helppicmouse.png");
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
-        this.setId("helpView");
         setBackground();
         pressMouseAnimation();
         addListener();

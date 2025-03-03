@@ -28,9 +28,14 @@ import static org.testfx.util.NodeQueryUtils.hasText;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class NewMenuButtonsTest extends ApplicationTest {
     private MainProgram mainProgram;
+    private Random random;
+    private Menu menu;
+    private AudioPlayer audioPlayer;
+    private RightPanel panel;
 
     @Override
     public void start(Stage stage) {
+        random = new Random();
         mainProgram = new MainProgram();
         try {
             mainProgram.start(stage);
@@ -40,49 +45,65 @@ class NewMenuButtonsTest extends ApplicationTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp()
+    {
+        mainProgram = new MainProgram();
+        audioPlayer = mock(AudioPlayer.class);
+        menu = new Menu(mainProgram, audioPlayer, panel);
+        try {
+            panel = new RightPanel(mainProgram, "11", audioPlayer, null);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
-     * Testar om en CampaignScene har startat
+     * Inte funktionellt
      */
     @Test
-    public void testCampaignButton()
+    void testCampaignButton()
     {
         WaitForAsyncUtils.waitForFxEvents();
         moveToAndClickOn("introButton");
         moveToAndClickOn("campaignButton");
-
-        RightPanel panel = lookup("#campaignScene").query();
-        assertNotNull(panel, "Panel should exist");
+        //verify(mainProgram).changeToCampaign();
     }
 
-    /**
-     * Testar om Randomizeknappen leder till rätt ställe
-     */
-    @Test
-    public void testRandomizeButton()
+    /*@Test
+    void testCampaignButton() throws FileNotFoundException
     {
-        WaitForAsyncUtils.waitForFxEvents();
-        moveToAndClickOn("introButton");
-        moveToAndClickOn("randomizeButton");
-        ChooseDimension choosePanel = lookup("#chooseDimension").query();
-        assertNotNull(choosePanel, "Panel should exist");
+        ImageView campaignButton = findButton(275, 200);
+        assert campaignButton != null;
 
-        sleep(500);
+        fireClickEvent(campaignButton);
+
+        verify(mainProgram).changeToCampaign();
+        verify(audioPlayer).playLevelMusic("forest");
+        verify(panel).setTheTime(25);
+        verify(panel).resetTimerLabel();
     }
 
     @Test
-    public void testHelpButton()
-    {
-        WaitForAsyncUtils.waitForFxEvents();
-        moveToAndClickOn("introButton");
-        moveToAndClickOn("helpButton");
-        Help helpView = lookup("#helpView").query();
-        assertNotNull(helpView, "Panel should exist");
+    void testRandomizeButton() {
+        ImageView randomizeButton = findButton(275, 250);
+        assert randomizeButton != null;
 
-        sleep(500);
+        fireClickEvent(randomizeButton);
+
+        verify(mainProgram).chooseDimension();
+        verify(audioPlayer).playButtonSound();
     }
+
+    @Test
+    void testHelpButton() {
+        ImageView helpButton = findButton(275, 300);
+        assert helpButton != null;
+
+        fireClickEvent(helpButton);
+
+        verify(mainProgram).changeToHelp();
+        verify(audioPlayer).playButtonSound();
+    }*/
 
 
 

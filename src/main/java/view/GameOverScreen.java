@@ -38,7 +38,6 @@ public class GameOverScreen extends Pane {
     public void gameOverAnimation() {
         ImageView introView = new ImageView(gameOver);
         introView.setStyle("fx-background-color: transparent;");
-        introView.setId("gameOverAnimation");
         FadeTransition ft = new FadeTransition(Duration.millis(4000), introView);
         getChildren().add(introView);
         ft.setFromValue(0);

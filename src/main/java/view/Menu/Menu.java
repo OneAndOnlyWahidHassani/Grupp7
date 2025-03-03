@@ -43,7 +43,6 @@ public class Menu extends Pane {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         this.panel = panel;
-        this.setId("menu");
         setBackground();
         setupImages();
         addButtons();

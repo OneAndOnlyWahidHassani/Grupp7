@@ -50,7 +50,6 @@ public class WorldTemplate extends GridPane {
         this.heartCrystals = gameController.getHeartCrystals();
         this.rightPanel = gameController.getRightPanel();
         this.audioPlayer = gameController.getAudioPlayer();
-        this.setId("worldTemplate");
         rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
         squareSize = 600/(levelArray.length+2);
         setBackground();
@@ -59,6 +58,7 @@ public class WorldTemplate extends GridPane {
         setupLevel();
         rightPanel.setSTARTTIME(seconds);
         rightPanel.resetTimerLabel();
+
     }
 
     /**
@@ -239,7 +239,6 @@ public class WorldTemplate extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setId("goalLabel");
         label.setOnMouseEntered(e -> {
             try {
                 gameController.enteredGoal();
@@ -260,7 +259,6 @@ public class WorldTemplate extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
-        label.setId("startLabel");
         label.setOnMouseClicked(e -> gameController.startLevel());
         return label;
     }
