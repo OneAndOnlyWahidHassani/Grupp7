@@ -1,5 +1,8 @@
 package LevelEditor.view;
 
+import javafx.scene.input.DragEvent;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import model.MazeGeneration.GenerateNextLevel;
 import control.MainProgram;
 import javafx.animation.FadeTransition;
@@ -141,17 +144,14 @@ public class MapTemplateLE extends GridPane {
                 else if (level[i][j] == 3){
                     add(getGoal(),j + 1,i + 1);
                 }
+               else if (level[i][j]== 4) {
+                    add(getPath(),j + 1,i + 1);
+                    add(addCollectible(),j + 1,i + 1);
+                }
             }
         }
     }
-    public void setupEmptyLevel() {
-        for (int i = 0; i < level.length; i++) {
-            for (int j = 0; j < level.length; j++) {
 
-                add(getPath(),j + 1,i + 1);
-            }
-        }
-    }
     /**
      * Instansierar de olika bilderna som används som grafik inuti spelet.
      * Baserad på value så sätts bilderna till en specifik folder per värld.
@@ -203,18 +203,24 @@ public class MapTemplateLE extends GridPane {
         label.setGraphic(wallView);
         label.setOnMouseEntered(e -> enteredWall(e));
         label.setOnMouseExited(e -> exitedLabel(e));
+        label.setOnDragOver(e -> holdOnLabel(e));
+        label.setOnDragDropped(e -> releaseOnLabel(e));
         return label;
     }
     /**
      * En metod som skapar ett objekt av label som representerar en väg.
      * @return Returnerar en label.
      */
-    private Label getPath() {
+    public Label getPath() {
         Label label = new Label();
         ImageView pathView = new ImageView(path);
         pathView.setFitHeight(squareSize);
         pathView.setFitWidth(squareSize);
         label.setGraphic(pathView);
+        label.setOnMouseEntered(e -> enteredWall(e));
+        label.setOnMouseExited(e -> exitedLabel(e));
+        label.setOnDragOver(e -> holdOnLabel(e));
+        label.setOnDragDropped(e -> releaseOnLabel(e));
         return label;
     }
     /**
@@ -241,6 +247,10 @@ public class MapTemplateLE extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
+        label.setOnMouseEntered(e -> enteredWall(e));
+        label.setOnMouseExited(e -> exitedLabel(e));
+        label.setOnDragOver(e -> holdOnLabel(e));
+        label.setOnDragDropped(e -> releaseOnLabel(e));
         return label;
     }
     /**
@@ -253,6 +263,10 @@ public class MapTemplateLE extends GridPane {
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
+        label.setOnMouseEntered(e -> enteredWall(e));
+        label.setOnMouseExited(e -> exitedLabel(e));
+        label.setOnDragOver(e -> holdOnLabel(e));
+        label.setOnDragDropped(e -> releaseOnLabel(e));
         return label;
     }
     /**
@@ -271,6 +285,10 @@ public class MapTemplateLE extends GridPane {
         collectible.setGraphic(borderView);
         collectible.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener);
         collectibles.add(collectible);
+        collectible.setOnMouseEntered(e -> enteredWall(e));
+        collectible.setOnMouseExited(e -> exitedLabel(e));
+        collectible.setOnDragOver(e -> holdOnLabel(e));
+        collectible.setOnDragDropped(e -> releaseOnLabel(e));
         return collectible;
     }
 
@@ -293,26 +311,7 @@ public class MapTemplateLE extends GridPane {
             startButtonPressed = false;
         }
     }
-    /**
-     * Om spelrundan är aktiverad och spelaren har plockat upp alla collectibles startas nästa nivå.
-     * @throws FileNotFoundException
-     * @throws InterruptedException
-     */
-    public void enteredGoal() throws FileNotFoundException, InterruptedException {
-        if (startButtonPressed && allCollectiblesObtained) {
-            goalPlayer.play();
-            goalPlayer.seek(Duration.ZERO);
-            generateNextLevel.generateNewMaze();
-        }
-    }
-    /**
-     * Startar spelrundan och timern.
-     */
-    public void startLevel() {
-        startPlayer.play();
-        startPlayer.seek(Duration.ZERO);
-        startButtonPressed = true;
-    }
+
     /**
      * När muspekaren lämnar en label slutar den att highlightas.
      * @param e Används för att hitta rätt label.
@@ -326,6 +325,46 @@ public class MapTemplateLE extends GridPane {
         fade.setToValue(10);
         fade.play();
     }
+    private void holdOnLabel(DragEvent e) {
+        // Only allow drop if it has a string (for example) and if the source allows copy or move
+
+            // Indicate that we can accept this transfer mode
+        e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+
+        e.consume();
+    }
+    private void releaseOnLabel(DragEvent e) {
+        Dragboard db = e.getDragboard();
+        boolean success = false;
+        Label dropTargetLabel = (Label) e.getGestureTarget();
+        System.out.println(dropTargetLabel.getLayoutX() + " " + dropTargetLabel.getLayoutY() );
+
+        int type = Integer.parseInt(db.getString());
+        int row = GridPane.getRowIndex(dropTargetLabel) -1;
+        int col = GridPane.getColumnIndex(dropTargetLabel) -1;
+        System.out.println("Row: " + row + " Col: " + col);
+
+        level[row][col] = type;
+        System.out.println(level[row][col]);
+        updateLevel();
+
+
+        System.out.println("Dropped on label");
+        success = true;
+
+        e.setDropCompleted(success);
+        e.consume();
+
+
+    }
+
+    private void updateLevel() {
+        this.getChildren().clear();
+        setupBorders();
+        setupLevel();
+    }
+
+
 
     /**
      * En listener som körs när spelaren plockar upp en collectible.

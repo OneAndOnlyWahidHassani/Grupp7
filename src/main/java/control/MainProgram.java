@@ -169,53 +169,6 @@ public class MainProgram extends Application {
         return scene;
     }
 
-    /**
-     * Enters the special Level Editor mode with a custom layout and larger right panel.
-     */
-  /* public void enterLevelEditor(int dimension) throws FileNotFoundException {
-        // Create a new BorderPane for the level editor.
-        BorderPane levelEditorPane = new BorderPane();
-
-        // Create the center area for level editing (e.g., a canvas or editor pane)
-        Pane editorContent = new Pane();
-        // (Add your level editor content initialization here)
-
-        // Optionally apply scaling to the editor content if desired.
-        Group editorGroup = new Group(editorContent);
-        Scale scale = new Scale(scaleFactor, scaleFactor);
-        editorGroup.getTransforms().add(scale);
-        levelEditorPane.setCenter(editorGroup);
-
-        // Create a special right panel for the level editor, with a larger preferred width.
-        RightPanel levelEditorRightPanel = new RightPanel(this, "Editor", audioPlayer, null);
-        levelEditorRightPanel.setPrefWidth(400); // Make this area proportionally bigger.
-        levelEditorRightPanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-        levelEditorPane.setRight(levelEditorRightPanel);
-
-        // Choose a special resolution for the level editor.
-        // For example, add extra width to accommodate the larger right panel.
-        double editorScaleFactor = scaleFactor; // You can modify this if needed.
-        double editorSceneWidth = designWidth * editorScaleFactor + 200; // Extra width for the right panel.
-        double editorSceneHeight = designHeight * editorScaleFactor;
-        levelEditorScene = new Scene(levelEditorPane, editorSceneWidth, editorSceneHeight, Color.BLACK);
-        levelEditorScene.setCursor(new ImageCursor(cursorImage));
-
-
-
-        mazeGenerator = new MazeGenerator(dimension, true);
-        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension);
-        mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel);
-        levelEditorPane.setCenter(mapTemplateLE); // Set mapTemplateLE instead of mapTemplate
-        mainWindow.setScene(levelEditorScene);
-
-
-        mazeGenerator = new MazeGenerator(dimension, true);
-        generateNextLevel = new GenerateNextLevel(this, mainPaneRandomMaze, mazeGenerator, rightPanel, dimension);
-        mapTemplate = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel);
-        mainPaneRandomMaze.setCenter(mapTemplate);
-        mainWindow.setScene(randomScene);
-
-    }*/
     public void enterLevelEditor(int dimension, int themeInt) throws FileNotFoundException {
         // 1. Create a new BorderPane for the level editor.
         BorderPane levelEditorPane = new BorderPane();
