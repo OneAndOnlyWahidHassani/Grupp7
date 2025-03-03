@@ -173,6 +173,7 @@ public class RightPanel extends Pane {
 
         musicLabel.setLayoutX(170);
         musicLabel.setLayoutY(570);
+        musicLabel.setId("musicLabel");
 
         timerLabel.setLayoutX(120);
         timerLabel.setLayoutY(250);
@@ -421,6 +422,7 @@ public class RightPanel extends Pane {
         }
         musicView.setImage(musicImage);
         musicLabel.setGraphic(musicView);
+        musicLabel.setId("musicLabel");
     }
     /**
      * Sätter en ny bild beroende på om man plockar upp/tappar ett liv

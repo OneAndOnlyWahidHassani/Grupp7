@@ -24,6 +24,10 @@ class MapTemplateTest extends ApplicationTest {
     private GenerateNextLevel generateNextLevelMock;
     private Label testCollectible;
 
+    /**
+     * Tester från sprint 1. Inte funktionella längre?
+     */
+
     @BeforeEach
     void setUp() throws FileNotFoundException {
         mainProgram = Mockito.mock(MainProgram.class);

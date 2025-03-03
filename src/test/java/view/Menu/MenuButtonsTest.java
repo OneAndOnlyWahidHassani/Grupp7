@@ -19,6 +19,10 @@ import java.io.FileNotFoundException;
 @ExtendWith(ApplicationExtension.class)
 class MenuButtonsTest {
 
+    /**
+     * Tester från sprint 1. Eventuellt funktionella men finns nyare, liknande tester i NewMenuButtonsTest
+     */
+
     private Menu menu;
     private MainProgram mainProgram;
     private AudioPlayer audioPlayer;

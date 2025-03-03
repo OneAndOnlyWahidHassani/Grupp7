@@ -20,6 +20,10 @@ public class World1TemplateCollisionTest {
     private RightPanel rightPanel;
     private AudioPlayer audioPlayer;
 
+    /**
+     * Tester från sprint 1. Inte funktionella längre?
+     */
+
     /*@BeforeAll
     public static void setupJavaFX() {
         Platform.startup(() -> {});

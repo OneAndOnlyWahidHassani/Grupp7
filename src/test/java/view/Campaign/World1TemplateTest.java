@@ -18,6 +18,10 @@ class World1TemplateTest {
     private int heartCrystals;
     private boolean startButtonPressed;
 
+    /**
+     * Tester från sprint 1. Inte funktionella längre?
+     */
+
     /*@BeforeEach
     void setUp() {
         mainProgramMock = mock(MainProgram.class);
