@@ -43,6 +43,8 @@ public class FileManager {
         }
     }
 
+    // Todo: USe this to be able to load the level data
+
     public static Map<String, Object> readLevelData(String levelName) {
         String fileName = "createdLevels/" + levelName + ".dat";
         Map<String, Object> dataMap = new HashMap<>();

@@ -131,6 +131,8 @@ public class MenuLE extends Pane {
             if (selectedLevel != null) {
                 System.out.println("Loading level: " + selectedLevel);
                  // Ladda filen (eller utför relevant handling)
+                //Todo: Ladda in leveldata
+
                 popupStage.close();
             }
         });
