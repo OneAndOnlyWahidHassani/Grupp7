@@ -185,6 +185,7 @@ public class RightPanel extends Pane {
             currentHeartView = new ImageView(heart);
             heartLabel = new Label();
             heartLabel.setGraphic(currentHeartView);
+            heartLabel.setId("heartLabel");
             getChildren().add(heartLabel);
             heartLabel.setLayoutX(100);
             heartLabel.setLayoutY(140);
@@ -238,6 +239,7 @@ public class RightPanel extends Pane {
         musicLabel.setLayoutX(370);
         musicLabel.setLayoutY(660);
         musicLabel.setGraphic(musicView);
+        musicLabel.setId("musicLabel");
 
 
         menuView.setLayoutX(310);
