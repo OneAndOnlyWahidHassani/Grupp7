@@ -26,6 +26,8 @@ import model.TotalTime;
 import view.AudioPlayer;
 
 import java.io.FileNotFoundException;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Filip Örnling
@@ -88,6 +90,7 @@ public class RightPanel extends Pane {
     private Image collectibleImage;
     private ImageView collectibleView;
     private Label collectibleLabel;
+    private int currentYPosition = 100;
 
     // ====== Start variables ======
     private Image startImage;
@@ -99,10 +102,15 @@ public class RightPanel extends Pane {
     private ImageView goalView;
     private Label goalLabel;
 
+    private Image itemsImage;
+    private ImageView itemsView;
+    private Label itemsLabel;
+
     private int themeInt;
     private AudioPlayer audioPlayer;
     private TimeThread time;
     private TotalTime totTime;
+    private Set<String> createdCollectibles = new HashSet<>();
 
 
     /**
@@ -257,6 +265,7 @@ public class RightPanel extends Pane {
         setupObjectButtons();
 
 
+
     }
     public String getThemeString() {
         switch (themeInt) {
@@ -278,45 +287,62 @@ public class RightPanel extends Pane {
     }
 
     public void setupObjectButtons() {
-        String theme = getThemeString();
-        int x = 80;
-        int v = 45;
-        createPathButton(theme, x, v);
-        x += 50;
-        createWallButton(theme, x, v);
-        x += 50;
-        createStartButton(theme, x, v);
-        x += 50;
-        createGoalButton(theme, x, v);
-        x += 50;
-        createCollectibleButton(theme, x, v);
+        String[] themes = {"forest", "lava", "underground", "cloud", "desert", "space"};
+        int xStart = 30;
+        int yStart = 40;
+        int buttonWidth = 50;
+        int buttonHeight = 50;
+        int rowHeight = 80;
+        int columnSpacing = 75;
 
+
+        for (int i = 0; i < themes.length; i++) {
+            String theme = themes[i];
+            int x = xStart + i * columnSpacing;
+            int y = yStart;
+
+            createPathButton(theme, x, y, buttonWidth, buttonHeight);
+            y += rowHeight;
+
+            createWallButton(theme, x, y, buttonWidth, buttonHeight);
+            y += rowHeight;
+
+            createStartButton(theme, x, y, buttonWidth, buttonHeight);
+            y += rowHeight;
+
+            createGoalButton(theme, x, y, buttonWidth, buttonHeight);
+            y += rowHeight;
+
+            createCollectibleButton(theme, x, y, buttonWidth, buttonHeight);
+            y += rowHeight;
+
+            createItemsButton(x, y, buttonWidth, buttonHeight);
+            y += rowHeight;
+
+        }
     }
-    public void createPathButton(String theme, int x, int v) {
-        pathImage = new Image ("file:files/" + theme + "/path.png", v, v, false, false);
+
+    public void createPathButton(String theme, int x, int y, int v, int h) {
+        pathImage = new Image("file:files/" + theme + "/path.png", v, h, false, false);
         pathView = new ImageView(pathImage);
         pathLabel = new Label();
         pathLabel.setGraphic(pathView);
         pathLabel.setLayoutX(x);
-        pathLabel.setLayoutY(150);
+        pathLabel.setLayoutY(y);
         pathLabel.setOnMouseEntered(e -> {
             pathLabel.setTooltip(new Tooltip("Path"));
         });
         makeDraggable(pathLabel, pathImage, 1);
-
         getChildren().add(pathLabel);
     }
 
-    /**
-     * Creates the wall button.
-     */
-    public void createWallButton(String theme, int x, int v) {
-        wallImage = new Image("file:files/" + theme + "/wall.png", v, v, false, false);
+    public void createWallButton(String theme, int x, int y, int v, int h) {
+        wallImage = new Image("file:files/" + theme + "/wall.png", v, h, false, false);
         wallView = new ImageView(wallImage);
         wallLabel = new Label();
         wallLabel.setGraphic(wallView);
-        wallLabel.setLayoutX(x);   // Slightly to the right of path
-        wallLabel.setLayoutY(150);
+        wallLabel.setLayoutX(x);
+        wallLabel.setLayoutY(y);
         wallLabel.setOnMouseEntered(e -> {
             wallLabel.setTooltip(new Tooltip("Wall"));
         });
@@ -324,33 +350,34 @@ public class RightPanel extends Pane {
         getChildren().add(wallLabel);
     }
 
-    /**
-     * Creates the collectible button.
-     */
-    public void createCollectibleButton(String theme, int x, int v) {
-        collectibleImage = new Image("file:files/" + theme + "/collectible.png", v, v, false, false);
-        collectibleView = new ImageView(collectibleImage);
-        collectibleLabel = new Label();
-        collectibleLabel.setGraphic(collectibleView);
-        collectibleLabel.setLayoutX(x);  // Next to wall
-        collectibleLabel.setLayoutY(150);
-        collectibleLabel.setOnMouseEntered(e -> {
-            collectibleLabel.setTooltip(new Tooltip("Collectible"));
-        });
+    public void createCollectibleButton(String theme, int x, int y, int v, int h) {
+        String collectibleType = getCollectibleType(theme);
+
+        if (!createdCollectibles.contains(collectibleType)) {
+
+            collectibleImage = new Image("file:files/" + theme + "/collectible.png", v, h, false, false);
+            collectibleView = new ImageView(collectibleImage);
+            collectibleLabel = new Label();
+            collectibleLabel.setGraphic(collectibleView);
+            collectibleLabel.setLayoutX(x);
+            collectibleLabel.setLayoutY(y);
+            collectibleLabel.setOnMouseEntered(e -> {
+                collectibleLabel.setTooltip(new Tooltip("Collectible"));
+            });
             makeDraggable(collectibleLabel, collectibleImage, 4);
-        getChildren().add(collectibleLabel);
+            getChildren().add(collectibleLabel);
+
+            createdCollectibles.add(collectibleType);
+        }
     }
 
-    /**
-     * Creates the start button.
-     */
-    public void createStartButton(String theme, int x, int v) {
-        startImage = new Image("file:files/" + theme + "/start.png", v, v, false, false);
+    public void createStartButton(String theme, int x, int y, int v, int h) {
+        startImage = new Image("file:files/" + theme + "/start.png", v, h, false, false);
         startView = new ImageView(startImage);
         startLabel = new Label();
         startLabel.setGraphic(startView);
-        startLabel.setLayoutX(x);  // Next to collectible
-        startLabel.setLayoutY(150);
+        startLabel.setLayoutX(x);
+        startLabel.setLayoutY(y);
         startLabel.setOnMouseEntered(e -> {
             startLabel.setTooltip(new Tooltip("Start"));
         });
@@ -358,22 +385,60 @@ public class RightPanel extends Pane {
         getChildren().add(startLabel);
     }
 
-    /**
-     * Creates the goal button.
-     */
-    public void createGoalButton(String theme, int x, int v) {
-        goalImage = new Image("file:files/" + theme + "/goal.png", v, v, false, false);
+    public void createGoalButton(String theme, int x, int y, int v, int h) {
+        goalImage = new Image("file:files/" + theme + "/goal.png", v, h, false, false);
         goalView = new ImageView(goalImage);
         goalLabel = new Label();
         goalLabel.setGraphic(goalView);
-        goalLabel.setLayoutX(x);  // Next to start
-        goalLabel.setLayoutY(150);
+        goalLabel.setLayoutX(x);
+        goalLabel.setLayoutY(y);
         goalLabel.setOnMouseEntered(e -> {
             goalLabel.setTooltip(new Tooltip("Goal"));
         });
         makeDraggable(goalLabel, goalImage, 3);
         getChildren().add(goalLabel);
     }
+
+    private boolean heartCreated = false;
+    private boolean pickaxeCreated = false;
+
+    public void createItemsButton(int x, int y, int v, int h) {
+        if (!heartCreated) {
+            Image heartImage = new Image("file:files/items/heart.png", v, h, false, false);
+            ImageView heartView = new ImageView(heartImage);
+            Label heartLabel = new Label();
+            heartLabel.setGraphic(heartView);
+            heartLabel.setLayoutX(x);
+            heartLabel.setLayoutY(y);
+            heartLabel.setOnMouseEntered(e -> {
+                heartLabel.setTooltip(new Tooltip("Heart"));
+            });
+            makeDraggable(heartLabel, heartImage, 5);
+            getChildren().add(heartLabel);
+
+            heartCreated = true;
+        }
+
+        if (!pickaxeCreated) {
+            Image pickaxeImage = new Image("file:files/items/pickaxe.png", v, h, false, false);
+            ImageView pickaxeView = new ImageView(pickaxeImage);
+            Label pickaxeLabel = new Label();
+            pickaxeLabel.setGraphic(pickaxeView);
+            pickaxeLabel.setLayoutX(x);
+            pickaxeLabel.setLayoutY(y + 75);
+            pickaxeLabel.setOnMouseEntered(e -> {
+                pickaxeLabel.setTooltip(new Tooltip("Pickaxe"));
+            });
+            makeDraggable(pickaxeLabel, pickaxeImage, 6);
+            getChildren().add(pickaxeLabel);
+
+            pickaxeCreated = true;
+        }
+    }
+
+
+
+
 
     //för att kunna dra objekten
     public void makeDraggable (Label label, Image image, int type) {
@@ -587,5 +652,17 @@ public class RightPanel extends Pane {
     public void resetTimerLabel(){
         timerLabel.setStyle("-fx-text-fill: white;");
         audioPlayer.stopClockSound();
+    }
+
+    private String getCollectibleType(String theme) {
+        switch (theme) {
+            case "desert":
+            case "forest":
+            case "lava":
+            case "underground":
+                return "commonColor";
+            default:
+                return theme;
+        }
     }
 }
