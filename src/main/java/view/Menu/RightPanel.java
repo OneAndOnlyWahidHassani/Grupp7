@@ -85,12 +85,13 @@ public class RightPanel extends Pane {
     private Image wallImage;
     private ImageView wallView;
     private Label wallLabel;
+    private int currentXPositionWall = 100;
 
     // ====== Collectible variables ======
     private Image collectibleImage;
     private ImageView collectibleView;
     private Label collectibleLabel;
-    private int currentYPosition = 100;
+    private int currentXPosition = 100;
 
     // ====== Start variables ======
     private Image startImage;
@@ -111,6 +112,7 @@ public class RightPanel extends Pane {
     private TimeThread time;
     private TotalTime totTime;
     private Set<String> createdCollectibles = new HashSet<>();
+
 
 
     /**
@@ -237,21 +239,21 @@ public class RightPanel extends Pane {
         soundImage = new Image("file:files/soundbuttons/soundon.png", 30,30,false,false);
         soundView = new ImageView(soundImage);
         soundLabel = new Label();
-        soundLabel.setLayoutX(340);
-        soundLabel.setLayoutY(660);
+        soundLabel.setLayoutX(440);
+        soundLabel.setLayoutY(690);
         soundLabel.setGraphic(soundView);
         soundLabel.setId("soundLabel");
 
         musicImage = new Image("file:files/soundbuttons/musicon.png", 30,30,false,false);
         musicView = new ImageView(musicImage);
         musicLabel = new Label();
-        musicLabel.setLayoutX(370);
-        musicLabel.setLayoutY(660);
+        musicLabel.setLayoutX(470);
+        musicLabel.setLayoutY(690);
         musicLabel.setGraphic(musicView);
         musicLabel.setId("musicLabel");
 
 
-        menuView.setLayoutX(310);
+        menuView.setLayoutX(400);
 
 
         soundLabel.setOnMouseClicked(e -> soundLabelClicked());
@@ -288,12 +290,13 @@ public class RightPanel extends Pane {
 
     public void setupObjectButtons() {
         String[] themes = {"forest", "lava", "underground", "cloud", "desert", "space"};
-        int xStart = 30;
+        int xStart = 50;
         int yStart = 40;
         int buttonWidth = 50;
         int buttonHeight = 50;
         int rowHeight = 80;
         int columnSpacing = 75;
+
 
 
         for (int i = 0; i < themes.length; i++) {
@@ -313,11 +316,18 @@ public class RightPanel extends Pane {
             createGoalButton(theme, x, y, buttonWidth, buttonHeight);
             y += rowHeight;
 
-            createCollectibleButton(theme, x, y, buttonWidth, buttonHeight);
+            createBreakableWallButton(theme, x, y, buttonWidth, buttonHeight);
             y += rowHeight;
 
             createItemsButton(x, y, buttonWidth, buttonHeight);
             y += rowHeight;
+
+
+
+            createCollectibleButton(theme, x, y, buttonWidth, buttonHeight);
+            y += rowHeight;
+
+
 
         }
     }
@@ -350,24 +360,58 @@ public class RightPanel extends Pane {
         getChildren().add(wallLabel);
     }
 
+    public void createBreakableWallButton(String theme, int x, int y, int v, int h) {
+        wallImage = new Image("file:files/" + theme + "/breakableWall.png", v, h, false, false);
+
+        wallView = new ImageView(wallImage);
+        wallLabel = new Label();
+        wallLabel.setGraphic(wallView);
+        wallLabel.setOnMouseEntered(e -> {
+            wallLabel.setTooltip(new Tooltip("Breakable Wall"));
+        });
+
+        makeDraggable(wallLabel, wallImage, 7);
+
+        wallLabel.setLayoutX(currentXPositionWall - 120);
+        wallLabel.setLayoutY(y);
+        currentXPositionWall += 50;
+
+        getChildren().add(wallLabel);
+    }
+
     public void createCollectibleButton(String theme, int x, int y, int v, int h) {
         String collectibleType = getCollectibleType(theme);
 
         if (!createdCollectibles.contains(collectibleType)) {
-
             collectibleImage = new Image("file:files/" + theme + "/collectible.png", v, h, false, false);
+
             collectibleView = new ImageView(collectibleImage);
             collectibleLabel = new Label();
             collectibleLabel.setGraphic(collectibleView);
-            collectibleLabel.setLayoutX(x);
-            collectibleLabel.setLayoutY(y);
             collectibleLabel.setOnMouseEntered(e -> {
                 collectibleLabel.setTooltip(new Tooltip("Collectible"));
             });
-            makeDraggable(collectibleLabel, collectibleImage, 4);
-            getChildren().add(collectibleLabel);
 
+            makeDraggable(collectibleLabel, collectibleImage, 4);
+
+            collectibleLabel.setLayoutX(currentXPosition + 30);
+            collectibleLabel.setLayoutY(y);
+            currentXPosition += 90;
+
+            getChildren().add(collectibleLabel);
             createdCollectibles.add(collectibleType);
+        }
+    }
+
+    private String getCollectibleType(String theme) {
+        switch (theme) {
+            case "desert":
+            case "forest":
+            case "lava":
+            case "underground":
+                return "commonColor";
+            default:
+                return theme;
         }
     }
 
@@ -408,7 +452,7 @@ public class RightPanel extends Pane {
             ImageView heartView = new ImageView(heartImage);
             Label heartLabel = new Label();
             heartLabel.setGraphic(heartView);
-            heartLabel.setLayoutX(x);
+            heartLabel.setLayoutX(x + 80);
             heartLabel.setLayoutY(y);
             heartLabel.setOnMouseEntered(e -> {
                 heartLabel.setTooltip(new Tooltip("Heart"));
@@ -424,8 +468,8 @@ public class RightPanel extends Pane {
             ImageView pickaxeView = new ImageView(pickaxeImage);
             Label pickaxeLabel = new Label();
             pickaxeLabel.setGraphic(pickaxeView);
-            pickaxeLabel.setLayoutX(x);
-            pickaxeLabel.setLayoutY(y + 75);
+            pickaxeLabel.setLayoutX(x + 170);
+            pickaxeLabel.setLayoutY(y);
             pickaxeLabel.setOnMouseEntered(e -> {
                 pickaxeLabel.setTooltip(new Tooltip("Pickaxe"));
             });
@@ -654,15 +698,5 @@ public class RightPanel extends Pane {
         audioPlayer.stopClockSound();
     }
 
-    private String getCollectibleType(String theme) {
-        switch (theme) {
-            case "desert":
-            case "forest":
-            case "lava":
-            case "underground":
-                return "commonColor";
-            default:
-                return theme;
-        }
+
     }
-}
