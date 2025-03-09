@@ -189,7 +189,7 @@ public class MainProgram extends Application {
 
         // 4. Create the larger right panel for the level editor.
         RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE());
-        levelEditorRightPanel.setPrefWidth(500);
+        levelEditorRightPanel.setPrefWidth(515);
         levelEditorRightPanel.setBackground(
                 new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
         );
@@ -197,7 +197,7 @@ public class MainProgram extends Application {
 
         // 5. Pick a custom resolution for the scene (slightly wider to accommodate the bigger right panel).
         double editorScaleFactor = scaleFactor;
-        double editorSceneWidth = designWidth * editorScaleFactor + 150;
+        double editorSceneWidth = designWidth * editorScaleFactor + 275;
         double editorSceneHeight = designHeight * editorScaleFactor;
         levelEditorScene = new Scene(levelEditorPane, editorSceneWidth, editorSceneHeight, Color.BLACK);
 

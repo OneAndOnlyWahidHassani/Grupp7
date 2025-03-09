@@ -232,7 +232,7 @@ public class RightPanel extends Pane {
         soundOn = true;
         musicOn = true;
 
-        imageMenu = new Image("file:files/texts/Menu.png", 90, 30, false, false);
+        imageMenu = new Image("file:files/texts/Menu.png", 110, 30, false, false);
         menuView = new ImageView(imageMenu);
 
         emptySprite = new Image("file:files/emptySprite.png", 30, 30, false, false);
@@ -247,7 +247,7 @@ public class RightPanel extends Pane {
         soundImage = new Image("file:files/soundbuttons/soundon.png", 30,30,false,false);
         soundView = new ImageView(soundImage);
         soundLabel = new Label();
-        soundLabel.setLayoutX(440);
+        soundLabel.setLayoutX(460);
         soundLabel.setLayoutY(690);
         soundLabel.setGraphic(soundView);
         soundLabel.setId("soundLabel");
@@ -255,7 +255,7 @@ public class RightPanel extends Pane {
         musicImage = new Image("file:files/soundbuttons/musicon.png", 30,30,false,false);
         musicView = new ImageView(musicImage);
         musicLabel = new Label();
-        musicLabel.setLayoutX(470);
+        musicLabel.setLayoutX(490);
         musicLabel.setLayoutY(690);
         musicLabel.setGraphic(musicView);
         musicLabel.setId("musicLabel");
@@ -269,8 +269,8 @@ public class RightPanel extends Pane {
 
         Button saveLevel = new Button("Save Level");
         saveLevel.setFont(customFont);
-        saveLevel.setTranslateX(195);
-        saveLevel.setTranslateY(600);
+        saveLevel.setTranslateX(160);
+        saveLevel.setTranslateY(800);
         saveLevel.setId("saveLevelButton");
         saveLevel.setOnMouseEntered(e -> saveLevel.setTextFill(Color.RED));
         saveLevel.setOnMouseExited(e -> saveLevel.setTextFill(Color.BLACK));
@@ -341,6 +341,9 @@ public class RightPanel extends Pane {
             createWallButton(theme, x, y, buttonWidth, buttonHeight);
             y += rowHeight;
 
+            createBorderButton(theme, x, y, buttonWidth, buttonHeight);
+            y += rowHeight;
+
             createStartButton(theme, x, y, buttonWidth, buttonHeight);
             y += rowHeight;
 
@@ -373,7 +376,7 @@ public class RightPanel extends Pane {
         pathLabel.setOnMouseEntered(e -> {
             pathLabel.setTooltip(new Tooltip("Path"));
         });
-        makeDraggable(pathLabel, pathImage, 1);
+        makeDraggable(pathLabel, pathImage, 1, theme);
         getChildren().add(pathLabel);
     }
 
@@ -387,7 +390,7 @@ public class RightPanel extends Pane {
         wallLabel.setOnMouseEntered(e -> {
             wallLabel.setTooltip(new Tooltip("Wall"));
         });
-        makeDraggable(wallLabel, wallImage, 0);
+        makeDraggable(wallLabel, wallImage, 0, theme);
         getChildren().add(wallLabel);
     }
 
@@ -401,12 +404,26 @@ public class RightPanel extends Pane {
             wallLabel.setTooltip(new Tooltip("Breakable Wall"));
         });
 
-        makeDraggable(wallLabel, wallImage, 7);
+        makeDraggable(wallLabel, wallImage, 7, theme);
 
-        wallLabel.setLayoutX(currentXPositionWall - 120);
+        wallLabel.setLayoutX(currentXPositionWall - 160);
         wallLabel.setLayoutY(y);
-        currentXPositionWall += 50;
+        currentXPositionWall += 37;
 
+        getChildren().add(wallLabel);
+    }
+
+    public void createBorderButton(String theme, int x, int y, int v, int h) {
+        wallImage = new Image("file:files/" + theme + "/border.png", v, h, false, false);
+        wallView = new ImageView(wallImage);
+        wallLabel = new Label();
+        wallLabel.setGraphic(wallView);
+        wallLabel.setLayoutX(x);
+        wallLabel.setLayoutY(y);
+        wallLabel.setOnMouseEntered(e -> {
+            wallLabel.setTooltip(new Tooltip("Border"));
+        });
+        makeDraggable(wallLabel, wallImage, 8, theme);
         getChildren().add(wallLabel);
     }
 
@@ -423,9 +440,9 @@ public class RightPanel extends Pane {
                 collectibleLabel.setTooltip(new Tooltip("Collectible"));
             });
 
-            makeDraggable(collectibleLabel, collectibleImage, 4);
+            makeDraggable(collectibleLabel, collectibleImage, 4, theme);
 
-            collectibleLabel.setLayoutX(currentXPosition + 30);
+            collectibleLabel.setLayoutX(currentXPosition - 50);
             collectibleLabel.setLayoutY(y);
             currentXPosition += 90;
 
@@ -456,7 +473,7 @@ public class RightPanel extends Pane {
         startLabel.setOnMouseEntered(e -> {
             startLabel.setTooltip(new Tooltip("Start"));
         });
-        makeDraggable(startLabel, startImage, 2);
+        makeDraggable(startLabel, startImage, 2, theme);
         getChildren().add(startLabel);
     }
 
@@ -470,7 +487,7 @@ public class RightPanel extends Pane {
         goalLabel.setOnMouseEntered(e -> {
             goalLabel.setTooltip(new Tooltip("Goal"));
         });
-        makeDraggable(goalLabel, goalImage, 3);
+        makeDraggable(goalLabel, goalImage, 3, theme);
         getChildren().add(goalLabel);
     }
 
@@ -483,12 +500,12 @@ public class RightPanel extends Pane {
             ImageView heartView = new ImageView(heartImage);
             Label heartLabel = new Label();
             heartLabel.setGraphic(heartView);
-            heartLabel.setLayoutX(x + 80);
+            heartLabel.setLayoutX(x);
             heartLabel.setLayoutY(y);
             heartLabel.setOnMouseEntered(e -> {
                 heartLabel.setTooltip(new Tooltip("Heart"));
             });
-            makeDraggable(heartLabel, heartImage, 5);
+            makeDraggable(heartLabel, heartImage, 5, getThemeString());
             getChildren().add(heartLabel);
 
             heartCreated = true;
@@ -499,12 +516,12 @@ public class RightPanel extends Pane {
             ImageView pickaxeView = new ImageView(pickaxeImage);
             Label pickaxeLabel = new Label();
             pickaxeLabel.setGraphic(pickaxeView);
-            pickaxeLabel.setLayoutX(x + 170);
+            pickaxeLabel.setLayoutX(x + 90);
             pickaxeLabel.setLayoutY(y);
             pickaxeLabel.setOnMouseEntered(e -> {
                 pickaxeLabel.setTooltip(new Tooltip("Pickaxe"));
             });
-            makeDraggable(pickaxeLabel, pickaxeImage, 6);
+            makeDraggable(pickaxeLabel, pickaxeImage, 6, getThemeString());
             getChildren().add(pickaxeLabel);
 
             pickaxeCreated = true;
@@ -516,20 +533,13 @@ public class RightPanel extends Pane {
 
 
     //för att kunna dra objekten
-    public void makeDraggable (Label label, Image image, int type) {
-
-        // 1) OnDragDetected: initiate the drag
+    public void makeDraggable(Label label, Image image, int type, String theme) {
         label.setOnDragDetected(event -> {
             Dragboard db = label.startDragAndDrop(TransferMode.COPY_OR_MOVE);
             ClipboardContent content = new ClipboardContent();
-            // Put the image on the dragboard
             content.putImage(image);
-            content.putString(String.valueOf(type));
+            content.putString(type + "," + theme);
             db.setContent(content);
-            //todo lägg till det i mazen som ska sparas i filen
-
-
-            // Optionally: do some visual feedback or change cursor
             event.consume();
         });
     }

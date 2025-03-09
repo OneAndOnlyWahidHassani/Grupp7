@@ -6,7 +6,6 @@ import javafx.scene.input.TransferMode;
 import model.MazeGeneration.GenerateNextLevel;
 import control.MainProgram;
 import javafx.animation.FadeTransition;
-import javafx.animation.PathTransition;
 import javafx.scene.effect.Glow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -15,15 +14,12 @@ import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.event.EventHandler;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import javafx.scene.media.Media;
-import view.Menu.RightPanel;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Random;
 
 /**
  * @author André Eklund
@@ -66,8 +62,8 @@ public class MapTemplateLE extends GridPane {
     private File goalSound = new File("files/sounds/MazegenGoal.mp3");
     private Media goalMedia = new Media(goalSound.toURI().toString());
     private MediaPlayer goalPlayer = new MediaPlayer(goalMedia);
-
     private int themeInt;
+    private String baseTheme;
 
 
     /**
@@ -79,14 +75,28 @@ public class MapTemplateLE extends GridPane {
         this.level = level;
         this.generateNextLevel = generateNextLevel;
         this.themeInt = themeInt;
-
+        this.baseTheme = getThemeString(themeInt);
 
         squareSize = 600/(level.length+2);
         setBackground();
-        setupImages(themeInt);
+        setupImages(baseTheme);
         setupBorders();
         setupLevel();
     }
+
+    private String getThemeString(int themeInt) {
+        switch (themeInt) {
+            case 0: return "forest";
+            case 1: return "lava";
+            case 2: return "underground";
+            case 3: return "cloud";
+            case 4: return "desert";
+            case 5: return "space";
+            default: return "forest";
+        }
+    }
+
+
     public MapTemplateLE(int[][] level, MainProgram mainProgram, int themeInt) throws FileNotFoundException {
         this.mainProgram = mainProgram;
         this.level = level;
@@ -95,7 +105,7 @@ public class MapTemplateLE extends GridPane {
 
         squareSize = 600/(level.length+2);
         setBackground();
-        setupImages(themeInt);
+        setupImages(baseTheme);
         setupBorders();
         setupLevel();
     }
@@ -113,16 +123,16 @@ public class MapTemplateLE extends GridPane {
      */
     public void setupBorders() {
         for (int i = 0; i < level.length + 1; i++) {
-            add(getBorders(), i, 0);
+            add(getBorders(baseTheme), i, 0);
         }
         for (int i = 0; i < level.length + 1; i++) {
-            add(getBorders(), 0, i);
+            add(getBorders(baseTheme), 0, i);
         }
         for (int i = 0; i < level.length + 2; i++) {
-            add(getBorders(), i, level.length + 1);
+            add(getBorders(baseTheme), i, level.length + 1);
         }
         for (int i = 0; i < level.length + 2; i++) {
-            add(getBorders(), level.length + 1, i);
+            add(getBorders(baseTheme), level.length + 1, i);
         }
     }
     /**
@@ -132,22 +142,39 @@ public class MapTemplateLE extends GridPane {
     public void setupLevel() {
         for (int i = 0; i < level.length; i++) {
             for (int j = 0; j < level.length; j++) {
-
-                if (level[i][j] == 1) {
-                    add(getPath(),j + 1,i + 1);
-                }
-                else if (level[i][j] == 0){
-                    add(getWall(),j + 1,i + 1);
-                }
-                else if (level[i][j] == 2){
-                    add(getStart(),j + 1,i + 1);
-                }
-                else if (level[i][j] == 3){
-                    add(getGoal(),j + 1,i + 1);
-                }
-               else if (level[i][j]== 4) {
-                    add(getPath(),j + 1,i + 1);
-                    add(addCollectible(),j + 1,i + 1);
+                switch (level[i][j]) {
+                    case 0:
+                        add(getWall(baseTheme), j + 1, i + 1);
+                        break;
+                    case 1:
+                        add(getPath(baseTheme), j + 1, i + 1);
+                        break;
+                    case 2:
+                        add(getStart(baseTheme), j + 1, i + 1);
+                        break;
+                    case 3:
+                        add(getGoal(baseTheme), j + 1, i + 1);
+                        break;
+                    case 4:
+                        add(getPath(baseTheme), j + 1, i + 1);
+                        add(addCollectible(baseTheme), j + 1, i + 1);
+                        break;
+                    case 5:
+                        add(getPath(baseTheme), j + 1, i + 1);
+                        add(addHeart(baseTheme), j + 1, i + 1);
+                        break;
+                    case 6:
+                        add(getPath(baseTheme), j + 1, i + 1);
+                        add(addPickaxe(baseTheme), j + 1, i + 1);
+                        break;
+                    case 7:
+                        add(getBreakableWall(baseTheme), j + 1, i + 1);
+                        break;
+                    case 8:
+                        add(getBorders(baseTheme), j + 1, i + 1);
+                        break;
+                    default:
+                        break;
                 }
             }
         }
@@ -156,49 +183,28 @@ public class MapTemplateLE extends GridPane {
     /**
      * Instansierar de olika bilderna som används som grafik inuti spelet.
      * Baserad på value så sätts bilderna till en specifik folder per värld.
-     * @param value Den aktuella världen.
      */
-    public void setupImages(int value){
+    private void setupImages(String theme) {
+        path = new Image("file:files/" + theme + "/path.png", squareSize, squareSize, false, false);
+        goal = new Image("file:files/" + theme + "/goal.png", squareSize, squareSize, false, false);
+        diamond = new Image("file:files/" + theme + "/collectible.png", squareSize, squareSize, false, false);
+        start = new Image("file:files/" + theme + "/start.png", squareSize, squareSize, false, false);
 
-        String folder = "";
-
-        if (value == 0) {
-            folder = "forest";
-        }
-        else if (value == 1) {
-            folder = "lava";
-        }
-        else if (value == 2) {
-            folder = "underground";
-        }
-        else if(value == 3) {
-            folder = "cloud";
-        }
-        else if(value == 4) {
-            folder = "desert";
-        }
-        else if(value == 5) {
-            folder = "space";
+        if (!theme.equals("space")) {
+            border = new Image("file:files/" + theme + "/border.png", squareSize, squareSize, false, false);
+            wall = new Image("file:files/" + theme + "/wall.png", squareSize, squareSize, false, false);
         }
 
-        path = new Image("file:files/" + folder + "/path.png", squareSize, squareSize, false, false);
-        goal = new Image("file:files/" + folder + "/goal.png", squareSize, squareSize, false, false);
-        diamond = new Image("file:files/" + folder + "/collectible.png", squareSize, squareSize, false, false);
-        start = new Image("file:files/" + folder + "/start.png", squareSize, squareSize, false, false);
-
-        if(value!=5){
-            border = new Image("file:files/" + folder + "/border.png", squareSize, squareSize, false, false);
-            wall = new Image("file:files/" + folder + "/wall.png", squareSize, squareSize, false, false);
-        }
+        wall = new Image("file:files/" + theme + "/breakableWall.png", squareSize, squareSize, false, false);
     }
-
     /**
      * En metod som skapar ett objekt av label som representerar en vägg.
      * @return Returnerar en label.
      */
-    public Label getWall() {
+    public Label getWall(String theme) {
         Label label = new Label();
-        ImageView wallView = new ImageView(wall);
+        Image wallImage = new Image("file:files/" + theme + "/wall.png", squareSize, squareSize, false, false);
+        ImageView wallView = new ImageView(wallImage);
         wallView.setFitHeight(squareSize);
         wallView.setFitWidth(squareSize);
         label.setGraphic(wallView);
@@ -208,13 +214,29 @@ public class MapTemplateLE extends GridPane {
         label.setOnDragDropped(e -> releaseOnLabel(e));
         return label;
     }
+
+    private Label getBreakableWall(String theme) {
+        Label breakableWallLabel = new Label();
+        Image breakableWallImage = new Image("file:files/" + theme + "/breakableWall.png", squareSize, squareSize, false, false);
+        ImageView breakableWallView = new ImageView(breakableWallImage);
+        breakableWallView.setFitHeight(squareSize);
+        breakableWallView.setFitWidth(squareSize);
+        breakableWallLabel.setGraphic(breakableWallView);
+        breakableWallLabel.setOnMouseEntered(e -> enteredWall(e));
+        breakableWallLabel.setOnMouseExited(e -> exitedLabel(e));
+        breakableWallLabel.setOnDragOver(e -> holdOnLabel(e));
+        breakableWallLabel.setOnDragDropped(e -> releaseOnLabel(e));
+        return breakableWallLabel;
+    }
+
     /**
      * En metod som skapar ett objekt av label som representerar en väg.
      * @return Returnerar en label.
      */
-    public Label getPath() {
+    public Label getPath(String theme) {
         Label label = new Label();
-        ImageView pathView = new ImageView(path);
+        Image pathImage = new Image("file:files/" + theme + "/path.png", squareSize, squareSize, false, false);
+        ImageView pathView = new ImageView(pathImage);
         pathView.setFitHeight(squareSize);
         pathView.setFitWidth(squareSize);
         label.setGraphic(pathView);
@@ -224,27 +246,33 @@ public class MapTemplateLE extends GridPane {
         label.setOnDragDropped(e -> releaseOnLabel(e));
         return label;
     }
+
+
     /**
      * En metod som skapar ett objekt av label som representerar en border.
      * @return Returnerar en label.
      */
-    private Label getBorders() {
+    private Label getBorders(String theme) {
         Label label = new Label();
-        ImageView borderView = new ImageView(border);
+        Image borderImage = new Image("file:files/" + theme + "/border.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(borderImage);
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
         label.setOnMouseEntered(e -> enteredWall(e));
         label.setOnMouseExited(e -> exitedLabel(e));
+        label.setOnDragOver(e -> holdOnLabel(e));
+        label.setOnDragDropped(e -> releaseOnLabel(e));
         return label;
     }
     /**
      * En metod som skapar ett objekt av label som representerar en förstörbar vägg.
      * @return Returnerar en label.
      */
-    private Label getGoal() {
+    private Label getGoal(String theme) {
         Label label = new Label();
-        ImageView borderView = new ImageView(goal);
+        Image goalImage = new Image("file:files/" + theme + "/goal.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(goalImage);
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
@@ -258,9 +286,10 @@ public class MapTemplateLE extends GridPane {
      * En metod som skapar ett objekt av label som representerar start.
      * @return Returnerar en label.
      */
-    private Label getStart() {
+    private Label getStart(String theme) {
         Label label = new Label();
-        ImageView borderView = new ImageView(start);
+        Image startImage = new Image("file:files/" + theme + "/start.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(startImage);
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
@@ -274,8 +303,9 @@ public class MapTemplateLE extends GridPane {
      * En metod som skapar ett objekt av label som representerar en collectible.
      * @return Returnerar en label.
      */
-    public Label addCollectible() {
+    public Label addCollectible(String theme) {
         Label collectible = new Label();
+        Image diamond = new Image("file:files/" + theme + "/collectible.png", squareSize, squareSize, false, false);
         ImageView borderView = new ImageView(diamond);
         borderView.setFitHeight(squareSize);
         borderView.setFitWidth(squareSize);
@@ -292,7 +322,33 @@ public class MapTemplateLE extends GridPane {
         collectible.setOnDragDropped(e -> releaseOnLabel(e));
         return collectible;
     }
+    private Label addHeart(String theme) {
+        Label heartLabel = new Label();
+        Image heartImage = new Image("file:files/items/heart.png", squareSize, squareSize, false, false);
+        ImageView heartView = new ImageView(heartImage);
+        heartView.setFitHeight(squareSize);
+        heartView.setFitWidth(squareSize);
+        heartLabel.setGraphic(heartView);
+        heartLabel.setOnMouseEntered(e -> enteredWall(e));
+        heartLabel.setOnMouseExited(e -> exitedLabel(e));
+        heartLabel.setOnDragOver(e -> holdOnLabel(e));
+        heartLabel.setOnDragDropped(e -> releaseOnLabel(e));
+        return heartLabel;
+    }
 
+    private Label addPickaxe(String theme) {
+        Label pickaxeLabel = new Label();
+        Image pickaxeImage = new Image("file:files/items/pickaxe.png", squareSize, squareSize, false, false);
+        ImageView pickaxeView = new ImageView(pickaxeImage);
+        pickaxeView.setFitHeight(squareSize);
+        pickaxeView.setFitWidth(squareSize);
+        pickaxeLabel.setGraphic(pickaxeView);
+        pickaxeLabel.setOnMouseEntered(e -> enteredWall(e));
+        pickaxeLabel.setOnMouseExited(e -> exitedLabel(e));
+        pickaxeLabel.setOnDragOver(e -> holdOnLabel(e));
+        pickaxeLabel.setOnDragDropped(e -> releaseOnLabel(e));
+        return pickaxeLabel;
+    }
     /**
      * Om spelaren vidrör muspekaren vid en vägg avslutas spelrundan.
      * @param e Används för att hitta rätt label.
@@ -327,44 +383,80 @@ public class MapTemplateLE extends GridPane {
         fade.play();
     }
     private void holdOnLabel(DragEvent e) {
-        // Only allow drop if it has a string (for example) and if the source allows copy or move
 
-            // Indicate that we can accept this transfer mode
         e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
 
         e.consume();
     }
+
+
     private void releaseOnLabel(DragEvent e) {
         Dragboard db = e.getDragboard();
         boolean success = false;
         Label dropTargetLabel = (Label) e.getGestureTarget();
-        System.out.println(dropTargetLabel.getLayoutX() + " " + dropTargetLabel.getLayoutY() );
 
-        int type = Integer.parseInt(db.getString());
-        int row = GridPane.getRowIndex(dropTargetLabel) -1;
-        int col = GridPane.getColumnIndex(dropTargetLabel) -1;
-        System.out.println("Row: " + row + " Col: " + col);
+        String[] data = db.getString().split(",");
+        int type = Integer.parseInt(data[0]);
+        String objectTheme = data[1];
 
+        int row = GridPane.getRowIndex(dropTargetLabel) - 1;
+        int col = GridPane.getColumnIndex(dropTargetLabel) - 1;
         level[row][col] = type;
-        System.out.println(level[row][col]);
-        updateLevel();
 
+        updateLevelWithObjectTheme(row, col, objectTheme);
 
-        System.out.println("Dropped on label");
         success = true;
-
         e.setDropCompleted(success);
         e.consume();
-
-
     }
 
-    private void updateLevel() {
-        this.getChildren().clear();
-        setupBorders();
-        setupLevel();
-    }
+    /**
+     * En metod som uppdaterar level med en ny label.
+     * @param row Raden som ska uppdateras.
+     * @param col Kolumnen som ska uppdateras.
+     * @param objectTheme Temat som ska användas.
+     */
+    private void updateLevelWithObjectTheme(int row, int col, String objectTheme) {
+        this.getChildren().removeIf(node -> {
+            Integer nodeRow = GridPane.getRowIndex(node);
+            Integer nodeCol = GridPane.getColumnIndex(node);
+            return nodeRow != null && nodeCol != null && nodeRow == row + 1 && nodeCol == col + 1;
+        });
 
+        switch (level[row][col]) {
+            case 0:
+                add(getWall(objectTheme), col + 1, row + 1);
+                break;
+            case 1:
+                add(getPath(objectTheme), col + 1, row + 1);
+                break;
+            case 2:
+                add(getStart(objectTheme), col + 1, row + 1);
+                break;
+            case 3:
+                add(getGoal(objectTheme), col + 1, row + 1);
+                break;
+            case 4:
+                add(getPath(baseTheme), col + 1, row + 1);
+                add(addCollectible(objectTheme), col + 1, row + 1);
+                break;
+            case 5:
+                add(getPath(baseTheme), col + 1, row + 1);
+                add(addHeart(objectTheme), col + 1, row + 1);
+                break;
+            case 6:
+                add(getPath(baseTheme), col + 1, row + 1);
+                add(addPickaxe(objectTheme), col + 1, row + 1);
+                break;
+            case 7:
+                add(getBreakableWall(objectTheme), col + 1, row + 1);
+            case 8:
+                add(getBorders(objectTheme), col + 1, row + 1);
+                break;
+            default:
+                break;
+        }
+    }
 
 
     /**
