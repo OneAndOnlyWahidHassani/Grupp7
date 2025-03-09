@@ -232,7 +232,7 @@ public class MainProgram extends Application {
         editorGroup.getTransforms().add(scale);
 
         RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE());
-        levelEditorRightPanel.setPrefWidth(400);
+        levelEditorRightPanel.setPrefWidth(500);
         levelEditorRightPanel.setBackground(
                 new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
         );
