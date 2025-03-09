@@ -29,7 +29,7 @@ public class MazeGenerator {
         dimension = dim;
         generateMaze();
         createStartAndGoal();
-        System.out.println(getRawMaze());
+        System.out.println("Raw maze usual: " + getRawMaze());
     }
 
     public MazeGenerator(int dim, boolean SetGoalAndStart, boolean editor) {
@@ -38,8 +38,20 @@ public class MazeGenerator {
         dimension = dim;
         generateEmptyMaze();
         createSetStartAndGoal();
-        System.out.println(getRawMaze());
+        System.out.println("Raw maze editor: " + getRawMaze());
     }
+
+    public MazeGenerator(int [][] existingMaze , boolean setGoalAndStart, boolean editor) {
+        this.maze = existingMaze;
+        dimension = existingMaze.length;
+        this.generateGoalAndStart = setGoalAndStart;
+        if(setGoalAndStart) {
+            createSetStartAndGoal();
+        }
+        generateMazeFromExisting();
+        System.out.println("Raw maze from existing: " + getRawMaze());
+    }
+
 
     public void generateMaze() {
         stack.push(new Node(0, 0));
@@ -51,6 +63,25 @@ public class MazeGenerator {
                 randomlyAddNodesToStack(neighbors);
             }
         }
+    }
+
+    public void generateMazeFromExisting() {
+        for (int y = 0; y < dimension; y++) {
+            for (int x = 0; x < dimension; x++) {
+                if (maze[y][x] == 1) {
+                    stack.push(new Node(x, y));
+                }
+            }
+        }
+        while (!stack.empty()) {
+            Node next = stack.pop();
+            if (validNextNode(next)) {
+                maze[next.y][next.x] = 1;
+                ArrayList<Node> neighbors = findNeighbors(next);
+                randomlyAddNodesToStack(neighbors);
+            }
+        }
+        System.out.println("Generated maze from existing" + Arrays.deepToString(maze));
     }
 
     public String getRawMaze() {
@@ -165,6 +196,10 @@ public class MazeGenerator {
 
     public int[][] getRawMazeArray() {
         return maze;
+    }
+
+    public void setRawMazeArray(int[][] maze) {
+        this.maze = maze;
     }
 
 }

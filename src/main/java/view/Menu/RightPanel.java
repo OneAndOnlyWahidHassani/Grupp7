@@ -1,6 +1,7 @@
 package view.Menu;
 
 
+import LevelEditor.controller.MainLE;
 import control.MainProgram;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -9,6 +10,7 @@ import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.concurrent.Task;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -25,6 +27,7 @@ import model.TimeThread;
 import model.TotalTime;
 import view.AudioPlayer;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.HashSet;
 import java.util.Set;
@@ -112,6 +115,9 @@ public class RightPanel extends Pane {
     private TimeThread time;
     private TotalTime totTime;
     private Set<String> createdCollectibles = new HashSet<>();
+
+    //rightPanel for leveleditor
+    MainLE mainLE;
 
 
 
@@ -215,10 +221,12 @@ public class RightPanel extends Pane {
     }
 
     //rightPanel for leveleditor
-    public RightPanel(MainProgram mainProgram, AudioPlayer audioPlayer, int themeInt) throws FileNotFoundException {
+    public RightPanel(MainProgram mainProgram, AudioPlayer audioPlayer, int themeInt, MainLE mainLE) throws FileNotFoundException {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         this.themeInt = themeInt;
+        this.mainLE = mainLE;
+        Font customFont = loadFont();
 
 
         soundOn = true;
@@ -259,15 +267,38 @@ public class RightPanel extends Pane {
         soundLabel.setOnMouseClicked(e -> soundLabelClicked());
         musicLabel.setOnMouseClicked(e -> musicLabelClicked());
 
-        getChildren().addAll(menuView, soundLabel, musicLabel);
+        Button saveLevel = new Button("Save Level");
+        saveLevel.setFont(customFont);
+        saveLevel.setTranslateX(100);
+        saveLevel.setTranslateY(600);
+        saveLevel.setId("saveLevelButton");
+        saveLevel.setOnMouseEntered(e -> saveLevel.setTextFill(Color.RED));
+        saveLevel.setOnMouseExited(e -> saveLevel.setTextFill(Color.BLACK));
+        saveLevel.setOnAction(e -> {
+            mainLE.saveLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
+            audioPlayer.playButtonSound();
+        });
+
+        getChildren().addAll(menuView, soundLabel, musicLabel, saveLevel);
 
 
         menuView.setOnMouseClicked(e -> MainMenuClicked(e));
+
+
+
 
         setupObjectButtons();
 
 
 
+    }
+
+    private Font loadFont() {
+        try {
+            return Font.loadFont(new FileInputStream("files/fonts/PressStart2P.ttf"), 20);
+        } catch (FileNotFoundException e) {
+            return Font.font("Verdana", 20);
+        }
     }
     public String getThemeString() {
         switch (themeInt) {
@@ -495,6 +526,8 @@ public class RightPanel extends Pane {
             content.putImage(image);
             content.putString(String.valueOf(type));
             db.setContent(content);
+            //todo lägg till det i mazen som ska sparas i filen
+
 
             // Optionally: do some visual feedback or change cursor
             event.consume();

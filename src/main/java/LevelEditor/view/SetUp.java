@@ -289,6 +289,7 @@ public class SetUp extends Pane {
 
 
             String selectedTheme = themes[currentThemeIndex].getUrl().replace("file:files/theme/", "").replace(".png", "");
+            System.out.println(selectedTheme);
             String selectedDimension = dimensions[currentDimensionIndex].getUrl().replace("file:files/texts/", "").replace(".png", "");
 
             String selectedDimensionPrefix = selectedDimension.substring(0, 2); // Hämtar de två första bokstäverna
@@ -296,7 +297,7 @@ public class SetUp extends Pane {
             selectedDimensionInt = Integer.parseInt(selectedDimensionPrefix);
             System.out.println(selectedDimensionInt);
 
-            mainLE.saveLevel(levelName, selectedTheme, selectedDimension);
+            mainLE.saveLevel(levelName, selectedTheme, selectedDimension, null);
             int themeInt = mainLE.getThemeInt();
 
 
@@ -384,6 +385,10 @@ public class SetUp extends Pane {
         } catch (FileNotFoundException e) {
             System.out.println("Fontfilen hittades inte!");
         }
+    }
+
+    public MainLE getMainLE() {
+        return this.mainLE;
     }
 
 

@@ -1,6 +1,7 @@
 package control;
 
 
+import LevelEditor.controller.MainLE;
 import LevelEditor.view.MapTemplateLE;
 import LevelEditor.view.MenuLE;
 import LevelEditor.view.SetUp;
@@ -28,6 +29,7 @@ import view.WorldIntroAnimation;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Updated MainProgram implementing a scalable UI with a special layout for the Level Editor.
@@ -95,7 +97,7 @@ public class MainProgram extends Application {
         chooseDimension = new ChooseDimension(this, audioPlayer);
         selectWorldMap = new SelectWorldMap(this, audioPlayer);
         setUp = new SetUp(this, audioPlayer);
-        menuLE = new MenuLE(this, audioPlayer);
+        menuLE = new MenuLE(this, audioPlayer, setUp.getMainLE());
 
 
 
@@ -186,7 +188,7 @@ public class MainProgram extends Application {
         editorGroup.getTransforms().add(scale);
 
         // 4. Create the larger right panel for the level editor.
-        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt);
+        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE());
         levelEditorRightPanel.setPrefWidth(500);
         levelEditorRightPanel.setBackground(
                 new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
@@ -207,6 +209,8 @@ public class MainProgram extends Application {
         generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension, themeInt);
         mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel, themeInt);
 
+        setUp.getMainLE().setMazeGenerator(mazeGenerator);
+
         // 8. Add mapTemplateLE to the same group so it scales together with the editorContent.
         editorGroup.getChildren().add(mapTemplateLE);
 
@@ -215,6 +219,57 @@ public class MainProgram extends Application {
         levelEditorPane.setCenter(editorGroup);
 
         // 10. Finally, show this scene in your primary stage/window.
+        mainWindow.setScene(levelEditorScene);
+    }
+//TODO fix this
+    public void enterLevelEditorFromEdit(int[][] maze, int dimension, int themeInt) throws FileNotFoundException {
+        System.out.println("Maze vid enterLevelEditorFromEdit:" + Arrays.deepToString(maze));
+        BorderPane levelEditorPane = new BorderPane();
+        Pane editorContent = new Pane();
+        Group editorGroup = new Group(editorContent);
+
+        Scale scale = new Scale(scaleFactor, scaleFactor);
+        editorGroup.getTransforms().add(scale);
+
+        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE());
+        levelEditorRightPanel.setPrefWidth(400);
+        levelEditorRightPanel.setBackground(
+                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
+        );
+        levelEditorPane.setRight(levelEditorRightPanel);
+
+        double editorScaleFactor = scaleFactor;
+        double editorSceneWidth = designWidth * editorScaleFactor + 150;
+        double editorSceneHeight = designHeight * editorScaleFactor;
+        levelEditorScene = new Scene(levelEditorPane, editorSceneWidth, editorSceneHeight, Color.BLACK);
+
+        levelEditorScene.setCursor(new ImageCursor(cursorImage));
+
+        mazeGenerator = new MazeGenerator(maze, false, true);
+        System.out.println("Maze vid enterLevelEditorFromEdit 1:");
+        for (int i = 0; i < maze.length; i++) {
+            System.out.println(java.util.Arrays.toString(maze[i]));
+        }
+
+
+        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension, themeInt);
+        System.out.println("Maze vid enterLevelEditorFromEdit:");
+        for (int i = 0; i < maze.length; i++) {
+            System.out.println(java.util.Arrays.toString(maze[i]));
+        }
+
+        mapTemplateLE = new MapTemplateLE(maze, this, generateNextLevel, themeInt);
+        System.out.println("Maze vid enterLevelEditorFromEdit:");
+        for (int i = 0; i < maze.length; i++) {
+            System.out.println(java.util.Arrays.toString(maze[i]));
+        }
+
+
+        editorGroup.getChildren().add(mapTemplateLE);
+
+        BorderPane.setAlignment(editorGroup, Pos.TOP_LEFT);
+        levelEditorPane.setCenter(editorGroup);
+
         mainWindow.setScene(levelEditorScene);
     }
 

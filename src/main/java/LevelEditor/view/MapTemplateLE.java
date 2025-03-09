@@ -74,6 +74,7 @@ public class MapTemplateLE extends GridPane {
      * Konstruktorn ska kunna ta emot int-arrayer och representera dem i GUIt
      */
     public MapTemplateLE(int[][] level, MainProgram mainProgram, GenerateNextLevel generateNextLevel, int themeInt) throws FileNotFoundException {
+        System.out.println("Theme in maptemplkate " + themeInt);
         this.mainProgram = mainProgram;
         this.level = level;
         this.generateNextLevel = generateNextLevel;

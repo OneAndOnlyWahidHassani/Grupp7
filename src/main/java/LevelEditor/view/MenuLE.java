@@ -1,5 +1,7 @@
 package LevelEditor.view;
 
+import LevelEditor.controller.MainLE;
+import LevelEditor.model.Level;
 import control.MainProgram;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -9,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import model.MazeGeneration.MazeGenerator;
 import model.ReaderWriter.FileManager;
 import view.AudioPlayer;
 import javafx.scene.control.Button;
@@ -24,12 +27,14 @@ public class MenuLE extends Pane {
     private AudioPlayer audioPlayer;
     private Font customFont;
     private FileManager fileManager;
+    private MainLE mainLE;
 
 
-    public MenuLE(MainProgram mainProgram, AudioPlayer audioPlayer) {
+    public MenuLE(MainProgram mainProgram, AudioPlayer audioPlayer, MainLE mainLE) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         this.fileManager = new FileManager();
+        this.mainLE = mainLE;
         loadFont();
         setBackground();
         addButtons();
@@ -130,8 +135,19 @@ public class MenuLE extends Pane {
             String selectedLevel = levelList.getSelectionModel().getSelectedItem();
             if (selectedLevel != null) {
                 System.out.println("Loading level: " + selectedLevel);
-                 // Ladda filen (eller utför relevant handling)
-                //Todo: Ladda in leveldata
+                mainLE.loadLevel(selectedLevel);
+                int themeInt = mainLE.getThemeInt();
+                System.out.println("Theme: " + themeInt);
+                int dimensionInt = Integer.parseInt(mainLE.getDimension().split("x")[0]);
+                System.out.println("Dimension: " + dimensionInt);
+                int[][] maze = mainLE.getMazeGenerator().getRawMazeArray();
+                System.out.println("Maze: " + Arrays.deepToString(maze));
+
+                try {
+                    mainProgram.enterLevelEditorFromEdit(maze,dimensionInt, themeInt);
+                } catch (FileNotFoundException fileNotFoundException) {
+                    throw new RuntimeException("Could not find file");
+                }
 
                 popupStage.close();
             }
@@ -144,6 +160,8 @@ public class MenuLE extends Pane {
         popupStage.setScene(scene);
         popupStage.show();
     }
+
+
 
 
 }
