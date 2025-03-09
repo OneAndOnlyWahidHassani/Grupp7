@@ -270,7 +270,7 @@ public class RightPanel extends Pane {
         Button saveLevel = new Button("Save Level");
         saveLevel.setFont(customFont);
         saveLevel.setTranslateX(160);
-        saveLevel.setTranslateY(800);
+        saveLevel.setTranslateY(665);
         saveLevel.setId("saveLevelButton");
         saveLevel.setOnMouseEntered(e -> saveLevel.setTextFill(Color.RED));
         saveLevel.setOnMouseExited(e -> saveLevel.setTextFill(Color.BLACK));
