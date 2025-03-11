@@ -1,4 +1,4 @@
 package levelEditor.controller;
 
-public class NivHantering {
+public class NivHanteringTest {
 }

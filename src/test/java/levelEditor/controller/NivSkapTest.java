@@ -1,4 +1,4 @@
 package levelEditor.controller;
 
-public class ObjHantering {
+public class NivSkapTest {
 }
