@@ -163,6 +163,55 @@ class LevelEditorTest extends ApplicationTest {
 
     }
 
+    /**
+     * testing random theme when creating level
+     */
+    @Test
+    public void NIVS_1_2_2(){
+        Path expectedFilePath = Paths.get("createdLevels/TestLevel_Niv.dat");
+        int worldsCLicks = random.nextInt(6) + 1;
+        System.out.println(worldsCLicks + "tre");
+        try {
+            if (Files.exists(expectedFilePath)) {
+                Files.delete(expectedFilePath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        WaitForAsyncUtils.waitForFxEvents();
+        moveToAndClickOn("introButton");
+        moveToAndClickOn("levelEditorButton");
+        moveToAndClickOn("createLevelButton");
+        moveTo("#LeftButtonThem").moveBy(0, -50);
+        clickOn();
+        moveTo("#RightButtonThem").moveBy(0, -50);
+        for(int i = 0; i < worldsCLicks; i++){
+            clickOn();
+            sleep(500);
+        }
+        moveToAndClickOn("textFieldLevelEditor");
+        write("TestLevel_Niv");
+        moveToAndClickOn("selectButtonLevelEditor");
+        if (worldsCLicks == 1)
+            assertEquals(3, mainLE.getThemeInt(), "cloud");
+        else if (worldsCLicks == 2)
+            assertEquals(4, mainLE.getThemeInt(), "desert");
+        else if (worldsCLicks == 3)
+            assertEquals(0, mainLE.getThemeInt(), "forest");
+        else if (worldsCLicks == 4)
+            assertEquals(1, mainLE.getThemeInt(), "lava");
+        else if (worldsCLicks == 5)
+            assertEquals(5, mainLE.getThemeInt(), "space");
+        else if (worldsCLicks == 6)
+            assertEquals(2, mainLE.getThemeInt(), "underground");
+        else if (worldsCLicks == 7)
+            assertEquals(3, mainLE.getThemeInt(), "cloud");
+
+
+        assertTrue(Files.exists(expectedFilePath));
+
+    }
+
 
     private void moveToAndClickOn(String buttonId) {
         moveTo("#" + buttonId);
