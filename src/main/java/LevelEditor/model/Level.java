@@ -41,6 +41,7 @@ public class Level {
     public String getTheme() {
         return theme;
     }
+
     public int getThemeInt() {
         if (theme.equals("forest")) {
             return 0;
