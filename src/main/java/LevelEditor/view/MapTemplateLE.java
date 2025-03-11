@@ -457,6 +457,15 @@ public class MapTemplateLE extends GridPane {
                 break;
         }
     }
+    public GridPane getGridPane() {
+        return this;
+    }
+    public int getDimension() {
+        return level.length;
+    }
+    public int[][] getLevel() {
+        return level;
+    }
 
 
     /**
