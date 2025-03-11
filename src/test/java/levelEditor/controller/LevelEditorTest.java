@@ -1,5 +1,6 @@
 package levelEditor.controller;
 
+import LevelEditor.controller.MainLE;
 import control.MainProgram;
 import javafx.stage.Stage;
 import model.Maps.World1Maps;
@@ -22,6 +23,7 @@ class LevelEditorTest extends ApplicationTest {
 
     private MainProgram mainProgram;
     private Random random;
+    private MainLE mainLE;
 
     @Override
     public void start(Stage stage) {
@@ -36,11 +38,16 @@ class LevelEditorTest extends ApplicationTest {
 
     @BeforeEach
     public void setUp() {
+        mainLE = mainProgram.getSetUp().getMainLE();
     }
 
 
     @Test
-    public void testCreatingLevelThatExistWithEditor(){
+    /**
+     * Test valid input of Level editor name
+     * Test invalid input of Level editor name
+     */
+    public void NIVS1_2_3_1() {
         Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
         try {
             if (Files.exists(expectedFilePath)) {
@@ -63,8 +70,9 @@ class LevelEditorTest extends ApplicationTest {
         moveToAndClickOn("selectButtonLevelEditor");
         assertTrue(Files.exists(expectedFilePath));
     }
+
     @Test
-    public void testCreatingLevelWithoutName(){
+    public void NIVS_1_2_3_2() {
         WaitForAsyncUtils.waitForFxEvents();
         moveToAndClickOn("introButton");
         moveToAndClickOn("levelEditorButton");
@@ -78,7 +86,10 @@ class LevelEditorTest extends ApplicationTest {
 
     @Test
     @Order(1)
-    public void testCreatingLevelWithEditor(){
+    /**
+     * Testing valid input for creating a new level.
+     */
+    public void NIVS_1_2() {
         Path expectedFilePath = Paths.get("createdLevels/TestLevel_Niv.dat");
         try {
             if (Files.exists(expectedFilePath)) {
@@ -95,14 +106,16 @@ class LevelEditorTest extends ApplicationTest {
         write("TestLevel_Niv");
         moveToAndClickOn("selectButtonLevelEditor");
         assertTrue(Files.exists(expectedFilePath));
-
     }
 
     @Test
-    public void testCreatingLevelRandomDimensionEditor(){
+    /**
+     * Testing random dimension and that it's saved properly.
+     */
+    public void NIVS_1_2_1() {
         Path expectedFilePath = Paths.get("createdLevels/TestLevel_Niv.dat");
         int dimensionCLicks = random.nextInt(3) + 1;
-        int worldsCLicks = random.nextInt(6) + 1;
+
         try {
             if (Files.exists(expectedFilePath)) {
                 Files.delete(expectedFilePath);
@@ -117,27 +130,41 @@ class LevelEditorTest extends ApplicationTest {
         moveTo("#LeftButtonDimension").moveBy(0, -80);
         clickOn();
         moveTo("#RightButtonDimension").moveBy(0, -80);
-        for(int i = 0; i < dimensionCLicks; i++){
+        for (int i = 0; i < dimensionCLicks; i++) {
             clickOn();
             sleep(500);
         }
+
+
         moveTo("#LeftButtonThem").moveBy(0, -50);
         clickOn();
-        moveTo("#RightButtonThem").moveBy(0, -50);
-        for(int i = 0; i < worldsCLicks; i++){
-            clickOn();
-            sleep(500);
-        }
+
         moveToAndClickOn("textFieldLevelEditor");
         write("TestLevel_Niv");
         moveToAndClickOn("selectButtonLevelEditor");
+
+        switch (dimensionCLicks) {
+            case 0:
+                assertEquals("18x18", mainLE.getDimension(), "Dimension 18X18");
+                break;
+            case 1:
+                assertEquals("14x14", mainLE.getDimension(), "Dimension 14X14");
+                break;
+            case 2:
+                assertEquals("10x10", mainLE.getDimension(), "Dimension 10X10");
+                break;
+            case 3:
+                assertEquals("18x18", mainLE.getDimension(), "Dimension 18X18"); // Loopen går runt
+                break;
+        }
+
+
         assertTrue(Files.exists(expectedFilePath));
 
     }
 
 
-
-    private void moveToAndClickOn(String buttonId){
+    private void moveToAndClickOn(String buttonId) {
         moveTo("#" + buttonId);
         clickOn();
     }

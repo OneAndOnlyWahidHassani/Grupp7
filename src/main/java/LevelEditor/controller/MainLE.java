@@ -32,6 +32,9 @@ public class MainLE {
         saveLevelData();
     }
 
+    public String getDimension() {
+        return (dimension);
+    }
 
     public int getThemeInt() {
         return level.getThemeInt();

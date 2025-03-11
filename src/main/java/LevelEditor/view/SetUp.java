@@ -386,5 +386,9 @@ public class SetUp extends Pane {
         }
     }
 
+    public MainLE getMainLE() {
+        return mainLE;
+    }
+
 
 }
