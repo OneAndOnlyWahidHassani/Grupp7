@@ -3,6 +3,7 @@ package levelEditor.controller;
 import LevelEditor.controller.MainLE;
 import control.MainProgram;
 import javafx.stage.Stage;
+import model.MazeGeneration.MazeGenerator;
 import model.Maps.World1Maps;
 import model.Maps.World2Maps;
 import org.junit.jupiter.api.*;
@@ -24,6 +25,7 @@ class LevelEditorTest extends ApplicationTest {
     private MainProgram mainProgram;
     private Random random;
     private MainLE mainLE;
+    private MazeGenerator mazeGenerator;
 
     @Override
     public void start(Stage stage) {
@@ -206,6 +208,75 @@ class LevelEditorTest extends ApplicationTest {
 
         assertTrue(Files.exists(expectedFilePath));
 
+    }
+
+    /**
+     * Tests that only one GOAL is generated on a new level
+     */
+    @Test
+    public void NIVS1_4_2() {
+
+    Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
+        try {
+            if (Files.exists(expectedFilePath)) {
+                Files.delete(expectedFilePath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        WaitForAsyncUtils.waitForFxEvents();
+        moveToAndClickOn("introButton");
+        moveToAndClickOn("levelEditorButton");
+        moveToAndClickOn("createLevelButton");
+        moveToAndClickOn("textFieldLevelEditor");
+        write("TestLevelNewName_Niv");
+        moveToAndClickOn("selectButtonLevelEditor");
+        mazeGenerator = mainProgram.getMazeGenerator();
+        int [][] maze = mazeGenerator.getRawMazeArray();
+        int counter = 0;
+        for (int i = 0; i < maze.length; i++){
+            for (int j = 0; j < maze[i].length; j++){
+                if (maze[i][j] == 3)
+                    counter++;
+            }
+        }
+        assertEquals(1, counter, "One GOAL generated");
+        assertTrue(Files.exists(expectedFilePath));
+    }
+
+    /**
+     * Tests that only one START is generated on a new level
+     */
+    @Test
+    public void NIVS1_4_3() {
+
+
+        Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
+        try {
+            if (Files.exists(expectedFilePath)) {
+                Files.delete(expectedFilePath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        WaitForAsyncUtils.waitForFxEvents();
+        moveToAndClickOn("introButton");
+        moveToAndClickOn("levelEditorButton");
+        moveToAndClickOn("createLevelButton");
+        moveToAndClickOn("textFieldLevelEditor");
+        write("TestLevelNewName_Niv");
+        moveToAndClickOn("selectButtonLevelEditor");
+        mazeGenerator = mainProgram.getMazeGenerator();
+        int [][] maze = mazeGenerator.getRawMazeArray();
+        int counter = 0;
+        for (int i = 0; i < maze.length; i++){
+            for (int j = 0; j < maze[i].length; j++){
+                if (maze[i][j] == 2)
+                    counter++;
+            }
+        }
+        assertEquals(1, counter, "One START generated");
+        assertTrue(Files.exists(expectedFilePath));
     }
 
 

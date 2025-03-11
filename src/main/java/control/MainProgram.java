@@ -332,6 +332,9 @@ public class MainProgram extends Application {
     public SetUp getSetUp() {
         return setUp;
     }
+    public MazeGenerator getMazeGenerator() {
+        return this.mazeGenerator;
+    }
 
     public static void main(String[] args) {
         launch(args);
