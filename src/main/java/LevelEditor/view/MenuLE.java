@@ -135,6 +135,7 @@ public class MenuLE extends Pane {
         selectButton.setId("LoadLevelButton");
         selectButton.setOnAction(e -> {
             String selectedLevel = levelList.getSelectionModel().getSelectedItem();
+
             if (selectedLevel != null) {
                 System.out.println("Loading level: " + selectedLevel);
                 mainLE.loadLevel(selectedLevel);

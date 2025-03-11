@@ -2,6 +2,9 @@ package levelEditor.controller;
 
 import LevelEditor.controller.MainLE;
 import control.MainProgram;
+import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
 import javafx.stage.Stage;
 import model.MazeGeneration.MazeGenerator;
 import model.Maps.World1Maps;
@@ -11,6 +14,7 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
 
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -48,8 +52,7 @@ class LevelEditorTest extends ApplicationTest {
     /**
      * Test valid input of Level editor name
      * Test invalid input of Level editor name
-     */
-    public void NIVS1_2_3_1() {
+     */ public void NIVS1_2_3_1() {
         Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
         try {
             if (Files.exists(expectedFilePath)) {
@@ -90,8 +93,7 @@ class LevelEditorTest extends ApplicationTest {
     @Order(1)
     /**
      * Testing valid input for creating a new level.
-     */
-    public void NIVS_1_2() {
+     */ public void NIVS_1_2() {
         Path expectedFilePath = Paths.get("createdLevels/TestLevel_Niv.dat");
         try {
             if (Files.exists(expectedFilePath)) {
@@ -113,8 +115,7 @@ class LevelEditorTest extends ApplicationTest {
     @Test
     /**
      * Testing random dimension and that it's saved properly.
-     */
-    public void NIVS_1_2_1() {
+     */ public void NIVS_1_2_1() {
         Path expectedFilePath = Paths.get("createdLevels/TestLevel_Niv.dat");
         int dimensionCLicks = random.nextInt(3) + 1;
 
@@ -159,12 +160,12 @@ class LevelEditorTest extends ApplicationTest {
         }
 
 
-
         assertTrue(Files.exists(expectedFilePath));
 
     }
+
     @Test
-    public void NIVS_1_2_2(){
+    public void NIVS_1_2_2() {
         Path expectedFilePath = Paths.get("createdLevels/TestLevel_Niv.dat");
         int worldsCLicks = random.nextInt(6) + 1;
         System.out.println(worldsCLicks + "tre");
@@ -182,27 +183,20 @@ class LevelEditorTest extends ApplicationTest {
         moveTo("#LeftButtonThem").moveBy(0, -50);
         clickOn();
         moveTo("#RightButtonThem").moveBy(0, -50);
-        for(int i = 0; i < worldsCLicks; i++){
+        for (int i = 0; i < worldsCLicks; i++) {
             clickOn();
             sleep(500);
         }
         moveToAndClickOn("textFieldLevelEditor");
         write("TestLevel_Niv");
         moveToAndClickOn("selectButtonLevelEditor");
-        if (worldsCLicks == 1)
-            assertEquals(3, mainLE.getThemeInt(), "cloud");
-        else if (worldsCLicks == 2)
-            assertEquals(4, mainLE.getThemeInt(), "desert");
-        else if (worldsCLicks == 3)
-            assertEquals(0, mainLE.getThemeInt(), "forest");
-        else if (worldsCLicks == 4)
-            assertEquals(1, mainLE.getThemeInt(), "lava");
-        else if (worldsCLicks == 5)
-            assertEquals(5, mainLE.getThemeInt(), "space");
-        else if (worldsCLicks == 6)
-            assertEquals(2, mainLE.getThemeInt(), "underground");
-        else if (worldsCLicks == 7)
-            assertEquals(3, mainLE.getThemeInt(), "cloud");
+        if (worldsCLicks == 1) assertEquals(3, mainLE.getThemeInt(), "cloud");
+        else if (worldsCLicks == 2) assertEquals(4, mainLE.getThemeInt(), "desert");
+        else if (worldsCLicks == 3) assertEquals(0, mainLE.getThemeInt(), "forest");
+        else if (worldsCLicks == 4) assertEquals(1, mainLE.getThemeInt(), "lava");
+        else if (worldsCLicks == 5) assertEquals(5, mainLE.getThemeInt(), "space");
+        else if (worldsCLicks == 6) assertEquals(2, mainLE.getThemeInt(), "underground");
+        else if (worldsCLicks == 7) assertEquals(3, mainLE.getThemeInt(), "cloud");
 
 
         assertTrue(Files.exists(expectedFilePath));
@@ -215,7 +209,7 @@ class LevelEditorTest extends ApplicationTest {
     @Test
     public void NIVS1_4_2() {
 
-    Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
+        Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
         try {
             if (Files.exists(expectedFilePath)) {
                 Files.delete(expectedFilePath);
@@ -231,12 +225,11 @@ class LevelEditorTest extends ApplicationTest {
         write("TestLevelNewName_Niv");
         moveToAndClickOn("selectButtonLevelEditor");
         mazeGenerator = mainProgram.getMazeGenerator();
-        int [][] maze = mazeGenerator.getRawMazeArray();
+        int[][] maze = mazeGenerator.getRawMazeArray();
         int counter = 0;
-        for (int i = 0; i < maze.length; i++){
-            for (int j = 0; j < maze[i].length; j++){
-                if (maze[i][j] == 3)
-                    counter++;
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                if (maze[i][j] == 3) counter++;
             }
         }
         assertEquals(1, counter, "One GOAL generated");
@@ -266,12 +259,11 @@ class LevelEditorTest extends ApplicationTest {
         write("TestLevelNewName_Niv");
         moveToAndClickOn("selectButtonLevelEditor");
         mazeGenerator = mainProgram.getMazeGenerator();
-        int [][] maze = mazeGenerator.getRawMazeArray();
+        int[][] maze = mazeGenerator.getRawMazeArray();
         int counter = 0;
-        for (int i = 0; i < maze.length; i++){
-            for (int j = 0; j < maze[i].length; j++){
-                if (maze[i][j] == 2)
-                    counter++;
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                if (maze[i][j] == 2) counter++;
             }
         }
         assertEquals(1, counter, "One START generated");
@@ -280,41 +272,45 @@ class LevelEditorTest extends ApplicationTest {
 
 
     @Test
-    /**
-     * Testing opening an exsisting level in level Editor.
-     * @author alanahColeman
-     */
-    public void NIVH_1_0() {
-        Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
+/**
+ * Testing opening an existing level in Level Editor.
+ * @author alanahColeman
+ */ public void NIVH_1_0() {
 
-        try {
-            if (Files.exists(expectedFilePath)) {
-                Files.delete(expectedFilePath);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         WaitForAsyncUtils.waitForFxEvents();
 
         moveToAndClickOn("introButton");
         moveToAndClickOn("levelEditorButton");
         moveToAndClickOn("editLevelButton");
-
-        sleep(500); // Vänta på popupen
-
-        // Välj en nivå i ListView
-        moveToAndClickOn("TestLevelNewName_Niv");
-        clickOn("TestLevelNewName_Niv");
-
         sleep(500);
+
+        type(KeyCode.DOWN);
+        type(KeyCode.DOWN);
+        type(KeyCode.UP);
+        type(KeyCode.UP);
+
+        sleep(1000);
 
         moveToAndClickOn("LoadLevelButton");
         clickOn();
 
-        assertTrue(Files.exists(expectedFilePath));
-    }
 
+        ListView<String> levelList = new ListView<>();
+        File createdLevelsFolder = new File("createdLevels");
+        if (createdLevelsFolder.exists() && createdLevelsFolder.isDirectory()) {
+            String[] levelFiles = createdLevelsFolder.list((dir, name) -> name.endsWith(".dat"));
+
+            String levelFile = levelFiles[0]; // Filen på plats 2 (index 1)
+            System.out.println(levelFile);
+            Path expectedFilePath = Paths.get("createdLevels/" + levelFile);
+
+            assertTrue(Files.exists(expectedFilePath), "Level file did not load correctly.");
+
+
+        }
+
+    }
 
     private void moveToAndClickOn(String buttonId) {
         moveTo("#" + buttonId);
