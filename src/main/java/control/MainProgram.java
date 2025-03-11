@@ -390,6 +390,9 @@ public class MainProgram extends Application {
     public MazeGenerator getMazeGenerator() {
         return this.mazeGenerator;
     }
+    public MapTemplateLE getMapTemplateLE() {
+        return this.mapTemplateLE;
+    }
 
     public static void main(String[] args) {
         launch(args);

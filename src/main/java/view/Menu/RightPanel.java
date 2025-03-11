@@ -338,7 +338,7 @@ public class RightPanel extends Pane {
             createPathButton(theme, x, y, buttonWidth, buttonHeight);
             y += rowHeight;
 
-            createWallButton(theme, x, y, buttonWidth, buttonHeight);
+            createWallButton(theme, x, y, buttonWidth, buttonHeight, i);
             y += rowHeight;
 
             createBorderButton(theme, x, y, buttonWidth, buttonHeight);
@@ -373,6 +373,7 @@ public class RightPanel extends Pane {
         pathLabel.setGraphic(pathView);
         pathLabel.setLayoutX(x);
         pathLabel.setLayoutY(y);
+        setId("pathButton");
         pathLabel.setOnMouseEntered(e -> {
             pathLabel.setTooltip(new Tooltip("Path"));
         });
@@ -380,10 +381,10 @@ public class RightPanel extends Pane {
         getChildren().add(pathLabel);
     }
 
-    public void createWallButton(String theme, int x, int y, int v, int h) {
+    public void createWallButton(String theme, int x, int y, int v, int h, int i) {
         wallImage = new Image("file:files/" + theme + "/wall.png", v, h, false, false);
         wallView = new ImageView(wallImage);
-        wallLabel = new Label();
+        wallLabel = new Label("wallLabel" + i);
         wallLabel.setGraphic(wallView);
         wallLabel.setLayoutX(x);
         wallLabel.setLayoutY(y);
