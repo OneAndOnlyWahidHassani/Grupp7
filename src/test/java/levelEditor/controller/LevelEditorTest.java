@@ -138,9 +138,6 @@ class LevelEditorTest extends ApplicationTest {
         }
 
 
-        moveTo("#LeftButtonThem").moveBy(0, -50);
-        clickOn();
-
         moveToAndClickOn("textFieldLevelEditor");
         write("TestLevel_Niv");
         moveToAndClickOn("selectButtonLevelEditor");
@@ -208,12 +205,46 @@ class LevelEditorTest extends ApplicationTest {
         assertTrue(Files.exists(expectedFilePath));
 
     }
+    /**
+     * Tests that all but 2 cells are  generated as PATH on a new level
+     */
+    @Test
+    public void NIVS_1_4_1() {
+
+        Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
+        try {
+            if (Files.exists(expectedFilePath)) {
+                Files.delete(expectedFilePath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        WaitForAsyncUtils.waitForFxEvents();
+        moveToAndClickOn("introButton");
+        moveToAndClickOn("levelEditorButton");
+        moveToAndClickOn("createLevelButton");
+        moveToAndClickOn("textFieldLevelEditor");
+        write("TestLevelNewName_Niv");
+        moveToAndClickOn("selectButtonLevelEditor");
+        mazeGenerator = mainProgram.getMazeGenerator();
+        int [][] maze = mazeGenerator.getRawMazeArray();
+        int counter = 0;
+        int expecto = maze.length * maze[0].length - 2;
+        for (int i = 0; i < maze.length; i++){
+            for (int j = 0; j < maze[i].length; j++){
+                if (maze[i][j] == 1)
+                    counter++;
+            }
+        }
+        assertEquals(expecto, counter, "All but 2 PATHs generated");
+        assertTrue(Files.exists(expectedFilePath));
+    }
 
     /**
      * Tests that only one GOAL is generated on a new level
      */
     @Test
-    public void NIVS1_4_2() {
+    public void NIVS_1_4_2() {
 
     Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
         try {
@@ -247,7 +278,7 @@ class LevelEditorTest extends ApplicationTest {
      * Tests that only one START is generated on a new level
      */
     @Test
-    public void NIVS1_4_3() {
+    public void NIVS_1_4_3() {
 
 
         Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
