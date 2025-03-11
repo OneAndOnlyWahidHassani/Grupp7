@@ -153,7 +153,7 @@ class LevelEditorTest extends ApplicationTest {
             case 3:
                 assertEquals("18x18", mainLE.getDimension(), "Dimension 18X18"); // Cirkulär rotation
                 break;
-            
+
         }
 
 
@@ -209,6 +209,42 @@ class LevelEditorTest extends ApplicationTest {
 
         assertTrue(Files.exists(expectedFilePath));
 
+    }
+
+    @Test
+    /**
+     * Testing opening an exsisting level in level Editor.
+     * @author alanahColeman
+     */
+    public void NIVH_1_0() {
+        Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
+
+        try {
+            if (Files.exists(expectedFilePath)) {
+                Files.delete(expectedFilePath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        WaitForAsyncUtils.waitForFxEvents();
+
+        moveToAndClickOn("introButton");
+        moveToAndClickOn("levelEditorButton");
+        moveToAndClickOn("editLevelButton");
+
+        sleep(500); // Vänta på popupen
+
+        // Välj en nivå i ListView
+        moveToAndClickOn("TestLevelNewName_Niv");
+        clickOn("TestLevelNewName_Niv");
+
+        sleep(500);
+
+        moveToAndClickOn("LoadLevelButton");
+        clickOn();
+
+        assertTrue(Files.exists(expectedFilePath));
     }
 
 
