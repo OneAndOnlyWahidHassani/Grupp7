@@ -384,6 +384,12 @@ public class MainProgram extends Application {
         return rightPanel;
     }
 
+    public SetUp getSetUp() {
+        return setUp;
+    }
+    public MazeGenerator getMazeGenerator() {
+        return this.mazeGenerator;
+    }
 
     public static void main(String[] args) {
         launch(args);
