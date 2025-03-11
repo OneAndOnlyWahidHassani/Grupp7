@@ -5,7 +5,6 @@ import control.MainProgram;
 import javafx.scene.control.ListView;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
-import model.MazeGeneration.MazeGenerator;
 import org.junit.jupiter.api.*;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
@@ -25,7 +24,7 @@ class NivHanteringTest extends ApplicationTest {
     private MainProgram mainProgram;
     private Random random;
     private MainLE mainLE;
-    private MazeGenerator mazeGenerator;
+
 
     @Override
     public void start(Stage stage) {
@@ -47,10 +46,8 @@ class NivHanteringTest extends ApplicationTest {
     @Test
 /**
  * Testing opening an existing level in Level Editor.
- * @author alanahColeman
+ * @author AlanahColeman
  */ public void NIVH_1_0() {
-
-
         WaitForAsyncUtils.waitForFxEvents();
 
         moveToAndClickOn("introButton");
@@ -74,15 +71,60 @@ class NivHanteringTest extends ApplicationTest {
         if (createdLevelsFolder.exists() && createdLevelsFolder.isDirectory()) {
             String[] levelFiles = createdLevelsFolder.list((dir, name) -> name.endsWith(".dat"));
 
-            String levelFile = levelFiles[0]; // Filen på plats 2 (index 1)
+            String levelFile = levelFiles[0];
             System.out.println(levelFile);
             Path expectedFilePath = Paths.get("createdLevels/" + levelFile);
 
             assertTrue(Files.exists(expectedFilePath), "Level file did not load correctly.");
-
-
         }
 
+    }
+
+    //TODO Avvaktar med denna efter NIVH 2.1 och OBJ 1.1
+    /**
+     *
+     */
+    public void NIVH_1_1(){
+        WaitForAsyncUtils.waitForFxEvents();
+        moveToAndClickOn("introButton");
+        moveToAndClickOn("levelEditorButton");
+        moveToAndClickOn("editLevelButton");
+        sleep(500);
+        type(KeyCode.DOWN);
+        type(KeyCode.UP);
+
+        sleep(1000);
+
+        moveToAndClickOn("LoadLevelButton");
+        clickOn();
+
+    }
+
+    @Test
+    /**
+     * Testing modified file is saved with changes
+     * @author AlanahColeman
+     */
+    public void NIVH_2_0(){
+        WaitForAsyncUtils.waitForFxEvents();
+        moveToAndClickOn("introButton");
+        moveToAndClickOn("levelEditorButton");
+        moveToAndClickOn("editLevelButton");
+        sleep(500);
+        type(KeyCode.DOWN);
+        type(KeyCode.UP);
+        sleep(1000);
+        moveToAndClickOn("LoadLevelButton");
+        clickOn();
+
+        int[][] originalMaze = mainLE.getMazeGenerator().getRawMazeArray();
+        //TODO Drag and drop för att redigera i nuvarande datfil
+
+        moveToAndClickOn("saveLevelButton");
+
+        int[][] reloadedMaze = mainLE.getMazeGenerator().getRawMazeArray();
+        assertArrayEquals(originalMaze, reloadedMaze, "The modified maze should be saved and reloaded correctly.");
+        assertNotEquals(originalMaze, reloadedMaze, "The modified maze should be saved and reloaded correctly.");
     }
 
     private void moveToAndClickOn(String buttonId) {

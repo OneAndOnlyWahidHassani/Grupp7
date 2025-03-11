@@ -46,7 +46,7 @@ class NivSkapandeTest extends ApplicationTest {
     /**
      * Test valid input of Level editor name
      * Test invalid input of Level editor name
-     */ public void NIVS1_2_3_1() {
+     */ public void NIVS_1_2_3_1() {
         Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
         try {
             if (Files.exists(expectedFilePath)) {
