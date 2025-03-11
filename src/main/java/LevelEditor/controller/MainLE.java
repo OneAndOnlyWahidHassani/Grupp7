@@ -79,9 +79,6 @@ public class MainLE {
         mazeGenerator.setRawMazeArray(maze);
     }
 
-    public String getDimension() {
-        return dimension;
-    }
 
     public MazeGenerator getMazeGenerator() {
         return mazeGenerator;

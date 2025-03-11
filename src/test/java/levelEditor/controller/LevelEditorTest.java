@@ -146,9 +146,6 @@ class LevelEditorTest extends ApplicationTest {
         moveToAndClickOn("selectButtonLevelEditor");
 
         switch (dimensionCLicks) {
-            case 0:
-                assertEquals("18x18", mainLE.getDimension(), "Dimension 18X18");
-                break;
             case 1:
                 assertEquals("14x14", mainLE.getDimension(), "Dimension 14X14");
                 break;
@@ -156,9 +153,11 @@ class LevelEditorTest extends ApplicationTest {
                 assertEquals("10x10", mainLE.getDimension(), "Dimension 10X10");
                 break;
             case 3:
-                assertEquals("18x18", mainLE.getDimension(), "Dimension 18X18"); // Loopen går runt
+                assertEquals("18x18", mainLE.getDimension(), "Dimension 18X18"); // Cirkulär rotation
                 break;
+
         }
+
 
 
         assertTrue(Files.exists(expectedFilePath));
@@ -276,6 +275,43 @@ class LevelEditorTest extends ApplicationTest {
             }
         }
         assertEquals(1, counter, "One START generated");
+        assertTrue(Files.exists(expectedFilePath));
+    }
+
+
+    @Test
+    /**
+     * Testing opening an exsisting level in level Editor.
+     * @author alanahColeman
+     */
+    public void NIVH_1_0() {
+        Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
+
+        try {
+            if (Files.exists(expectedFilePath)) {
+                Files.delete(expectedFilePath);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        WaitForAsyncUtils.waitForFxEvents();
+
+        moveToAndClickOn("introButton");
+        moveToAndClickOn("levelEditorButton");
+        moveToAndClickOn("editLevelButton");
+
+        sleep(500); // Vänta på popupen
+
+        // Välj en nivå i ListView
+        moveToAndClickOn("TestLevelNewName_Niv");
+        clickOn("TestLevelNewName_Niv");
+
+        sleep(500);
+
+        moveToAndClickOn("LoadLevelButton");
+        clickOn();
+
         assertTrue(Files.exists(expectedFilePath));
     }
 

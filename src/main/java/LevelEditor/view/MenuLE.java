@@ -81,6 +81,7 @@ public class MenuLE extends Pane {
         editButton.setFont(customFont);
         editButton.setTranslateX(250);
         editButton.setTranslateY(310);
+        editButton.setId("editLevelButton");
         editButton.setOnMouseEntered(e -> editButton.setTextFill(Color.RED));
         editButton.setOnMouseExited(e -> editButton.setTextFill(Color.BLACK));
         editButton.setOnAction(e -> {
@@ -131,6 +132,7 @@ public class MenuLE extends Pane {
         }
 
         Button selectButton = new Button("Load Level");
+        selectButton.setId("LoadLevelButton");
         selectButton.setOnAction(e -> {
             String selectedLevel = levelList.getSelectionModel().getSelectedItem();
             if (selectedLevel != null) {
