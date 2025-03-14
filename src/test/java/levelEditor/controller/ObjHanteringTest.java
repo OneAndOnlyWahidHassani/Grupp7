@@ -55,7 +55,6 @@ class ObjHanteringTest extends ApplicationTest {
     @Test
 /**
  * Testing opening an existing level in Level Editor.
- * @author alanahColeman
  */ public void OBJ_1_1() {
 
 
@@ -99,7 +98,6 @@ class ObjHanteringTest extends ApplicationTest {
     System.out.println(mazeGenerator.getRawMaze());
     assertEquals(0, level[expectedCol][expectedRow],
             "After dropping 'wallButton', the level cell should be set to 0 for WALL");
-
 
     assertTrue(Files.exists(expectedFilePath));
     }
