@@ -101,10 +101,7 @@ class ObjHanteringTest extends ApplicationTest {
             "After dropping 'wallButton', the level cell should be set to 0 for WALL");
 
 
-
-
     assertTrue(Files.exists(expectedFilePath));
-
     }
 
     private Node getNodeByRowColumnIndex(int row, int col, GridPane gridPane) {
@@ -126,4 +123,37 @@ class ObjHanteringTest extends ApplicationTest {
         moveTo("#" + buttonId);
         clickOn();
     }
+
+
+    public void DrapAndDrop(){
+        mapTemplateLE = mainProgram.getMapTemplateLE();
+        GridPane gridPane = mapTemplateLE.getGridPane();
+        int dimension = mapTemplateLE.getDimension();
+        int x = random.nextInt(dimension)+1;
+        int y = random.nextInt(dimension)+1;
+
+
+        Node targetCell = getNodeByRowColumnIndex(x, y, gridPane);
+        assertNotNull(targetCell, "Could not find target cell in the grid!");
+        System.out.println("before");
+
+
+        drag("wallLabel1");
+        WaitForAsyncUtils.waitForFxEvents();
+        dropTo(targetCell);
+        System.out.println("after");
+        int expectedCol = x-1;
+        int expectedRow = y-1;
+        System.out.println("Expected row: " + expectedRow + " Expected col: " + expectedCol);
+        int[][] level = mapTemplateLE.getLevel(); // If you have a getter for the raw level array
+        mazeGenerator = mainProgram.getMazeGenerator();
+        System.out.println(mazeGenerator.getRawMaze());
+        assertEquals(0, level[expectedCol][expectedRow],
+                "After dropping 'wallButton', the level cell should be set to 0 for WALL");
+        moveToAndClickOn("saveLevelButton");
+
+       // int[][] Maze = mainLE.getMazeGenerator().getRawMazeArray();
+
+    }
+
 }
