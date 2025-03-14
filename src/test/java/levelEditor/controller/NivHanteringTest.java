@@ -9,6 +9,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.MazeGeneration.MazeGenerator;
+import model.ReaderWriter.FileManager;
 import org.junit.jupiter.api.*;
 import org.testfx.framework.junit5.ApplicationTest;
 import org.testfx.util.WaitForAsyncUtils;
@@ -19,6 +20,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -89,28 +91,12 @@ class NivHanteringTest extends ApplicationTest {
 
     }
 
-    //TODO Avvaktar med denna efter NIVH 2.1 och OBJ 1.1
-    /**
-     *
-     */
-    public void NIVH_1_1(){
-        WaitForAsyncUtils.waitForFxEvents();
-        moveToAndClickOn("introButton");
-        moveToAndClickOn("levelEditorButton");
-        moveToAndClickOn("editLevelButton");
-        sleep(500);
-        type(KeyCode.DOWN);
-        type(KeyCode.UP);
 
-        sleep(1000);
-
-        moveToAndClickOn("LoadLevelButton");
-        clickOn();
-    }
 
     @Test
     /**
-     * Testing modified file is saved with changes
+     * Testing modify existing file
+     * Ensuring modified file is saved with changes
      * @author AlanahColeman
      */
     public void NIVH_2_0(){
@@ -126,7 +112,7 @@ class NivHanteringTest extends ApplicationTest {
         clickOn();
         int[][] originalMaze = mainLE.getMazeGenerator().getRawMazeArray();
 
-        /// ////DRAG AND DROP
+        //// DRAG AND DROP  ////
         mapTemplateLE = mainProgram.getMapTemplateLE();
         GridPane gridPane = mapTemplateLE.getGridPane();
         int dimension = mapTemplateLE.getDimension();
@@ -144,7 +130,7 @@ class NivHanteringTest extends ApplicationTest {
         int expectedRow = y-1;
 
 
-        int[][] level = mapTemplateLE.getLevel(); // If you have a getter for the raw level array
+        int[][] level = mapTemplateLE.getLevel();
         mazeGenerator = mainProgram.getMazeGenerator();
 
 
@@ -153,26 +139,36 @@ class NivHanteringTest extends ApplicationTest {
         moveToAndClickOn("saveLevelButton");
 
 
+        int[][] modifiedMaze = mapTemplateLE.getLevel();
+        assertEquals(0, modifiedMaze[expectedCol][expectedRow],
+                "After dropping 'wallButton', the level cell should be set to 0 for WALL");
+
+        // Save the modified level
         moveToAndClickOn("saveLevelButton");
-        moveToAndClickOn("menuButton");
-        WaitForAsyncUtils.waitForFxEvents();
-        sleep(1000);
 
-        moveToAndClickOn("levelEditorButton");
-        moveToAndClickOn("editLevelButton");
-        sleep(500);
-        type(KeyCode.DOWN);
-        type(KeyCode.UP);
-        sleep(1000);
-        moveToAndClickOn("LoadLevelButton");
-        clickOn();
+        File createdLevelsFolder = new File("createdLevels");
+        if (createdLevelsFolder.exists() && createdLevelsFolder.isDirectory()) {
+            String[] levelFiles = createdLevelsFolder.list((dir, name) -> name.endsWith(".dat"));
 
+            assertNotNull(levelFiles, "No level files found!");
+            assertTrue(levelFiles.length > 0, "No saved levels found in directory");
 
-        int[][] reloadedMaze = mainLE.getMazeGenerator().getRawMazeArray();
+            String levelFile = levelFiles[0];
+            Path expectedFilePath = Paths.get("createdLevels/" + levelFile);
 
-        assertArrayEquals(originalMaze, reloadedMaze, "The modified maze should be saved and reloaded correctly.");
-        assertNotEquals(originalMaze, reloadedMaze, "The modified maze should be saved and reloaded correctly.");
+            assertTrue(Files.exists(expectedFilePath), "Level file did not load correctly.");
 
+            FileManager fileManager = new FileManager();
+            try {
+                Map<String, Object> loadedData = fileManager.readLevelData(levelFile.replace(".dat", ""));
+                int[][] reloadedMaze = (int[][]) loadedData.get("maze");
+
+                assertNotNull(reloadedMaze, "Reloaded maze is null!");
+                assertNotEquals(originalMaze, reloadedMaze, "The modified maze should be different from the original.");
+            } catch (Exception e) {
+                fail("Exception occurred while reading level file: " + e.getMessage());
+            }
+        }
     }
 
     private void moveToAndClickOn(String buttonId) {
@@ -192,6 +188,6 @@ class NivHanteringTest extends ApplicationTest {
                 return node;
             }
         }
-        return null;  // if nothing matched
+        return null;
     }
 }
