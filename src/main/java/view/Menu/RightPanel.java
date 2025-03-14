@@ -177,6 +177,7 @@ public class RightPanel extends Pane {
         menuView.setLayoutX(100);
         menuView.setLayoutY(5);
 
+
         // Example layout positions (adjust to taste)
         levelLabel.setLayoutX(100);
         levelLabel.setLayoutY(60);
@@ -262,6 +263,7 @@ public class RightPanel extends Pane {
 
 
         menuView.setLayoutX(400);
+        menuView.setId("menuButton");
 
 
         soundLabel.setOnMouseClicked(e -> soundLabelClicked());
