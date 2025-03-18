@@ -273,6 +273,41 @@ public class MainProgram extends Application {
         mainWindow.setScene(levelEditorScene);
     }
 
+    public boolean startTestLevel(String levelName, int themeInt, int dimension, int[][] maze) {
+        BorderPane testLevelPane = new BorderPane();
+
+        Pane testLevelContent = new Pane();
+        Group testLevelGroup = new Group(testLevelContent);
+
+        Scale scale = new Scale(scaleFactor, scaleFactor);
+        testLevelGroup.getTransforms().add(scale);
+        try {
+            RightPanel testLevelRightPanel = new RightPanel(this, audioPlayer, themeInt, null);
+            testLevelRightPanel.setPrefWidth(515);
+            testLevelRightPanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+            testLevelPane.setRight(testLevelRightPanel);
+
+            double testLevelSceneWidth = designWidth * scaleFactor + 275;
+            double testLevelSceneHeight = designHeight * scaleFactor;
+            Scene testLevelScene = new Scene(testLevelPane, testLevelSceneWidth, testLevelSceneHeight, Color.BLACK);
+
+            testLevelScene.setCursor(new ImageCursor(cursorImage));
+
+            MazeGenerator mazeGenerator = new MazeGenerator(maze, false, true);
+            GenerateNextLevel generateNextLevel = new GenerateNextLevel(this, testLevelPane, mazeGenerator, testLevelRightPanel, dimension, themeInt);
+            MapTemplate mapTemplate = new MapTemplate(maze, this, generateNextLevel);
+            testLevelGroup.getChildren().add(mapTemplate);
+            BorderPane.setAlignment(testLevelGroup, Pos.TOP_LEFT);
+            testLevelPane.setCenter(testLevelGroup);
+
+            mainWindow.setScene(testLevelScene);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return true;
+    }
+
     /**
      * Switches to the menu scene.
      */

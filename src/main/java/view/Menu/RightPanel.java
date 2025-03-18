@@ -267,27 +267,45 @@ public class RightPanel extends Pane {
         soundLabel.setOnMouseClicked(e -> soundLabelClicked());
         musicLabel.setOnMouseClicked(e -> musicLabelClicked());
 
-        Button saveLevel = new Button("Save Level");
-        saveLevel.setFont(customFont);
-        saveLevel.setTranslateX(155);
-        saveLevel.setTranslateY(665);
+        //save level button
+        ImageView saveLevelView = new ImageView(new Image("file:files/texts/pngSaveImage.png", 30, 30, false, false));
+        Button saveLevel = new Button();
+        saveLevel.setGraphic(saveLevelView);
+        saveLevel.setTranslateX(60);
+        saveLevel.setTranslateY(650);
         saveLevel.setId("saveLevelButton");
-        saveLevel.setOnMouseEntered(e -> saveLevel.setTextFill(Color.RED));
-        saveLevel.setOnMouseExited(e -> saveLevel.setTextFill(Color.BLACK));
+        saveLevel.setStyle("-fx-border-color: transparent; -fx-border-width: 2px;");
+        saveLevel.setOnMouseEntered(e -> saveLevel.setStyle("-fx-border-color: red; -fx-border-width: 2px;"));
+        saveLevel.setOnMouseExited(e -> saveLevel.setStyle("-fx-border-color: transparent; -fx-border-width: 2px;"));
         saveLevel.setOnAction(e -> {
             mainLE.saveLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
             audioPlayer.playButtonSound();
         });
 
-        getChildren().addAll(menuView, soundLabel, musicLabel, saveLevel);
+        Tooltip saveTooltip = new Tooltip("Save Level?");
+        saveTooltip.setStyle("-fx-font-family: 'Press Start 2P'; -fx-font-size: 14px;");
+        saveLevel.setTooltip(saveTooltip);
 
+        //Test level button
+        Button testLevel = new Button("Test Level");
+        testLevel.setFont(customFont);
+        testLevel.setTranslateX(150);
+        testLevel.setTranslateY(652.5);
+        testLevel.setId("testLevelButton");
+        testLevel.setOnMouseEntered(e -> testLevel.setTextFill(Color.RED));
+        testLevel.setOnMouseExited(e -> testLevel.setTextFill(Color.BLACK));
+        testLevel.setOnAction(e -> {
+            mainLE.saveLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
+            mainLE.testLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
+            audioPlayer.playButtonSound();
+        });
 
+        getChildren().addAll(menuView, soundLabel, musicLabel, saveLevel, testLevel);
         menuView.setOnMouseClicked(e -> MainMenuClicked(e));
 
 
 
-
-        setupObjectButtons();
+        setupObjectButtons(getThemeString(themeInt));
 
 
 
@@ -300,7 +318,7 @@ public class RightPanel extends Pane {
             return Font.font("Verdana", 20);
         }
     }
-    public String getThemeString() {
+    public String getThemeString(int themeInt) {
         switch (themeInt) {
             case 0:
                 return "forest";
@@ -319,51 +337,42 @@ public class RightPanel extends Pane {
         }
     }
 
-    public void setupObjectButtons() {
-        String[] themes = {"forest", "lava", "underground", "cloud", "desert", "space"};
+    public void setupObjectButtons(String theme) {
         int xStart = 50;
-        int yStart = 40;
+        int yStart = 60;
         int buttonWidth = 50;
         int buttonHeight = 50;
         int rowHeight = 80;
         int columnSpacing = 75;
 
+        int x = xStart;
+        int y = yStart;
 
+        createPathButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
-        for (int i = 0; i < themes.length; i++) {
-            String theme = themes[i];
-            int x = xStart + i * columnSpacing;
-            int y = yStart;
+        createWallButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
-            createPathButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createBorderButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
-            createWallButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createStartButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
-            createBorderButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createGoalButton(theme, x, y, buttonWidth, buttonHeight);
 
-            createStartButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createBreakableWallButton(theme, x, y, buttonWidth, buttonHeight);
+        y += rowHeight;
+        x -= columnSpacing;
+        x -= columnSpacing;
+        x -= columnSpacing;
 
-            createGoalButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createItemsButton(x, y, buttonWidth, buttonHeight);
+        x -= columnSpacing;
 
-            createBreakableWallButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createCollectibleButton(theme, x, y, buttonWidth, buttonHeight);
 
-            createItemsButton(x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
-
-
-
-            createCollectibleButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
-
-
-
-        }
     }
 
     public void createPathButton(String theme, int x, int y, int v, int h) {
@@ -505,7 +514,7 @@ public class RightPanel extends Pane {
             heartLabel.setOnMouseEntered(e -> {
                 heartLabel.setTooltip(new Tooltip("Heart"));
             });
-            makeDraggable(heartLabel, heartImage, 5, getThemeString());
+            makeDraggable(heartLabel, heartImage, 5, getThemeString(themeInt));
             getChildren().add(heartLabel);
 
             heartCreated = true;
@@ -521,7 +530,7 @@ public class RightPanel extends Pane {
             pickaxeLabel.setOnMouseEntered(e -> {
                 pickaxeLabel.setTooltip(new Tooltip("Pickaxe"));
             });
-            makeDraggable(pickaxeLabel, pickaxeImage, 6, getThemeString());
+            makeDraggable(pickaxeLabel, pickaxeImage, 6, getThemeString(themeInt));
             getChildren().add(pickaxeLabel);
 
             pickaxeCreated = true;
