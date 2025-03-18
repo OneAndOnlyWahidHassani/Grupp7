@@ -551,6 +551,10 @@ public class RightPanel extends Pane {
             db.setContent(content);
             event.consume();
         });
+        label.setOnDragDone(event -> {
+            mainLE.saveLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
+            event.consume();
+        });
     }
     /**
      * Slår på/av spelljud
