@@ -188,12 +188,7 @@ public class MainProgram extends Application {
         editorGroup.getTransforms().add(scale);
 
         // 4. Create the larger right panel for the level editor.
-        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE());
-        levelEditorRightPanel.setPrefWidth(515);
-        levelEditorRightPanel.setBackground(
-                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
-        );
-        levelEditorPane.setRight(levelEditorRightPanel);
+
 
         // 5. Pick a custom resolution for the scene (slightly wider to accommodate the bigger right panel).
         double editorScaleFactor = scaleFactor;
@@ -206,10 +201,17 @@ public class MainProgram extends Application {
 
         // 7. Generate your maze, create `mapTemplateLE`, and the code to manage the level logic.
         mazeGenerator = new MazeGenerator(dimension, true, true);
-        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension, themeInt);
+        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, dimension, themeInt);
         mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel, themeInt);
 
         setUp.getMainLE().setMazeGenerator(mazeGenerator);
+
+        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE(), mapTemplateLE);
+        levelEditorRightPanel.setPrefWidth(515);
+        levelEditorRightPanel.setBackground(
+                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
+        );
+        levelEditorPane.setRight(levelEditorRightPanel);
 
         // 8. Add mapTemplateLE to the same group so it scales together with the editorContent.
         editorGroup.getChildren().add(mapTemplateLE);
@@ -231,12 +233,7 @@ public class MainProgram extends Application {
         Scale scale = new Scale(scaleFactor, scaleFactor);
         editorGroup.getTransforms().add(scale);
 
-        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE());
-        levelEditorRightPanel.setPrefWidth(515);
-        levelEditorRightPanel.setBackground(
-                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
-        );
-        levelEditorPane.setRight(levelEditorRightPanel);
+
 
         double editorScaleFactor = scaleFactor;
         double editorSceneWidth = designWidth * editorScaleFactor + 275;
@@ -252,7 +249,7 @@ public class MainProgram extends Application {
         }
 
 
-        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension, themeInt);
+        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, dimension, themeInt);
         System.out.println("Maze vid enterLevelEditorFromEdit:");
         for (int i = 0; i < maze.length; i++) {
             System.out.println(java.util.Arrays.toString(maze[i]));
@@ -264,6 +261,13 @@ public class MainProgram extends Application {
             System.out.println(java.util.Arrays.toString(maze[i]));
         }
 
+        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE(), mapTemplateLE);
+        levelEditorRightPanel.setPrefWidth(515);
+        levelEditorRightPanel.setBackground(
+                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
+        );
+        levelEditorPane.setRight(levelEditorRightPanel);
+
 
         editorGroup.getChildren().add(mapTemplateLE);
 
@@ -273,7 +277,7 @@ public class MainProgram extends Application {
         mainWindow.setScene(levelEditorScene);
     }
 
-    public boolean startTestLevel(String levelName, int themeInt, int dimension, int[][] maze) {
+    public boolean startTestLevel(int themeInt, int dimension, int[][] maze) {
         BorderPane testLevelPane = new BorderPane();
 
         Pane testLevelContent = new Pane();
@@ -282,10 +286,7 @@ public class MainProgram extends Application {
         Scale scale = new Scale(scaleFactor, scaleFactor);
         testLevelGroup.getTransforms().add(scale);
         try {
-            RightPanel testLevelRightPanel = new RightPanel(this, audioPlayer, themeInt, null);
-            testLevelRightPanel.setPrefWidth(515);
-            testLevelRightPanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-            testLevelPane.setRight(testLevelRightPanel);
+
 
             double testLevelSceneWidth = designWidth * scaleFactor + 275;
             double testLevelSceneHeight = designHeight * scaleFactor;
@@ -294,9 +295,15 @@ public class MainProgram extends Application {
             testLevelScene.setCursor(new ImageCursor(cursorImage));
 
             MazeGenerator mazeGenerator = new MazeGenerator(maze, false, true);
-            GenerateNextLevel generateNextLevel = new GenerateNextLevel(this, testLevelPane, mazeGenerator, testLevelRightPanel, dimension, themeInt);
-            MapTemplate mapTemplate = new MapTemplate(maze, this, generateNextLevel);
+            GenerateNextLevel generateNextLevel = new GenerateNextLevel(this, testLevelPane, mazeGenerator, dimension, themeInt);
+            MapTemplateLE mapTemplate = new MapTemplateLE(maze, this, generateNextLevel, themeInt);
             testLevelGroup.getChildren().add(mapTemplate);
+
+            RightPanel testLevelRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE(), mapTemplate);
+            testLevelRightPanel.setPrefWidth(515);
+            testLevelRightPanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+            testLevelPane.setRight(testLevelRightPanel);
+
             BorderPane.setAlignment(testLevelGroup, Pos.TOP_LEFT);
             testLevelPane.setCenter(testLevelGroup);
 

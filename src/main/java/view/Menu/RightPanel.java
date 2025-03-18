@@ -2,6 +2,7 @@ package view.Menu;
 
 
 import LevelEditor.controller.MainLE;
+import LevelEditor.view.MapTemplateLE;
 import control.MainProgram;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -15,10 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -26,6 +24,7 @@ import javafx.util.Duration;
 import model.TimeThread;
 import model.TotalTime;
 import view.AudioPlayer;
+import view.Randomize.MapTemplate;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -117,7 +116,9 @@ public class RightPanel extends Pane {
     private Set<String> createdCollectibles = new HashSet<>();
 
     //rightPanel for leveleditor
-    MainLE mainLE;
+    private MainLE mainLE;
+    private MapTemplateLE mapTemplateLE;
+    private boolean userInitiatedDrag = false;
 
 
 
@@ -221,11 +222,12 @@ public class RightPanel extends Pane {
     }
 
     //rightPanel for leveleditor
-    public RightPanel(MainProgram mainProgram, AudioPlayer audioPlayer, int themeInt, MainLE mainLE) throws FileNotFoundException {
+    public RightPanel(MainProgram mainProgram, AudioPlayer audioPlayer, int themeInt, MainLE mainLE, MapTemplateLE mapTemplateLE) throws FileNotFoundException {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         this.themeInt = themeInt;
         this.mainLE = mainLE;
+        this.mapTemplateLE = mapTemplateLE;
         Font customFont = loadFont();
 
 
@@ -537,6 +539,21 @@ public class RightPanel extends Pane {
         }
     }
 
+    private void removePreviousStartOrGoal(int type) {
+        int[][] maze = mainLE.getMazeGenerator().getRawMazeArray();
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                if (type == 2 && maze[i][j] == 2) {
+                    maze[i][j] = 1;
+
+
+                } else if (type == 3 && maze[i][j] == 3) {
+                    maze[i][j] = 1;
+                }
+            }
+        }
+        mainLE.getMazeGenerator().setRawMazeArray(maze);
+    }
 
 
 
@@ -544,14 +561,20 @@ public class RightPanel extends Pane {
     //för att kunna dra objekten
     public void makeDraggable(Label label, Image image, int type, String theme) {
         label.setOnDragDetected(event -> {
+            userInitiatedDrag = true;
             Dragboard db = label.startDragAndDrop(TransferMode.COPY_OR_MOVE);
             ClipboardContent content = new ClipboardContent();
             content.putImage(image);
             content.putString(type + "," + theme);
             db.setContent(content);
+            if (type == 2 || type == 3 && userInitiatedDrag) {
+                removePreviousStartOrGoal(type);
+                mapTemplateLE.updateMapTemplate(mainLE.getMazeGenerator().getRawMazeArray());
+            }
             event.consume();
         });
         label.setOnDragDone(event -> {
+            userInitiatedDrag = false;
             mainLE.saveLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
             event.consume();
         });
