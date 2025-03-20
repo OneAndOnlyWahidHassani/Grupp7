@@ -15,6 +15,7 @@ import view.AudioPlayer;
 import view.Campaign.*;
 import view.GameOverScreen;
 import view.Menu.RightPanel;
+import view.Randomize.MapTemplate;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -59,6 +60,22 @@ public class GameController {
         this.world = world;
         this.level = level;
         heartCrystals = 3;
+    }
+
+    public GameController(MainProgram mainProgram, RightPanel rightPanel, AudioPlayer audioPlayer, GameOverScreen gameOverScreen, BorderPane customLevelPane, int level, int heartCrystals, int time, int themeInt) {
+        this.mainProgram = mainProgram;
+        this.rightPanel = rightPanel;
+        this.audioPlayer = audioPlayer;
+        this.gameOverScreen = gameOverScreen;
+        this.mainPaneCampaign = customLevelPane;
+        enemyController = new EnemyController(this);
+        totTime = new TotalTime(false);
+        this.time = null;
+        seconds = time;
+        this.level = level;
+        this.heartCrystals = heartCrystals;
+        world = themeInt;
+
     }
 
     public void gameOver() {
@@ -251,6 +268,31 @@ public class GameController {
         audioPlayer.playStartSound();
         startButtonPressed = true;
     }
+
+    public void startLevelFromLevelEditor(MapTemplate customMapTemplate) {
+        if (customMapTemplate != null) {
+            mainPaneCampaign.setCenter(customMapTemplate);
+        }
+        if (!totalTimeStarted){
+            rightPanel.startTotalTimer();
+            rightPanel.setTimerIsStarted(true);
+        }
+        if (!gameStarted){
+            rightPanel.resumeClock();
+            gameStarted = true;
+            time = new TimeThread(seconds, rightPanel);
+            time.setGameOver(false);
+            time.start();
+        } else if (startNotClickedOnce){
+            rightPanel.runClock();
+            time.setGameOver(false);
+            time.start();
+        }
+        totalTimeStarted = true;
+        startNotClickedOnce = false;
+        audioPlayer.playStartSound();
+        startButtonPressed = true;
+    }
     public void enteredBreakableWall(MouseEvent e) {
 
         Label label = (Label)e.getSource();
@@ -343,6 +385,9 @@ public class GameController {
 
     public ArrayList<Label> getPickaxes() {
         return pickaxes;
+    }
+    public void setTime(TimeThread time) {
+        this.time = time;
     }
 }
 

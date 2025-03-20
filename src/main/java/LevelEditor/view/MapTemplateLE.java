@@ -135,6 +135,11 @@ public class MapTemplateLE extends GridPane {
             add(getBorders(baseTheme), level.length + 1, i);
         }
     }
+
+    public void updateMapTemplate(int[][] level) {
+        this.level = level;
+        setupLevel();
+    }
     /**
      * Omvandlar värdena i arrayen av siffror till olika grafiska komponenter baserat på vilken siffra en position har.
      * Exempelvis så representerar 1:or väg, 0:or väggar, och 7:or hjärtan osv.

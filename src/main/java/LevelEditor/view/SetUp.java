@@ -59,7 +59,7 @@ public class SetUp extends Pane {
     public SetUp(MainProgram mainProgram, AudioPlayer audioPlayer) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
-        this.mainLE = new MainLE();
+        this.mainLE = new MainLE(mainProgram);
         setBackground();
         setupImages();
         addButtons();

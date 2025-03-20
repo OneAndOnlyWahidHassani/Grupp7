@@ -63,7 +63,6 @@ public class GenerateNextLevel {
         this.mazeGenerator = mazeGenerator;
         this.mainProgram = mainProgram;
         this.mainPane = mainPane;
-        this.rightPanel = rightPanel;
         this.themeInt = themeInt;
     }
 

@@ -1,6 +1,7 @@
 package LevelEditor.controller;
 
 import LevelEditor.model.Level;
+import control.MainProgram;
 import model.MazeGeneration.MazeGenerator;
 import model.ReaderWriter.FileManager;
 
@@ -14,6 +15,11 @@ public class MainLE {
     private Level level;
     private MazeGenerator mazeGenerator; // Lägg till en referens till MazeGenerator
     private FileManager fileManager;
+    private MainProgram mainProgram;
+
+    public MainLE(MainProgram mainProgram) {
+        this.mainProgram = mainProgram;
+    }
 
 //todo fixa så att den sparar labyrinten
     public void saveLevel(String levelName, String selectedTheme, String dimension, int[][] maze) {
@@ -76,6 +82,32 @@ public class MainLE {
         mazeGenerator.setRawMazeArray(maze);
     }
 
+    public boolean testLevel(String currentLevelName, String currentTheme, String dimension, int[][] maze) {
+        if (maze != null) {
+            System.out.println("Maze when testing level from editor: " + Arrays.deepToString(maze));
+        }
+
+        this.level = new Level(this);
+        this.currentLevelName = currentLevelName;
+        this.currentTheme = currentTheme;
+        this.dimension = dimension;
+        level.setLevelName(currentLevelName);
+        level.setTheme(currentTheme);
+        level.setDimension(dimension);
+
+        String[] dimensionParts = dimension.split("x");
+        int mazeSize = Integer.parseInt(dimensionParts[0]);
+
+        if (maze != null) {
+            mazeGenerator = new MazeGenerator(maze, false, true);
+            mazeGenerator.setRawMazeArray(maze);
+
+        } else {
+            mazeGenerator = new MazeGenerator(mazeSize, true);
+        }
+
+        return mainProgram.startTestLevel( getThemeInt(), mazeSize, mazeGenerator.getRawMazeArray(), 50, 3); //todo input seconds and heart from user
+    }
 
     public MazeGenerator getMazeGenerator() {
         return mazeGenerator;

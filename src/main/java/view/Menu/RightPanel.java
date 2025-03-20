@@ -2,6 +2,8 @@ package view.Menu;
 
 
 import LevelEditor.controller.MainLE;
+import LevelEditor.view.MapTemplateLE;
+import control.GameController;
 import control.MainProgram;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -15,10 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ClipboardContent;
-import javafx.scene.input.Dragboard;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.input.TransferMode;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -26,6 +25,7 @@ import javafx.util.Duration;
 import model.TimeThread;
 import model.TotalTime;
 import view.AudioPlayer;
+import view.Randomize.MapTemplate;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -73,7 +73,7 @@ public class RightPanel extends Pane {
     private Image emptySprite;
     private ImageView emptyView;
 
-    private static Integer STARTTIME = 15;
+    private static Integer STARTTIME = 0;
     private Timeline timeline = new Timeline();
     private Label timerLabel = new Label();
     private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
@@ -89,6 +89,16 @@ public class RightPanel extends Pane {
     private ImageView wallView;
     private Label wallLabel;
     private int currentXPositionWall = 100;
+
+    // ====== Breakable Wall variables ======
+    private Image breakableWallImage;
+    private ImageView breakableWallView;
+    private Label breakableWallLabel;
+
+    // ====== Breakable Wall variables ======
+    private Image borderWallImage;
+    private ImageView borderWallView;
+    private Label borderWallLabel;
 
     // ====== Collectible variables ======
     private Image collectibleImage;
@@ -117,7 +127,9 @@ public class RightPanel extends Pane {
     private Set<String> createdCollectibles = new HashSet<>();
 
     //rightPanel for leveleditor
-    MainLE mainLE;
+    private MainLE mainLE;
+    private MapTemplateLE mapTemplateLE;
+    private boolean userInitiatedDrag = false;
 
 
 
@@ -221,15 +233,105 @@ public class RightPanel extends Pane {
         totTime = new TotalTime(false);
     }
 
-    //rightPanel for leveleditor
+    public RightPanel(MainProgram mainProgram, String gameMode, AudioPlayer audioPlayer, TimeThread time, GameController controller, int seconds) throws FileNotFoundException {
+        this.mainProgram = mainProgram;
+        this.gameMode = gameMode;
+        this.audioPlayer = audioPlayer;
+        this.time = time;
+        this.setId("campaignScene");
+
+        soundOn = true;
+        musicOn = true;
+
+        imageMenu = new Image("file:files/texts/Menu.png", 110, 30, false, false);
+        menuView = new ImageView(imageMenu);
+
+        emptySprite = new Image("file:files/emptySprite.png", 30, 30, false, false);
+        emptyView = new ImageView(emptySprite);
+
+        pickaxe = new Image("file:files/items/pickaxe.png", 30, 30, false, false);
+        pickaxeView = new ImageView(pickaxe);
+        pickaxeLabel = new Label();
+        pickaxeLabel.setGraphic(emptyView);
+
+        levelNumber = new Image("file:files/levelcounter/"+ gameMode +".png", 180, 60, false, false);
+        currentLevelView = new ImageView(levelNumber);
+        levelLabel = new Label();
+        levelLabel.setGraphic(currentLevelView);
+
+        soundImage = new Image("file:files/soundbuttons/soundon.png", 30,30,false,false);
+        soundView = new ImageView(soundImage);
+        soundLabel = new Label();
+        soundLabel.setGraphic(soundView);
+
+        musicImage = new Image("file:files/soundbuttons/musicon.png", 30,30,false,false);
+        musicView = new ImageView(musicImage);
+        musicLabel = new Label();
+        musicLabel.setGraphic(musicView);
+        setSTARTTIME(seconds);
+        timeSeconds = new SimpleIntegerProperty(STARTTIME);
+        timerLabel.textProperty().bind(timeSeconds.asString());
+        timerLabel.setTextFill(Color.WHITE);
+        timerLabel.setFont(font);
+
+        // Add everything to the Pane (absolute positioning)
+        getChildren().addAll(menuView, levelLabel, pickaxeLabel,
+                soundLabel, musicLabel);
+
+        // Position them with setLayoutX/Y:
+        menuView.setLayoutX(400);
+
+        // Example layout positions (adjust to taste)
+        levelLabel.setLayoutX(5);
+        levelLabel.setLayoutY(5);
+
+        pickaxeLabel.setLayoutX(10);
+        pickaxeLabel.setLayoutY(80);
+
+        soundLabel.setLayoutX(460);
+        soundLabel.setLayoutY(690);
+
+        musicLabel.setLayoutX(490);
+        musicLabel.setLayoutY(690);
+        musicLabel.setId("musicLabel");
+
+        timerLabel.setLayoutX(15);
+        timerLabel.setLayoutY(300);
+        getChildren().add(timerLabel);
+
+        if(gameMode!="Random"){
+            heart = new Image("file:files/hearts/3heart.png", 180, 60, false, false);
+            currentHeartView = new ImageView(heart);
+            heartLabel = new Label();
+            heartLabel.setGraphic(currentHeartView);
+            heartLabel.setId("heartLabel");
+            getChildren().add(heartLabel);
+            heartLabel.setLayoutX(15);
+            heartLabel.setLayoutY(120);
+        }
+
+        soundLabel.setOnMouseClicked(e -> soundLabelClicked());
+        musicLabel.setOnMouseClicked(e -> musicLabelClicked());
+
+
+
+        menuView.setOnMouseClicked(e -> MainMenuClicked(e));
+
+        totTime = new TotalTime(false);
+    }
+
     /**
      * @author Linus Sigurd
      */
-    public RightPanel(MainProgram mainProgram, AudioPlayer audioPlayer, int themeInt, MainLE mainLE) throws FileNotFoundException {
+
+    //rightPanel for leveleditor
+    public RightPanel(MainProgram mainProgram, AudioPlayer audioPlayer, int themeInt, MainLE mainLE, MapTemplateLE mapTemplateLE) throws FileNotFoundException {
+
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
         this.themeInt = themeInt;
         this.mainLE = mainLE;
+        this.mapTemplateLE = mapTemplateLE;
         Font customFont = loadFont();
 
 
@@ -272,27 +374,45 @@ public class RightPanel extends Pane {
         soundLabel.setOnMouseClicked(e -> soundLabelClicked());
         musicLabel.setOnMouseClicked(e -> musicLabelClicked());
 
-        Button saveLevel = new Button("Save Level");
-        saveLevel.setFont(customFont);
-        saveLevel.setTranslateX(155);
-        saveLevel.setTranslateY(665);
+        //save level button
+        ImageView saveLevelView = new ImageView(new Image("file:files/texts/pngSaveImage.png", 30, 30, false, false));
+        Button saveLevel = new Button();
+        saveLevel.setGraphic(saveLevelView);
+        saveLevel.setTranslateX(60);
+        saveLevel.setTranslateY(650);
         saveLevel.setId("saveLevelButton");
-        saveLevel.setOnMouseEntered(e -> saveLevel.setTextFill(Color.RED));
-        saveLevel.setOnMouseExited(e -> saveLevel.setTextFill(Color.BLACK));
+        saveLevel.setStyle("-fx-border-color: transparent; -fx-border-width: 2px;");
+        saveLevel.setOnMouseEntered(e -> saveLevel.setStyle("-fx-border-color: red; -fx-border-width: 2px;"));
+        saveLevel.setOnMouseExited(e -> saveLevel.setStyle("-fx-border-color: transparent; -fx-border-width: 2px;"));
         saveLevel.setOnAction(e -> {
             mainLE.saveLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
             audioPlayer.playButtonSound();
         });
 
-        getChildren().addAll(menuView, soundLabel, musicLabel, saveLevel);
+        Tooltip saveTooltip = new Tooltip("Save Level?");
+        saveTooltip.setStyle("-fx-font-family: 'Press Start 2P'; -fx-font-size: 14px;");
+        saveLevel.setTooltip(saveTooltip);
 
+        //Test level button
+        Button testLevel = new Button("Test Level");
+        testLevel.setFont(customFont);
+        testLevel.setTranslateX(150);
+        testLevel.setTranslateY(652.5);
+        testLevel.setId("testLevelButton");
+        testLevel.setOnMouseEntered(e -> testLevel.setTextFill(Color.RED));
+        testLevel.setOnMouseExited(e -> testLevel.setTextFill(Color.BLACK));
+        testLevel.setOnAction(e -> {
+            mainLE.saveLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
+            mainLE.testLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
+            audioPlayer.playButtonSound();
+        });
 
+        getChildren().addAll(menuView, soundLabel, musicLabel, saveLevel, testLevel);
         menuView.setOnMouseClicked(e -> MainMenuClicked(e));
 
 
 
-
-        setupObjectButtons();
+        setupObjectButtons(getThemeString(themeInt));
 
 
 
@@ -305,10 +425,13 @@ public class RightPanel extends Pane {
             return Font.font("Verdana", 20);
         }
     }
+
     /**
      * @author Linus Sigurd
      */
-    public String getThemeString() {
+
+    public String getThemeString(int themeInt) {
+
         switch (themeInt) {
             case 0:
                 return "forest";
@@ -326,59 +449,46 @@ public class RightPanel extends Pane {
                 return "forest";
         }
     }
-    /**
-     * @author Linus Sigurd
-     */
-    public void setupObjectButtons() {
-        String[] themes = {"forest", "lava", "underground", "cloud", "desert", "space"};
+
+    public void setupObjectButtons(String theme) {
         int xStart = 50;
-        int yStart = 40;
+        int yStart = 60;
         int buttonWidth = 50;
         int buttonHeight = 50;
         int rowHeight = 80;
         int columnSpacing = 75;
 
+        int x = xStart;
+        int y = yStart;
 
+        createPathButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
-        for (int i = 0; i < themes.length; i++) {
-            String theme = themes[i];
-            int x = xStart + i * columnSpacing;
-            int y = yStart;
+        createWallButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
-            createPathButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createBorderButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
-            createWallButton(theme, x, y, buttonWidth, buttonHeight, i);
-            y += rowHeight;
+        createStartButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
-            createBorderButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createGoalButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
-            createStartButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createBreakableWallButton(theme, x, y, buttonWidth, buttonHeight);
+        y += rowHeight;
+        x -= columnSpacing;
+        x -= columnSpacing;
+        x -= columnSpacing;
 
-            createGoalButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createItemsButton(x, y, buttonWidth, buttonHeight);
+        x -= columnSpacing;
 
-            createBreakableWallButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
+        createCollectibleButton(theme, x, y, buttonWidth, buttonHeight);
 
-            createItemsButton(x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
-
-
-
-            createCollectibleButton(theme, x, y, buttonWidth, buttonHeight);
-            y += rowHeight;
-
-
-
-        }
     }
 
-    /**
-     * @author Linus Sigurd
-     */
     public void createPathButton(String theme, int x, int y, int v, int h) {
         pathImage = new Image("file:files/" + theme + "/path.png", v, h, false, false);
         pathView = new ImageView(pathImage);
@@ -393,10 +503,8 @@ public class RightPanel extends Pane {
         makeDraggable(pathLabel, pathImage, 1, theme);
         getChildren().add(pathLabel);
     }
-    /**
-     * @author Linus Sigurd
-     */
-    public void createWallButton(String theme, int x, int y, int v, int h, int i) {
+
+    public void createWallButton(String theme, int x, int y, int v, int h) {
         wallImage = new Image("file:files/" + theme + "/wall.png", v, h, false, false);
         wallView = new ImageView(wallImage);
         wallLabel = new Label("wallLabel" + i);
@@ -411,42 +519,48 @@ public class RightPanel extends Pane {
     }
 
     public void createBreakableWallButton(String theme, int x, int y, int v, int h) {
-        wallImage = new Image("file:files/" + theme + "/breakableWall.png", v, h, false, false);
+        switch (theme){
+            case "cloud":
+                createBreakableWall(theme, x, y, v, h);
+                break;
+            case "underground":
+                createBreakableWall(theme, x, y, v, h);
+                break;
+            default:
+                break;
+        }
 
-        wallView = new ImageView(wallImage);
-        wallLabel = new Label();
-        wallLabel.setGraphic(wallView);
-        wallLabel.setOnMouseEntered(e -> {
-            wallLabel.setTooltip(new Tooltip("Breakable Wall"));
-        });
-
-        makeDraggable(wallLabel, wallImage, 7, theme);
-
-        wallLabel.setLayoutX(currentXPositionWall - 160);
-        wallLabel.setLayoutY(y);
-        currentXPositionWall += 37;
-
-        getChildren().add(wallLabel);
     }
-    /**
-     * @author Linus Sigurd
-     */
+
+    private void createBreakableWall(String theme, int x, int y , int v, int h){
+        breakableWallImage = new Image("file:files/" + theme + "/breakableWall.png", v, h, false, false);
+
+        breakableWallView = new ImageView(breakableWallImage);
+        breakableWallLabel = new Label();
+        breakableWallLabel.setGraphic(breakableWallView);
+        breakableWallLabel.setOnMouseEntered(e -> {
+            breakableWallLabel.setTooltip(new Tooltip("Breakable Wall"));
+        });
+        breakableWallLabel.setLayoutX(x);
+        breakableWallLabel.setLayoutY(y);
+        makeDraggable(breakableWallLabel, breakableWallImage, 7, theme);
+        getChildren().add(breakableWallLabel);
+    }
+
     public void createBorderButton(String theme, int x, int y, int v, int h) {
-        wallImage = new Image("file:files/" + theme + "/border.png", v, h, false, false);
-        wallView = new ImageView(wallImage);
-        wallLabel = new Label();
-        wallLabel.setGraphic(wallView);
-        wallLabel.setLayoutX(x);
-        wallLabel.setLayoutY(y);
-        wallLabel.setOnMouseEntered(e -> {
-            wallLabel.setTooltip(new Tooltip("Border"));
+        borderWallImage = new Image("file:files/" + theme + "/border.png", v, h, false, false);
+        borderWallView = new ImageView(borderWallImage);
+        borderWallLabel = new Label();
+        borderWallLabel.setGraphic(borderWallView);
+        borderWallLabel.setLayoutX(x);
+        borderWallLabel.setLayoutY(y);
+        borderWallLabel.setOnMouseEntered(e -> {
+            borderWallLabel.setTooltip(new Tooltip("Border"));
         });
-        makeDraggable(wallLabel, wallImage, 8, theme);
-        getChildren().add(wallLabel);
+        makeDraggable(borderWallLabel, borderWallImage, 8, theme);
+        getChildren().add(borderWallLabel);
     }
-    /**
-     * @author Linus Sigurd
-     */
+
     public void createCollectibleButton(String theme, int x, int y, int v, int h) {
         String collectibleType = getCollectibleType(theme);
 
@@ -482,9 +596,7 @@ public class RightPanel extends Pane {
                 return theme;
         }
     }
-    /**
-     * @author Linus Sigurd
-     */
+
     public void createStartButton(String theme, int x, int y, int v, int h) {
         startImage = new Image("file:files/" + theme + "/start.png", v, h, false, false);
         startView = new ImageView(startImage);
@@ -498,9 +610,7 @@ public class RightPanel extends Pane {
         makeDraggable(startLabel, startImage, 2, theme);
         getChildren().add(startLabel);
     }
-    /**
-     * @author Linus Sigurd
-     */
+
     public void createGoalButton(String theme, int x, int y, int v, int h) {
         goalImage = new Image("file:files/" + theme + "/goal.png", v, h, false, false);
         goalView = new ImageView(goalImage);
@@ -529,7 +639,7 @@ public class RightPanel extends Pane {
             heartLabel.setOnMouseEntered(e -> {
                 heartLabel.setTooltip(new Tooltip("Heart"));
             });
-            makeDraggable(heartLabel, heartImage, 5, getThemeString());
+            makeDraggable(heartLabel, heartImage, 5, getThemeString(themeInt));
             getChildren().add(heartLabel);
 
             heartCreated = true;
@@ -545,28 +655,50 @@ public class RightPanel extends Pane {
             pickaxeLabel.setOnMouseEntered(e -> {
                 pickaxeLabel.setTooltip(new Tooltip("Pickaxe"));
             });
-            makeDraggable(pickaxeLabel, pickaxeImage, 6, getThemeString());
+            makeDraggable(pickaxeLabel, pickaxeImage, 6, getThemeString(themeInt));
             getChildren().add(pickaxeLabel);
 
             pickaxeCreated = true;
         }
     }
 
+    private void removePreviousStartOrGoal(int type) {
+        int[][] maze = mainLE.getMazeGenerator().getRawMazeArray();
+        for (int i = 0; i < maze.length; i++) {
+            for (int j = 0; j < maze[i].length; j++) {
+                if (type == 2 && maze[i][j] == 2) {
+                    maze[i][j] = 1;
+
+
+                } else if (type == 3 && maze[i][j] == 3) {
+                    maze[i][j] = 1;
+                }
+            }
+        }
+        mainLE.getMazeGenerator().setRawMazeArray(maze);
+    }
 
 
 
 
     //för att kunna dra objekten
-    /**
-     * @author Linus Sigurd
-     */
     public void makeDraggable(Label label, Image image, int type, String theme) {
         label.setOnDragDetected(event -> {
+            userInitiatedDrag = true;
             Dragboard db = label.startDragAndDrop(TransferMode.COPY_OR_MOVE);
             ClipboardContent content = new ClipboardContent();
             content.putImage(image);
             content.putString(type + "," + theme);
             db.setContent(content);
+            if (type == 2 || type == 3 && userInitiatedDrag) {
+                removePreviousStartOrGoal(type);
+                mapTemplateLE.updateMapTemplate(mainLE.getMazeGenerator().getRawMazeArray());
+            }
+            event.consume();
+        });
+        label.setOnDragDone(event -> {
+            userInitiatedDrag = false;
+            mainLE.saveLevel(mainLE.getCurrentLevelName(), mainLE.getCurrentTheme(), mainLE.getDimension(), mainLE.getMazeGenerator().getRawMazeArray());
             event.consume();
         });
     }
@@ -696,7 +828,7 @@ public class RightPanel extends Pane {
      */
     public void startTotalTimer(){
         if (!timerIsStartedOnce)
-        totTime.start();
+            totTime.start();
     }
     /**
      * Startar en task för Game Over

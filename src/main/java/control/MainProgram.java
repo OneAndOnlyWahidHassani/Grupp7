@@ -21,6 +21,7 @@ import javafx.stage.WindowEvent;
 import model.HighscoreList;
 import model.MazeGeneration.GenerateNextLevel;
 import model.MazeGeneration.MazeGenerator;
+import model.TimeThread;
 import view.AudioPlayer;
 import view.GameOverScreen;
 import view.Menu.*;
@@ -193,12 +194,7 @@ public class MainProgram extends Application {
         editorGroup.getTransforms().add(scale);
 
         // 4. Create the larger right panel for the level editor.
-        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE());
-        levelEditorRightPanel.setPrefWidth(515);
-        levelEditorRightPanel.setBackground(
-                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
-        );
-        levelEditorPane.setRight(levelEditorRightPanel);
+
 
         // 5. Pick a custom resolution for the scene (slightly wider to accommodate the bigger right panel).
         double editorScaleFactor = scaleFactor;
@@ -211,10 +207,17 @@ public class MainProgram extends Application {
 
         // 7. Generate your maze, create `mapTemplateLE`, and the code to manage the level logic.
         mazeGenerator = new MazeGenerator(dimension, true, true);
-        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension, themeInt);
+        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, dimension, themeInt);
         mapTemplateLE = new MapTemplateLE(mazeGenerator.getMaze(), this, generateNextLevel, themeInt);
 
         setUp.getMainLE().setMazeGenerator(mazeGenerator);
+
+        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE(), mapTemplateLE);
+        levelEditorRightPanel.setPrefWidth(515);
+        levelEditorRightPanel.setBackground(
+                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
+        );
+        levelEditorPane.setRight(levelEditorRightPanel);
 
         // 8. Add mapTemplateLE to the same group so it scales together with the editorContent.
         editorGroup.getChildren().add(mapTemplateLE);
@@ -236,12 +239,7 @@ public class MainProgram extends Application {
         Scale scale = new Scale(scaleFactor, scaleFactor);
         editorGroup.getTransforms().add(scale);
 
-        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE());
-        levelEditorRightPanel.setPrefWidth(515);
-        levelEditorRightPanel.setBackground(
-                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
-        );
-        levelEditorPane.setRight(levelEditorRightPanel);
+
 
         double editorScaleFactor = scaleFactor;
         double editorSceneWidth = designWidth * editorScaleFactor + 275;
@@ -257,7 +255,7 @@ public class MainProgram extends Application {
         }
 
 
-        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, levelEditorRightPanel, dimension, themeInt);
+        generateNextLevel = new GenerateNextLevel(this, levelEditorPane, mazeGenerator, dimension, themeInt);
         System.out.println("Maze vid enterLevelEditorFromEdit:");
         for (int i = 0; i < maze.length; i++) {
             System.out.println(java.util.Arrays.toString(maze[i]));
@@ -269,6 +267,13 @@ public class MainProgram extends Application {
             System.out.println(java.util.Arrays.toString(maze[i]));
         }
 
+        RightPanel levelEditorRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE(), mapTemplateLE);
+        levelEditorRightPanel.setPrefWidth(515);
+        levelEditorRightPanel.setBackground(
+                new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY))
+        );
+        levelEditorPane.setRight(levelEditorRightPanel);
+
 
         editorGroup.getChildren().add(mapTemplateLE);
 
@@ -276,6 +281,52 @@ public class MainProgram extends Application {
         levelEditorPane.setCenter(editorGroup);
 
         mainWindow.setScene(levelEditorScene);
+    }
+
+    public boolean startTestLevel(int themeInt, int dimension, int[][] maze, int seconds, int lives) {
+        BorderPane testLevelPane = new BorderPane();
+
+        Pane testLevelContent = new Pane();
+        Group testLevelGroup = new Group(testLevelContent);
+
+        Scale scale = new Scale(scaleFactor, scaleFactor);
+        testLevelGroup.getTransforms().add(scale);
+        try {
+
+
+            double testLevelSceneWidth = designWidth * scaleFactor + 275;
+            double testLevelSceneHeight = designHeight * scaleFactor;
+            Scene testLevelScene = new Scene(testLevelPane, testLevelSceneWidth, testLevelSceneHeight, Color.BLACK);
+
+            testLevelScene.setCursor(new ImageCursor(cursorImage));
+
+            MazeGenerator mazeGenerator = new MazeGenerator(maze, false, true);
+            GenerateNextLevel generateNextLevel = new GenerateNextLevel(this, testLevelPane, mazeGenerator, dimension, themeInt);
+
+            //todo lägg in level alltså maze direkt i din kontruktor för gamecontroller. I konrktorn skapa worldtemplate med vår maze och tema
+            //todo skapa även en rightpanel som ser ut som i campaign som har modifierats med indata från testrightpanel
+            RightPanel rightPanelforTestingLvl = new RightPanel(this, "LevelCustom", audioPlayer, null, null, seconds);
+            rightPanelforTestingLvl.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+            rightPanelforTestingLvl.setPrefWidth(515);
+
+
+            gameController = new GameController(this, rightPanelforTestingLvl, audioPlayer, gameOverScreen, testLevelPane, 0 , lives, seconds, themeInt);
+
+            MapTemplate mapTemplate = new MapTemplate(maze, this, gameController, generateNextLevel, themeInt);
+
+            testLevelGroup.getChildren().add(mapTemplate);
+            testLevelPane.setRight(rightPanelforTestingLvl);
+
+            //todo: fixa med tiden och liv. Den behöver indatan från levelEditorn.
+            BorderPane.setAlignment(testLevelGroup, Pos.TOP_LEFT);
+            testLevelPane.setCenter(testLevelGroup);
+
+            mainWindow.setScene(testLevelScene);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+
+        return true;
     }
 
     /**

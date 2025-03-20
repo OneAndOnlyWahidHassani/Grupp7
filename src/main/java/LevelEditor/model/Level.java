@@ -20,6 +20,8 @@ public class Level {
      * @param mainLE the main level editor controller
      * @author Alanah Öster berg Coleman
      */
+    private int lives = 3;
+
     public Level(MainLE mainLE) {
         this.mainLE = mainLE;
     }
@@ -102,7 +104,16 @@ public class Level {
     public String getDimension() {
         return dimension;
     }
-
-
+    public void setLives(int lives) {
+        if (lives < 1) {
+            this.lives = 1;
+        } else if (lives > 3) {
+        } else {
+            this.lives = lives;
+        }
+    }
+        public int getLives() {
+        return lives;
+        }
 }
 
