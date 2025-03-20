@@ -21,7 +21,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
-
+/**
+ * Represents the menu for the Level Editor, providing options to create, edit, and return to the main menu.
+ *
+ * @author Alanah Öster berg Coleman
+ */
 public class MenuLE extends Pane {
     private MainProgram mainProgram;
     private AudioPlayer audioPlayer;
@@ -29,7 +33,15 @@ public class MenuLE extends Pane {
     private FileManager fileManager;
     private MainLE mainLE;
 
-
+    /**
+     * Constructs a MenuLE instance with references to the main program, audio player, and level editor controller.
+     *
+     * @param mainProgram the main program instance
+     * @param audioPlayer the audio player for playing sounds
+     * @param mainLE the level editor controller
+     * @author Alanah Öster berg Coleman
+     * @author Wahid Hassani
+     */
     public MenuLE(MainProgram mainProgram, AudioPlayer audioPlayer, MainLE mainLE) {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
@@ -41,7 +53,10 @@ public class MenuLE extends Pane {
     }
 
 
-
+    /**
+     * Loads a custom font for the menu.
+     * @author Alanah Öster berg Coleman
+     */
     private void loadFont() {
         try {
             customFont = Font.loadFont(new FileInputStream("files/fonts/PressStart2P.ttf"), 20);
@@ -49,14 +64,20 @@ public class MenuLE extends Pane {
             System.out.println("Fontfilen hittades inte!");
         }
     }
-
+    /**
+     * Sets the background image for the menu.
+     * @author Alanah Öster berg Coleman
+     */
     private void setBackground() {
         BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg", 800, 600, false, true),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT);
         this.setBackground(new Background(menuBackground));
     }
-
+    /**
+     * Adds buttons for creating a new level, editing an existing level, and returning to the main menu.
+     * @author Alanah Öster berg Coleman
+     */
     private void addButtons() {
         ImageView titelImageView = new ImageView(new Image("file:files/texts/lvl.png", 300, 80, false, true));
         titelImageView.setStyle("fx-background-color: transparent;");
@@ -111,7 +132,11 @@ public class MenuLE extends Pane {
 
         getChildren().addAll(titelImageView, createButton, editButton, returnView);
     }
-
+    /**
+     * Displays a popup for selecting a level to edit.
+     * @author Alanah Öster berg Coleman
+     * @author Wahid Hassani
+     */
     private void showLevelSelection() {
         Stage popupStage = new Stage();
         popupStage.setTitle("Select a Level");

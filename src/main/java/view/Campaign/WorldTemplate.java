@@ -18,8 +18,13 @@ import view.WorldIntroAnimation;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-
-
+/**
+ * This class represents the World Template in the game, handling the graphical layout of the world,
+ * including borders, paths, walls, collectibles, and the game objects. It uses JavaFX components
+ * to render the level based on the level array provided.
+ *
+ * @author Elvira Grubb
+ */
 public class WorldTemplate extends GridPane {
     //private MainProgram mainProgram;
     private GameController gameController;
@@ -43,6 +48,15 @@ public class WorldTemplate extends GridPane {
     public WorldTemplate(){
 
     }
+
+    /**
+     * Constructor that initializes the WorldTemplate with the given level array and GameController.
+     * Sets up the world and graphics based on the level data and controller information.
+     *
+     * @param levelArray The array representing the world layout.
+     * @param gameController The GameController that manages the game state.
+     * @throws FileNotFoundException if there is an issue loading world images.
+     */
     public WorldTemplate(int[][] levelArray, GameController gameController) throws FileNotFoundException {
         this.gameController = gameController;
         this.levelArray = levelArray;
@@ -62,7 +76,7 @@ public class WorldTemplate extends GridPane {
     }
 
     /**
-     * Sätter bakgrunden i fönstret.
+     * Sets the background for the world template.
      */
     public void setBackground(){
         BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg",800,600,false,true),
@@ -72,7 +86,7 @@ public class WorldTemplate extends GridPane {
     }
 
     /**
-     * Skapar en ram runt spelplanen.
+     * Sets up the borders around the world layout.
      */
     public void setupBorders() {
         for (int i = 0; i < levelArray.length + 1; i++) {
@@ -90,8 +104,8 @@ public class WorldTemplate extends GridPane {
     }
 
     /**
-     * Omvandlar värdena i arrayen av siffror till olika grafiska komponenter baserat på vilken siffra en position har.
-     * Exempelvis så representerar 1:or väg, 0:or väggar, och 7:or hjärtan osv.
+     * Converts the level array values into graphical components (e.g., walls, paths, collectibles)
+     * and adds them to the grid.
      */
     public void setupLevel() {
         for (int i = 0; i < levelArray.length; i++) {
@@ -127,7 +141,12 @@ public class WorldTemplate extends GridPane {
             }
         }
     }
-
+    /**
+     * Returns the name of the world based on the integer value.
+     *
+     * @param value The integer value representing the world.
+     * @return The name of the world as a string.
+     */
     public String getWorldName(int value){
         switch (value){
             case 1:
@@ -147,10 +166,11 @@ public class WorldTemplate extends GridPane {
         }
     }
 
+
     /**
-     * Instansierar de olika bilderna som används som grafik inuti spelet.
-     * Baserad på value så sätts bilderna till en specifik folder per värld.
-     * @param value Den aktuella världen.
+     * Sets up the images for different components (e.g., walls, paths) based on the current world.
+     *
+     * @param value The current world value used to select the correct set of images.
      */
     public void setupImages(int value){
         String folder = getWorldName(value);
@@ -171,10 +191,11 @@ public class WorldTemplate extends GridPane {
             wall = new Image("file:files/" + folder + "/wall.png", squareSize, squareSize, false, false);
         }
     }
-
     /**
-     * En metod som skapar ett objekt av label som representerar en vägg.
-     * @return Returnerar en label.
+     * Creates and returns a Label that represents a wall in the game.
+     * The label is clickable and triggers events when the mouse enters or exits.
+     *
+     * @return The Label representing a wall.
      */
     public Label getWall() {
         Label label = new Label();
@@ -186,10 +207,10 @@ public class WorldTemplate extends GridPane {
         label.setOnMouseExited(e -> exitedLabel(e));
         return label;
     }
-
     /**
-     * En metod som skapar ett objekt av label som representerar en väg.
-     * @return Returnerar en label.
+     * Creates and returns a Label that represents a path in the game.
+     *
+     * @return The Label representing a path.
      */
     private Label getPath() {
         Label label = new Label();
@@ -199,10 +220,10 @@ public class WorldTemplate extends GridPane {
         label.setGraphic(pathView);
         return label;
     }
-
     /**
-     * En metod som skapar ett objekt av label som representerar en border.
-     * @return Returnerar en label.
+     * Creates and returns a Label that represents a border around the game.
+     *
+     * @return The Label representing a border.
      */
     private Label getBorders() {
         Label label = new Label();
@@ -216,8 +237,9 @@ public class WorldTemplate extends GridPane {
     }
 
     /**
-     * En metod som skapar ett objekt av label som representerar en förstörbar vägg.
-     * @return Returnerar en label.
+     * Creates and returns a Label that represents a breakable wall in the game.
+     *
+     * @return The Label representing a breakable wall.
      */
     private Label getBreakableWall() {
         Label label = new Label();
@@ -228,10 +250,10 @@ public class WorldTemplate extends GridPane {
         label.setOnMouseEntered(e -> gameController.enteredBreakableWall(e));
         return label;
     }
-
     /**
-     * En metod som skapar ett objekt av label som representerar ett mål.
-     * @return Returnerar en label.
+     * Creates and returns a Label that represents the goal in the game.
+     *
+     * @return The Label representing the goal.
      */
     private Label getGoal() {
         Label label = new Label();
@@ -251,8 +273,9 @@ public class WorldTemplate extends GridPane {
     }
 
     /**
-     * En metod som skapar ett objekt av label som representerar start.
-     * @return Returnerar en label.
+     * Creates and returns a Label that represents the start position in the game.
+     *
+     * @return The Label representing the start.
      */
     private Label getStart() {
         Label label = new Label();
@@ -266,8 +289,9 @@ public class WorldTemplate extends GridPane {
     }
 
     /**
-     * En metod som skapar ett objekt av label som representerar en collectible.
-     * @return Returnerar en label.
+     * Creates and returns a Label that represents a collectible item in the game.
+     *
+     * @return The Label representing a collectible item.
      */
     public Label addCollectible() {
         Label collectible = new Label();
@@ -285,8 +309,9 @@ public class WorldTemplate extends GridPane {
     }
 
     /**
-     * En metod som skapar ett objekt av label som representerar ett spelarliv.
-     * @return Returnerar en label.
+     * Creates and returns a Label that represents a heart crystal in the game.
+     *
+     * @return The Label representing a heart crystal.
      */
     public Label addHeartCrystal() {
         Label heartCrystal = new Label();
@@ -304,8 +329,9 @@ public class WorldTemplate extends GridPane {
     }
 
     /**
-     * En metod som skapar ett objekt av label som representerar en yxa.
-     * @return Returnerar en label.
+     * Creates and returns a Label that represents a pickaxe item in the game.
+     *
+     * @return The Label representing a pickaxe.
      */
     public Label addPickAxe() {
         Label pickAxe = new Label();
@@ -324,8 +350,9 @@ public class WorldTemplate extends GridPane {
 
 
     /**
-     * När muspekaren lämnar en label slutar den att highlightas.
-     * @param e Används för att hitta rätt label.
+     * Handles the event when the mouse exits a label by removing any highlight effects.
+     *
+     * @param e The MouseEvent that triggered this method.
      */
     public void exitedLabel(MouseEvent e) {
         Label label = (Label)e.getSource();
@@ -336,7 +363,12 @@ public class WorldTemplate extends GridPane {
         fade.setToValue(10);
         fade.play();
     }
-
+    /**
+     * Sets up an animation for introducing a new world.
+     *
+     * @param mainPaneCampaign The main pane for the campaign view.
+     * @param world The world identifier for the world to be introduced.
+     */
     public void setNewWorldAnimation(BorderPane mainPaneCampaign, int world){
         WorldIntroAnimation introAnimation = new WorldIntroAnimation(String.valueOf(world));
         mainPaneCampaign.getChildren().add(introAnimation);

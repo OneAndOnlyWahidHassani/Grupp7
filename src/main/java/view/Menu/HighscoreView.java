@@ -15,6 +15,10 @@ import java.util.ArrayList;
 import static javax.swing.text.StyleConstants.setAlignment;
 
 /**
+ * The HighscoreView class displays the high score list for a specific game map.
+ * It shows the high scores, names of players, and provides a return button to navigate back to the main menu.
+ * The high scores are retrieved from a HighscoreList object, and the display is interactive with hover and click effects.
+ *
  * @author Elvira Grubb
  */
 public class HighscoreView extends Pane{
@@ -30,13 +34,15 @@ public class HighscoreView extends Pane{
     ArrayList<Label> highscoreLabels = new ArrayList<>();
 
 
+
     /**
-     * @author Elvira Grubb
-     * Konstruktor som tar emot mainProgram och audioPlayer och kör några metoder för att
-     * sätta bilder och knappar
+     * Constructor that initializes the HighscoreView with the provided main program, audio player, map selection, and high score list.
+     * It also sets up the background, labels, and buttons for the high score display.
      *
-     * @param mainProgram tas emot och instansvariabeln sätts
-     * @param audioPlayer tas emot och instansvariabeln sätts
+     * @param mainProgram The main program managing the application's logic.
+     * @param audioPlayer The audio player used for sound effects.
+     * @param map The map for which high scores are displayed.
+     * @param highscoreList The list of high scores to be displayed.
      */
     public HighscoreView(MainProgram mainProgram, AudioPlayer audioPlayer, int map, HighscoreList highscoreList) {
         this.mainProgram = mainProgram;
@@ -51,8 +57,8 @@ public class HighscoreView extends Pane{
     }
 
     /**
-     * Sätter labels och bilder i menyn
-     * @author Elvira Grubb
+     * Sets up the labels and images for displaying the high scores and other visual elements in the menu.
+     * It retrieves the high scores and player names and creates labels for each entry.
      */
     public void setupLabelsAndImages() {
         selectLevel = new Image("file:files/texts/HighscoreTitle.png", 800, 600, false, false);
@@ -76,8 +82,8 @@ public class HighscoreView extends Pane{
     }
 
     /**
-     * Metod som sätter bakgrundsbilden
-     * @author Elvira Grubb
+     * Sets the background image for the high score screen.
+     * This method is called during initialization to provide a visual background for the high score view.
      */
     public void setBackground() {
         BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg", 800, 600, false, true),
@@ -87,9 +93,10 @@ public class HighscoreView extends Pane{
     }
 
     /**
-     * Metod som placerar bilderna som klickbara ImageViews i scenen med events för knapptryck och hovering.
-     * Bilderna förstoras när man hovrar över dem och scenen byts när man trycker på dem.
-     * @author Elvira Grubb
+     * Adds the interactive buttons and labels to the high score view.
+     * The return button allows the user to navigate back to the main menu.
+     * Labels displaying the high scores are also added and positioned on the screen.
+     * The return button's image changes on hover, and it navigates to the menu when clicked.
      */
     public void addButtons() {
         ImageView dimensionView = new ImageView(selectLevel);

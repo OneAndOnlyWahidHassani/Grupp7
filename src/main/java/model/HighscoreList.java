@@ -3,15 +3,32 @@ package model;
 import java.io.*;
 
 /**
+ * The HighscoreList class handles the storage and management of high scores in a game.
+ * It allows adding new scores, reading and writing the list of high scores to and from a file.
+ * The class supports sorting the high scores and storing up to 10 scores.
+ *
  * @author Elvira Grubb
  */
 public class HighscoreList {
     int[] highscoreListScores;
     String[] highscoreListNames;
-
+    /**
+     * Constructs a new HighscoreList instance and reads the high score data from a file.
+     *
+     * @throws IOException if an I/O error occurs during reading the file.
+     * @throws ClassNotFoundException if the class of a serialized object cannot be found.
+     */
     public HighscoreList() throws IOException, ClassNotFoundException {
         read();
     }
+
+    /**
+     * Adds a new score to the high score list. If the new score is higher than the lowest score,
+     * it will be inserted in the correct position in the sorted list.
+     *
+     * @param score The score to be added.
+     * @param name The name associated with the score.
+     */
     public void addScore(int score, String name)
     {
         if (highscoreListScores != null)
@@ -55,7 +72,11 @@ public class HighscoreList {
             highscoreListScores[0] = score;
         }
     }
-
+    /**
+     * Writes the current high score list to a file.
+     *
+     * @throws IOException if an I/O error occurs during writing to the file.
+     */
     public void write() throws IOException
     {
         System.out.println("Writing list");
@@ -70,7 +91,12 @@ public class HighscoreList {
             }
         }
     }
-
+    /**
+     * Reads the high score list from a file.
+     *
+     * @throws IOException if an I/O error occurs during reading the file.
+     * @throws ClassNotFoundException if the class of a serialized object cannot be found.
+     */
     public void read() throws IOException, ClassNotFoundException {
         System.out.println("Reading highscore list");
         String fileName = "maps\\highscore.dat";

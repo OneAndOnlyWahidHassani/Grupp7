@@ -8,11 +8,12 @@ import javafx.scene.layout.*;
 import view.AudioPlayer;
 
 import java.io.FileNotFoundException;
-
 /**
- * @author Viktor Näslund
+ * Represents the view where the player can choose the dimensions of the game grid.
+ * This class sets up images and buttons for different grid sizes, handling mouse events
+ * for hover and click actions. The game switches to the chosen grid size when a button is clicked.
+ *
  */
-
 public class ChooseDimension extends Pane {
     private MainProgram mainProgram;
     private Image chooseDimension;
@@ -30,10 +31,10 @@ public class ChooseDimension extends Pane {
 
 
     /**
-     * Konstruktor som tar emot mainProgram och audioPlayer och kör några metoder för att
-     * sätta bilder och knappar
-     * @param mainProgram tas emot och instansvariabeln sätts
-     * @param audioPlayer tas emot och instansvariabeln sätts
+     * Constructor that initializes the main program and audio player and sets up the images and buttons.
+     *
+     * @param mainProgram the main program controlling the game.
+     * @param audioPlayer the audio player for managing sound effects.
      */
     public ChooseDimension(MainProgram mainProgram, AudioPlayer audioPlayer){
         this.mainProgram = mainProgram;
@@ -45,7 +46,7 @@ public class ChooseDimension extends Pane {
     }
 
     /**
-     * Metod som länkar Image-objekten till png-filer
+     * Sets up the images for buttons and backgrounds used in the Choose Dimension view.
      */
     public void setupImages(){
         chooseDimension = new Image("file:files/texts/ChooseDimension.png", 800, 600, false,false);
@@ -60,9 +61,8 @@ public class ChooseDimension extends Pane {
         returnImage = new Image("file:files/texts/return.png", 250,30,false,false);
         returnResize = new Image("file:files/texts/return.png", 255,33,false,false);
     }
-
     /**
-     * Metod som sätter bakgrundsbilden
+     * Sets the background image for the Choose Dimension screen.
      */
     public void setBackground(){
         BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg",800,600,false,true),
@@ -72,8 +72,8 @@ public class ChooseDimension extends Pane {
     }
 
     /**
-     * Metod som placerar bilderna som klickbara ImageViews i scenen med events för knapptryck och hovering.
-     * Bilderna förstoras när man hovrar över dem och scenen byts när man trycker på dem.
+     * Adds interactive buttons to the screen. Each button corresponds to a different grid size.
+     * When a button is hovered, its image is resized. When clicked, the game changes to the selected grid size.
      */
     public void addButtons(){
         ImageView dimensionView = new ImageView(chooseDimension);

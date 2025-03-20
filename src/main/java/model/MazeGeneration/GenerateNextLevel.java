@@ -11,8 +11,13 @@ import java.io.FileNotFoundException;
 import java.util.Random;
 
 /**
+ * The GenerateNextLevel class handles the generation of the next level of the maze.
+ * It includes functionality to generate a new maze, ensure the start and goal positions
+ * are accessible, and update the game UI with the newly generated maze.
+ *
  * @author André Eklund
  * @edit Viktor Näslund
+ * @edit Linus Sigurd
  */
 
 public class GenerateNextLevel {
@@ -26,12 +31,13 @@ public class GenerateNextLevel {
 
 
     /**
-     * Initializes the objects.
-     * @param mainProgram Huvudprogrammet.
-     * @param mainPane En BorderPane.
-     * @param mazeGenerator Klassen som genererar labyrinter.
-     * @param rightPanel Panelen som visar information så som liv, tid, nivå osv.
-     * @param dimension Storleken på labyrinten som ska genereras.
+     * Constructor that initializes the necessary components to generate a new maze.
+     *
+     * @param mainProgram  The main program object responsible for handling game logic.
+     * @param mainPane     The main BorderPane layout of the game.
+     * @param mazeGenerator The maze generator object that generates new mazes.
+     * @param rightPanel   The right panel showing information such as lives, time, level, etc.
+     * @param dimension    The size of the maze to be generated.
      */
 
     public GenerateNextLevel(MainProgram mainProgram, BorderPane mainPane, MazeGenerator mazeGenerator, RightPanel rightPanel, int dimension){
@@ -42,6 +48,14 @@ public class GenerateNextLevel {
         this.rightPanel = rightPanel;
     }
     /**
+     * Constructor that initializes the necessary components to generate a new maze, with an additional theme parameter.
+     *
+     * @param mainProgram  The main program object responsible for handling game logic.
+     * @param mainPane     The main BorderPane layout of the game.
+     * @param mazeGenerator The maze generator object that generates new mazes.
+     * @param rightPanel   The right panel showing information such as lives, time, level, etc.
+     * @param dimension    The size of the maze to be generated.
+     * @param themeInt     The integer representing the current theme for the level.
      * @author Linus Sigurd
      */
     public GenerateNextLevel(MainProgram mainProgram, BorderPane mainPane, MazeGenerator mazeGenerator, RightPanel rightPanel, int dimension, int themeInt){
@@ -54,8 +68,9 @@ public class GenerateNextLevel {
     }
 
     /**
-     * Genererar en ny labyrint och skickar det till GUIt.
-     * @throws FileNotFoundException
+     * Generates a new maze, ensuring that the start and goal positions are accessible and updates the UI to display the new maze.
+     *
+     * @throws FileNotFoundException if there is an issue loading the maze files.
      */
     public void generateNewMaze() throws FileNotFoundException {
         int currentMaze[][] = mazeGenerator.getMaze();
@@ -79,11 +94,13 @@ public class GenerateNextLevel {
         this.mazeGenerator = newMazegenerator;
     }
 
+
     /**
-     * En metod som kollar arrayens siffror för att säkerställa att
-     * start och mål inte är instängda mellan siffror som representerar väggar.
-     * @param maze Arrayen som ska granskas.
-     * @return returnerar den modifierade arrayen.
+     * Ensures that the start and goal positions in the maze are not enclosed by walls.
+     * This method checks the neighbors of the start and goal positions and adjusts the maze to ensure accessibility.
+     *
+     * @param maze The 2D array representing the maze to be checked.
+     * @return The modified maze with accessible start and goal positions.
      */
     public int[][] checkStartAndGoalNeighbors(int[][] maze) {
 

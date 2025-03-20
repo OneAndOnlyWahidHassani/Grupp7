@@ -3,7 +3,6 @@ package model;
 import view.Menu.RightPanel;
 
 /**
- * @author Sebastian Helin
  * En tråd som räknar ner den
  * totala tiden som skickas in från konstruktorn
  */

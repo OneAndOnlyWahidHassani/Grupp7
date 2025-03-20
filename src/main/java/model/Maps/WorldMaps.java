@@ -1,11 +1,25 @@
 package model.Maps;
-
+/**
+ * The WorldMaps class is responsible for storing and providing access to different levels in the game.
+ * Each level is represented as a 2D array of integers, and the class offers methods to retrieve these levels.
+ * @author Elvira Grubb
+ */
 public class WorldMaps {
-
+    /**
+     * Constructor that initializes the world map for a given world.
+     * This constructor is meant to load the necessary files based on the world parameter.
+     *
+     * @param world The world identifier (an integer that determines which world map to load).
+     */
     public WorldMaps(int world){
         //file to load
     }
 
+    /**
+     * Gets the 2D integer array representing levels.
+     *
+     * @return A 2D integer array representing the map for levels.
+     */
     private int[][] level1 = {{}};
 
     private int[][] level2 = {{}};

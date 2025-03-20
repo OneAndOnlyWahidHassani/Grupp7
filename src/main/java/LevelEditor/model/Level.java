@@ -1,7 +1,12 @@
 package LevelEditor.model;
 
 import LevelEditor.controller.MainLE;
-
+/**
+ * Represents a level in the level editor.
+ * Stores information such as the level's name, theme, and dimensions.
+ *
+ * @author Alanah Öster berg Coleman
+ */
 public class Level {
 
     private MainLE mainLE;
@@ -9,40 +14,60 @@ public class Level {
     private String theme;
     private String dimension;
 
-
+    /**
+     * Constructs a Level instance with a reference to the main level editor controller.
+     *
+     * @param mainLE the main level editor controller
+     * @author Alanah Öster berg Coleman
+     */
     public Level(MainLE mainLE) {
         this.mainLE = mainLE;
     }
 
     /**
-     * Sätter namnet på banan.
+     * Sets the name of the level.
+     *
+     * @param levelName the name of the level
+     * @author Alanah Öster berg Coleman
      */
     public void setLevelName(String levelName) {
         this.levelName = levelName;
     }
 
     /**
-     * Hämtar namnet på banan.
+     * Retrieves the name of the level.
+     *
+     * @return the level name
+     * @author Alanah Öster berg Coleman
      */
     public String getLevelName() {
         return levelName;
     }
 
     /**
-     * Sätter temat för banan.
+     * Sets the theme for the level.
+     *
+     * @param theme the theme of the level
+     * @author Alanah Öster berg Coleman
      */
     public void setTheme(String theme) {
         this.theme = theme;
     }
 
     /**
-     * Hämtar temat för banan.
+     * Retrieves the theme of the level.
+     *
+     * @return the level theme
+     * @author Alanah Öster berg Coleman
      */
     public String getTheme() {
         return theme;
     }
 
     /**
+     *  Retrieves an integer representation of the theme.
+     *  Each theme is mapped to a unique integer.
+     *  @return an integer representing the theme
      * @author Linus Sigurd
      */
     public int getThemeInt() {
@@ -63,14 +88,16 @@ public class Level {
     }
 
     /**
-     * Sätter storleken för banan.
+     * Sets the dimensions of the level.
+     * @author Alanah Öster berg Coleman
      */
     public void setDimension(String dimension) {
         this.dimension = dimension;
     }
 
     /**
-     * Hämtar storleken för banan.
+     * Retrieves the dimensions of the level.
+     * @author Alanah Öster berg Coleman
      */
     public String getDimension() {
         return dimension;

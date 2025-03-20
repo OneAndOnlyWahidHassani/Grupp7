@@ -11,8 +11,12 @@ import javafx.scene.layout.*;
 import javafx.util.Duration;
 import view.AudioPlayer;
 
+
 /**
- * @author Viktor Näslund
+ * The Help class represents a view that provides instructions or assistance to the user.
+ * It displays an animated image indicating that the user can interact with the help screen.
+ * The view transitions back to the main menu when clicked.
+ *
  */
 
 public class Help extends VBox {
@@ -21,9 +25,11 @@ public class Help extends VBox {
     private AudioPlayer audioPlayer;
 
     /**
-     * Konstruktor som skapar pressMouse-objektet för animation och tar emot mainProgram och audioPlayer
-     * @param mainProgram tas emot och instansvariabeln sätts
-     * @param audioPlayer tas emot och instansvariabeln sätts
+     * Constructor that initializes the help screen with the provided main program and audio player.
+     * It also sets up the background, animations, and event listeners for user interaction.
+     *
+     * @param mainProgram The main program managing the application's logic.
+     * @param audioPlayer The audio player used for sound effects.
      */
     public Help(MainProgram mainProgram, AudioPlayer audioPlayer){
         pressMouse = new Image("file:files/menuImages/helppicmouse.png");
@@ -34,9 +40,9 @@ public class Help extends VBox {
         pressMouseAnimation();
         addListener();
     }
-
     /**
-     * Metod som sätter bakgrundsbilden
+     * Sets the background image of the help screen.
+     * This method is called during initialization to provide a visual background for the help view.
      */
     public void setBackground(){
         BackgroundImage myBI= new BackgroundImage(new Image("file:files/menuImages/helppicnew.png",800,600,false,true),
@@ -46,7 +52,8 @@ public class Help extends VBox {
     }
 
     /**
-     * Metod som får pressMouseView-objektet att blinka genom en FadeTransition
+     * Adds a mouse click listener to the help screen. When the screen is clicked,
+     * it transitions to the main menu and plays a button sound.
      */
     public void pressMouseAnimation(){
         ImageView pressMouseView = new ImageView(pressMouse);

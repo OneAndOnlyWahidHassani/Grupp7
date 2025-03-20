@@ -9,7 +9,7 @@ import view.AudioPlayer;
 import java.io.FileNotFoundException;
 
 /**
- * @author Viktor Näslund, @author Elvira Grubb
+ * @author Viktor Näslund, @author Elvira Grubb @author Alanah  Österberg Coleman
  */
 
 public class Menu extends Pane {
@@ -51,6 +51,8 @@ public class Menu extends Pane {
 
     /**
      * Metod som länkar Image-objekten till png-filer
+     * @author Elvira Grubb
+     * @author Alanah Österberg Coleman
      */
     public void setupImages() {
         mazegen = new Image("file:files/texts/MazegenTitel.png", 800, 600, false, false);
@@ -81,6 +83,8 @@ public class Menu extends Pane {
     /**
      * Metod som lägger till klickbara ImageViews i scenen
      * Imageviews förstoras när man hovrar och byter scen när man klickar på dem
+     * @author Elvira Grubb
+     * @author Alanah Österberg Coleman
      */
     public void addButtons() {
         ImageView mazegenView = new ImageView(mazegen);

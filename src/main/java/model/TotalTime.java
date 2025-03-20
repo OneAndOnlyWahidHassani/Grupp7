@@ -1,7 +1,6 @@
 package model;
 
 /**
- * @author Sebastian Helin
  * Tråd som räknar den totala tiden det tog att spela
  */
 public class TotalTime extends Thread{

@@ -17,7 +17,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-
+/**
+ * The SetUp class is responsible for creating the UI for selecting level themes and dimensions.
+ * It includes interactive buttons for navigation and text fields for input.
+ * @author Alanah Öster berg Coleman
+ * @author Linus Sigurd
+ */
 public class SetUp extends Pane {
 
     private MainProgram mainProgram;
@@ -45,11 +50,11 @@ public class SetUp extends Pane {
 
 
     /**
-     * Konstruktor som tar emot mainProgram och audioPlayer och kör några metoder för att
-     * sätta bilder och knappar
+     * Constructor initializes the setup screen, setting images, buttons, and background.
      *
-     * @param mainProgram tas emot och instansvariabeln sätts
-     * @param audioPlayer tas emot och instansvariabeln sätts
+     * @param mainProgram The main program instance to manage scene transitions.
+     * @param audioPlayer The audio player instance for playing button sounds.
+     * @author Alanah Öster berg Coleman
      */
     public SetUp(MainProgram mainProgram, AudioPlayer audioPlayer) {
         this.mainProgram = mainProgram;
@@ -63,7 +68,8 @@ public class SetUp extends Pane {
     }
 
     /**
-     * Metod som länkar Image-objekten till png-filer
+     * Loads images used for buttons and themes.
+     * @author Alanah Öster berg Coleman
      */
     public void setupImages() {
         titel = new Image("file:files/texts/lvl.png", 300, 80, false, true);
@@ -97,7 +103,8 @@ public class SetUp extends Pane {
     }
 
     /**
-     * Metod som sätter bakgrundsbilden
+     * Sets the background image for the setup scene.
+     * @author Alanah Öster berg Coleman
      */
     public void setBackground() {
         BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg", 800, 600, false, true),
@@ -109,8 +116,11 @@ public class SetUp extends Pane {
 
 
     /**
-     * Metod som placerar bilderna som klickbara ImageViews i scenen med events för knapptryck och hovering.
-     * Bilderna förstoras när man hovrar över dem och scenen byts när man trycker på dem.
+     * Adds clickable image buttons to the scene with hover and click event handling.
+     * The images enlarge when hovered over and trigger scene changes when clicked.
+     * @author Alanah Öster berg Coleman
+     * @auhtor Linus Sigurd
+     * @auhtor Wahid Hassani
      */
     public void addButtons() {
 
@@ -315,29 +325,45 @@ public class SetUp extends Pane {
 
         getChildren().addAll(titelImageView, dimensionView, rDButtonView, lDButtonView, RButtonView, themeView, LButtonView, returnView, selectView);
     }
-
+    /**
+     * Navigates to the next dimension in the selection.
+     * @author Alanah Öster berg Coleman
+     */
     private void nextDimension() {
         currentDimensionIndex = (currentDimensionIndex + 1) % dimensions.length;
         dimensionView.setImage(dimensions[currentDimensionIndex]);
     }
-
+    /**
+     * Navigates to the previous dimension in the selection.
+     * @author Alanah Öster berg Coleman
+     */
     private void previousDimension() {
         currentDimensionIndex = (currentDimensionIndex - 1 + dimensions.length) % dimensions.length;
         dimensionView.setImage(dimensions[currentDimensionIndex]);
     }
 
-
+    /**
+     * Navigates to the next theme in the selection.
+     * @author Alanah Öster berg Coleman
+     */
     private void nextTheme() {
         currentThemeIndex = (currentThemeIndex + 1) % themes.length;
         themeView.setImage(themes[currentThemeIndex]);
     }
-
+    /**
+     * Navigates to the previous theme in the selection.
+     * @author Alanah Öster berg Coleman
+     */
     private void previousTheme() {
         currentThemeIndex = (currentThemeIndex - 1 + themes.length) % themes.length;
         themeView.setImage(themes[currentThemeIndex]);
     }
 
 
+    /**
+     * Adds text field for entering level names.
+     * @author Alanah Öster berg Coleman
+     */
     public void addTextField() {
         try {
             Font customFont = Font.loadFont(new FileInputStream("files/fonts/PressStart2P.ttf"), 20);
@@ -363,7 +389,10 @@ public class SetUp extends Pane {
             System.out.println("Fontfilen hittades inte!");
         }
     }
-
+    /**
+     * Adds titles to the setup screen.
+     * @author Alanah Öster berg Coleman
+     */
     public void addTitles() {
         try {
             Font customFont = Font.loadFont(new FileInputStream("files/fonts/PressStart2P.ttf"), 20);
@@ -386,7 +415,12 @@ public class SetUp extends Pane {
             System.out.println("Fontfilen hittades inte!");
         }
     }
-
+    /**
+     * Returns the MainLE instance used for level editing.
+     *
+     * @return The MainLE instance.
+     * @author Wahid Hassani
+     */
     public MainLE getMainLE() {
         return this.mainLE;
     }
