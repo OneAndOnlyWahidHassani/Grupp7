@@ -161,6 +161,9 @@ public class MainProgram extends Application {
      * Helper method that wraps a given Pane in a Group,
      * applies a fixed Scale transform, and returns a new Scene with a black background.
      */
+    /**
+     * @author Linus Sigurd
+     */
     private Scene createScaledScene(Pane rootPane) {
         Group group = new Group(rootPane);
         double sceneWidth = designWidth * scaleFactor;
@@ -170,7 +173,9 @@ public class MainProgram extends Application {
         group.getTransforms().add(scale);
         return scene;
     }
-
+    /**
+     * @author Linus Sigurd
+     */
     public void enterLevelEditor(int dimension, int themeInt) throws FileNotFoundException {
         // 1. Create a new BorderPane for the level editor.
         BorderPane levelEditorPane = new BorderPane();

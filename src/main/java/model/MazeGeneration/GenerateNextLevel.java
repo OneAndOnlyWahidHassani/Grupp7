@@ -41,6 +41,9 @@ public class GenerateNextLevel {
         this.mainPane = mainPane;
         this.rightPanel = rightPanel;
     }
+    /**
+     * @author Linus Sigurd
+     */
     public GenerateNextLevel(MainProgram mainProgram, BorderPane mainPane, MazeGenerator mazeGenerator, RightPanel rightPanel, int dimension, int themeInt){
         this.dimension = dimension;
         this.mazeGenerator = mazeGenerator;

@@ -200,6 +200,7 @@ public class MapTemplateLE extends GridPane {
     /**
      * En metod som skapar ett objekt av label som representerar en vägg.
      * @return Returnerar en label.
+     * @author Linus Sigurd
      */
     public Label getWall(String theme) {
         Label label = new Label();
@@ -215,6 +216,9 @@ public class MapTemplateLE extends GridPane {
         return label;
     }
 
+    /**
+     * @author Linus Sigurd
+     */
     private Label getBreakableWall(String theme) {
         Label breakableWallLabel = new Label();
         Image breakableWallImage = new Image("file:files/" + theme + "/breakableWall.png", squareSize, squareSize, false, false);
@@ -232,6 +236,7 @@ public class MapTemplateLE extends GridPane {
     /**
      * En metod som skapar ett objekt av label som representerar en väg.
      * @return Returnerar en label.
+     * @author Linus Sigurd
      */
     public Label getPath(String theme) {
         Label label = new Label();
@@ -251,6 +256,7 @@ public class MapTemplateLE extends GridPane {
     /**
      * En metod som skapar ett objekt av label som representerar en border.
      * @return Returnerar en label.
+     * @author Linus Sigurd
      */
     private Label getBorders(String theme) {
         Label label = new Label();
@@ -268,6 +274,7 @@ public class MapTemplateLE extends GridPane {
     /**
      * En metod som skapar ett objekt av label som representerar en förstörbar vägg.
      * @return Returnerar en label.
+     * @author Linus Sigurd
      */
     private Label getGoal(String theme) {
         Label label = new Label();
@@ -285,6 +292,7 @@ public class MapTemplateLE extends GridPane {
     /**
      * En metod som skapar ett objekt av label som representerar start.
      * @return Returnerar en label.
+     * @author Linus Sigurd
      */
     private Label getStart(String theme) {
         Label label = new Label();
@@ -302,6 +310,7 @@ public class MapTemplateLE extends GridPane {
     /**
      * En metod som skapar ett objekt av label som representerar en collectible.
      * @return Returnerar en label.
+     * @author Linus Sigurd
      */
     public Label addCollectible(String theme) {
         Label collectible = new Label();
@@ -322,6 +331,10 @@ public class MapTemplateLE extends GridPane {
         collectible.setOnDragDropped(e -> releaseOnLabel(e));
         return collectible;
     }
+
+    /**
+     * @author Linus Sigurd
+     */
     private Label addHeart(String theme) {
         Label heartLabel = new Label();
         Image heartImage = new Image("file:files/items/heart.png", squareSize, squareSize, false, false);
@@ -335,7 +348,9 @@ public class MapTemplateLE extends GridPane {
         heartLabel.setOnDragDropped(e -> releaseOnLabel(e));
         return heartLabel;
     }
-
+    /**
+     * @author Linus Sigurd
+     */
     private Label addPickaxe(String theme) {
         Label pickaxeLabel = new Label();
         Image pickaxeImage = new Image("file:files/items/pickaxe.png", squareSize, squareSize, false, false);
@@ -382,6 +397,9 @@ public class MapTemplateLE extends GridPane {
         fade.setToValue(10);
         fade.play();
     }
+    /**
+     * @author Linus Sigurd
+     */
     private void holdOnLabel(DragEvent e) {
 
         e.acceptTransferModes(TransferMode.COPY_OR_MOVE);
@@ -390,6 +408,9 @@ public class MapTemplateLE extends GridPane {
     }
 
 
+    /**
+     * @author Linus Sigurd
+     */
     private void releaseOnLabel(DragEvent e) {
         Dragboard db = e.getDragboard();
         boolean success = false;

@@ -42,6 +42,9 @@ public class Level {
         return theme;
     }
 
+    /**
+     * @author Linus Sigurd
+     */
     public int getThemeInt() {
         if (theme.equals("forest")) {
             return 0;

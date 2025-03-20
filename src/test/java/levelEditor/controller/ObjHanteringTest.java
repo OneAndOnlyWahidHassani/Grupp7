@@ -55,6 +55,7 @@ class ObjHanteringTest extends ApplicationTest {
     @Test
 /**
  * Testing opening an existing level in Level Editor.
+ * @author Linus Sigurd
  */ public void OBJ_1_1() {
 
     Path expectedFilePath = Paths.get("createdLevels/TestLevelNewName_Niv.dat");
@@ -101,6 +102,9 @@ class ObjHanteringTest extends ApplicationTest {
     assertTrue(Files.exists(expectedFilePath));
     }
 
+    /**
+     * @Author Linus Sigurd
+     */
     private Node getNodeByRowColumnIndex(int row, int col, GridPane gridPane) {
         for (Node node : gridPane.getChildren()) {
             // By default, getRowIndex() or getColumnIndex() can be null, so handle that

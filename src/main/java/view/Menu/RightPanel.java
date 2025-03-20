@@ -222,6 +222,9 @@ public class RightPanel extends Pane {
     }
 
     //rightPanel for leveleditor
+    /**
+     * @author Linus Sigurd
+     */
     public RightPanel(MainProgram mainProgram, AudioPlayer audioPlayer, int themeInt, MainLE mainLE) throws FileNotFoundException {
         this.mainProgram = mainProgram;
         this.audioPlayer = audioPlayer;
@@ -302,6 +305,9 @@ public class RightPanel extends Pane {
             return Font.font("Verdana", 20);
         }
     }
+    /**
+     * @author Linus Sigurd
+     */
     public String getThemeString() {
         switch (themeInt) {
             case 0:
@@ -320,7 +326,9 @@ public class RightPanel extends Pane {
                 return "forest";
         }
     }
-
+    /**
+     * @author Linus Sigurd
+     */
     public void setupObjectButtons() {
         String[] themes = {"forest", "lava", "underground", "cloud", "desert", "space"};
         int xStart = 50;
@@ -368,6 +376,9 @@ public class RightPanel extends Pane {
         }
     }
 
+    /**
+     * @author Linus Sigurd
+     */
     public void createPathButton(String theme, int x, int y, int v, int h) {
         pathImage = new Image("file:files/" + theme + "/path.png", v, h, false, false);
         pathView = new ImageView(pathImage);
@@ -382,7 +393,9 @@ public class RightPanel extends Pane {
         makeDraggable(pathLabel, pathImage, 1, theme);
         getChildren().add(pathLabel);
     }
-
+    /**
+     * @author Linus Sigurd
+     */
     public void createWallButton(String theme, int x, int y, int v, int h, int i) {
         wallImage = new Image("file:files/" + theme + "/wall.png", v, h, false, false);
         wallView = new ImageView(wallImage);
@@ -415,7 +428,9 @@ public class RightPanel extends Pane {
 
         getChildren().add(wallLabel);
     }
-
+    /**
+     * @author Linus Sigurd
+     */
     public void createBorderButton(String theme, int x, int y, int v, int h) {
         wallImage = new Image("file:files/" + theme + "/border.png", v, h, false, false);
         wallView = new ImageView(wallImage);
@@ -429,7 +444,9 @@ public class RightPanel extends Pane {
         makeDraggable(wallLabel, wallImage, 8, theme);
         getChildren().add(wallLabel);
     }
-
+    /**
+     * @author Linus Sigurd
+     */
     public void createCollectibleButton(String theme, int x, int y, int v, int h) {
         String collectibleType = getCollectibleType(theme);
 
@@ -465,7 +482,9 @@ public class RightPanel extends Pane {
                 return theme;
         }
     }
-
+    /**
+     * @author Linus Sigurd
+     */
     public void createStartButton(String theme, int x, int y, int v, int h) {
         startImage = new Image("file:files/" + theme + "/start.png", v, h, false, false);
         startView = new ImageView(startImage);
@@ -479,7 +498,9 @@ public class RightPanel extends Pane {
         makeDraggable(startLabel, startImage, 2, theme);
         getChildren().add(startLabel);
     }
-
+    /**
+     * @author Linus Sigurd
+     */
     public void createGoalButton(String theme, int x, int y, int v, int h) {
         goalImage = new Image("file:files/" + theme + "/goal.png", v, h, false, false);
         goalView = new ImageView(goalImage);
@@ -536,6 +557,9 @@ public class RightPanel extends Pane {
 
 
     //för att kunna dra objekten
+    /**
+     * @author Linus Sigurd
+     */
     public void makeDraggable(Label label, Image image, int type, String theme) {
         label.setOnDragDetected(event -> {
             Dragboard db = label.startDragAndDrop(TransferMode.COPY_OR_MOVE);

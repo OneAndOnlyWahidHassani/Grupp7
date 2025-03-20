@@ -156,6 +156,10 @@ class NivSkapandeTest extends ApplicationTest {
     }
 
     @Test
+    /**
+     * Testing random theme and that it's saved properly.
+     * @author Linus Sigurd
+     */
     public void NIVS_1_2_2() {
         Path expectedFilePath = Paths.get("createdLevels/TestLevel_Niv.dat");
         int worldsCLicks = random.nextInt(6) + 1;
@@ -195,6 +199,7 @@ class NivSkapandeTest extends ApplicationTest {
     }
     /**
      * Tests that all but 2 cells are  generated as PATH on a new level
+     * @author Linus Sigurd
      */
     @Test
     public void NIVS_1_4_1() {
@@ -230,6 +235,7 @@ class NivSkapandeTest extends ApplicationTest {
 
     /**
      * Tests that only one GOAL is generated on a new level
+     * @author Linus Sigurd
      */
     @Test
     public void NIVS_1_4_2() {
@@ -263,6 +269,7 @@ class NivSkapandeTest extends ApplicationTest {
 
     /**
      * Tests that only one START is generated on a new level
+     * @author Linus Sigurd
      */
     @Test
     public void NIVS_1_4_3() {
