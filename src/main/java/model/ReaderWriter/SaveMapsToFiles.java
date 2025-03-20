@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Klassen används enbart för att spara alla maps som dat. filer på nytt
  * Kan kallas på för att skriva om alla dat filer
+ * @author Elvira Grubb
  */
 public class SaveMapsToFiles {
     public SaveMapsToFiles() throws IOException {

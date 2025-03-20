@@ -45,6 +45,7 @@ class NewMenuButtonsTest extends ApplicationTest {
 
     /**
      * Testar om en CampaignScene har startat
+     * @author Elvira Grubb
      */
     @Test
     public void testCampaignButton()
@@ -59,6 +60,7 @@ class NewMenuButtonsTest extends ApplicationTest {
 
     /**
      * Testar om Randomizeknappen leder till rätt ställe
+     * @author Elvira Grubb
      */
     @Test
     public void testRandomizeButton()
@@ -72,6 +74,10 @@ class NewMenuButtonsTest extends ApplicationTest {
         sleep(500);
     }
 
+    /**
+     * Testar om helpknappen leder till rätt ställe
+     * @author Elvira Grubb
+     */
     @Test
     public void testHelpButton()
     {

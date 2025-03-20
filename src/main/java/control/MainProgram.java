@@ -330,6 +330,7 @@ public class MainProgram extends Application {
 
     /**
      * Switches to a specified campaign level.
+     * @author Elvira Grubb
      */
     public void changeToSpecifiedCampaign(int world, int level) {
         gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, world, level);
@@ -358,6 +359,7 @@ public class MainProgram extends Application {
 
     /**
      * Switches to the level selection scene.
+     * @author Elvira Grubb
      */
     public void selectLevelMap(int map) {
         selectLevel = new SelectLevel(this, audioPlayer, map);

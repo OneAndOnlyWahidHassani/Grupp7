@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
+ * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling, Elvira Grubb
  */
 
 public class World2Maps extends WorldMaps {

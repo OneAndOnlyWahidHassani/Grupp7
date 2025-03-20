@@ -10,7 +10,7 @@ public class World3Maps extends WorldMaps{
 
 
     /**
-     * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling
+     * @author André Eklund, Sebastian Helin, Viktor Näslund, Filip Örnling, Elvira Grubb
      */
     FileManager fileManager = new FileManager();
     private int[][] level1;

@@ -14,6 +14,9 @@ import java.util.ArrayList;
 
 import static javax.swing.text.StyleConstants.setAlignment;
 
+/**
+ * @author Elvira Grubb
+ */
 public class HighscoreView extends Pane{
     private MainProgram mainProgram;
     private Image selectLevel;
@@ -28,6 +31,7 @@ public class HighscoreView extends Pane{
 
 
     /**
+     * @author Elvira Grubb
      * Konstruktor som tar emot mainProgram och audioPlayer och kör några metoder för att
      * sätta bilder och knappar
      *
@@ -47,7 +51,8 @@ public class HighscoreView extends Pane{
     }
 
     /**
-     * Metod som länkar Image-objekten till png-filer
+     * Sätter labels och bilder i menyn
+     * @author Elvira Grubb
      */
     public void setupLabelsAndImages() {
         selectLevel = new Image("file:files/texts/HighscoreTitle.png", 800, 600, false, false);
@@ -72,6 +77,7 @@ public class HighscoreView extends Pane{
 
     /**
      * Metod som sätter bakgrundsbilden
+     * @author Elvira Grubb
      */
     public void setBackground() {
         BackgroundImage menuBackground = new BackgroundImage(new Image("file:files/MenuBackground.jpg", 800, 600, false, true),
@@ -83,6 +89,7 @@ public class HighscoreView extends Pane{
     /**
      * Metod som placerar bilderna som klickbara ImageViews i scenen med events för knapptryck och hovering.
      * Bilderna förstoras när man hovrar över dem och scenen byts när man trycker på dem.
+     * @author Elvira Grubb
      */
     public void addButtons() {
         ImageView dimensionView = new ImageView(selectLevel);

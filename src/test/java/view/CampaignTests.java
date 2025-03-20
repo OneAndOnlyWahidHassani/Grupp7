@@ -47,6 +47,7 @@ class CampaignTests extends ApplicationTest {
      * Testar om det går att stänga av musiken
      * Testar dock inte om musiken faktiskt stängs av, utan testar om
      * musiknappens ikon ändras
+     * @author Elvira Grubb
      */
     @Test
     public void testTurnoffSound(){
@@ -68,6 +69,7 @@ class CampaignTests extends ApplicationTest {
     /**
      * Testar om man förlorar ett liv när man kolliderar med en vägg genom att
      * checka att bilden till liven ändras
+     * @author Elvira Grubb
      */
     @Test
     public void testLoseOneLife(){
@@ -93,6 +95,7 @@ class CampaignTests extends ApplicationTest {
      * genom att cheka att GameOver animationen existerar
      * Checkar också att användaren kan komma tillbaka till menyn efter
      * game over
+     * @author Elvira Grubb
      */
     @Test
     public void testGameOverWhenLosingThreeLives(){

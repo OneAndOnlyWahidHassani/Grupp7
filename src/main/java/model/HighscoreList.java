@@ -2,6 +2,9 @@ package model;
 
 import java.io.*;
 
+/**
+ * @author Elvira Grubb
+ */
 public class HighscoreList {
     int[] highscoreListScores;
     String[] highscoreListNames;

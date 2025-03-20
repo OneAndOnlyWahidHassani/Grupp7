@@ -9,7 +9,7 @@ import view.AudioPlayer;
 import java.io.FileNotFoundException;
 
 /**
- * @author Viktor Näslund
+ * @author Viktor Näslund, @author Elvira Grubb
  */
 
 public class Menu extends Pane {

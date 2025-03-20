@@ -46,6 +46,7 @@ class RandomizeTests extends ApplicationTest {
 
     /**
      * Testar om Randomize funktionen skapar en map
+     * @author Elvira Grubb
      */
     @Test
     public void testRandomizeFunction()

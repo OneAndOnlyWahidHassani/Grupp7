@@ -8,6 +8,9 @@ import view.AudioPlayer;
 
 import java.io.IOException;
 
+/**
+ * @author Elvira Grubb
+ */
 public class SelectLevel extends Pane{
     private MainProgram mainProgram;
     private Image selectLevel;
