@@ -21,6 +21,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The GameController class is responsible for managing the game state and logic.
+ * It handles the game clock, player actions, and game over conditions.
+ * The class also manages the game audio, collectibles, and level transitions.
+ * The GameController class is used in the main game loop to control the game state.
+ * The class is also used in the level editor to manage the game state and logic.
+ * @author Kasper Svenlin, Elvira Grubb, Wahid Hassani
+ */
+
 public class GameController {
     private MainProgram mainProgram;
     private WorldMaps worldMaps;
@@ -47,6 +56,18 @@ public class GameController {
     private TotalTime totTime;
     private boolean totalTimeStarted = false;
 
+    /**
+     * Constructor for the GameController class.
+     * Initializes the game controller with the main program, right panel, audio player, game over screen, and main pane.
+     * @param mainProgram
+     * @param rightPanel
+     * @param audioPlayer
+     * @param gameOverScreen
+     * @param mainPaneCampaign
+     * @param world
+     * @param level
+     * @author Elvira Grubb
+     */
 
     public GameController(MainProgram mainProgram, RightPanel rightPanel, AudioPlayer audioPlayer, GameOverScreen gameOverScreen, BorderPane mainPaneCampaign, int world, int level) {
         this.mainProgram = mainProgram;
@@ -61,6 +82,21 @@ public class GameController {
         this.level = level;
         heartCrystals = 3;
     }
+
+    /**
+     * Constructor for the GameController class.
+     * Initializes the game controller with the main program, right panel, audio player, game over screen, and main pane and more flexible settings for the leveleditor.
+     * @param mainProgram
+     * @param rightPanel
+     * @param audioPlayer
+     * @param gameOverScreen
+     * @param customLevelPane
+     * @param level
+     * @param heartCrystals
+     * @param time
+     * @param themeInt
+     * @author Wahid Hassani
+     */
 
     public GameController(MainProgram mainProgram, RightPanel rightPanel, AudioPlayer audioPlayer, GameOverScreen gameOverScreen, BorderPane customLevelPane, int level, int heartCrystals, int time, int themeInt) {
         this.mainProgram = mainProgram;
@@ -78,6 +114,12 @@ public class GameController {
 
     }
 
+    /**
+     * This method initializes the game over screen and other logic related to ending the game.
+     * It plays the game over sound, stops the music, pauses the clock, and sets the game state to game over.
+     * @author Elvira Grubb
+     */
+
     public void gameOver() {
         gameOverScreen = new GameOverScreen(mainProgram);
         mainPaneCampaign.getChildren().add(gameOverScreen);
@@ -91,6 +133,13 @@ public class GameController {
         rightPanel.removePickaxe();
     }
 
+    /**
+     * This method is used to change levels in the campaign mode.
+     * @param world
+     * @param level
+     * @author Elvira Grubb
+     */
+
     public void campaignLevelManager(int world, int level) {
         rightPanel.changeLevelCounter(String.valueOf(world * 10 + level));
         mainPaneCampaign.setCenter(worldTemplate);
@@ -98,6 +147,18 @@ public class GameController {
             setUpNewWorldAnimation();
         }
     }
+
+    /**
+     * This method is used to manage the campaign world.
+     * It sets the world maps, seconds, and world template based on the world number.
+     * It then sets up the level based on the level number and calls the campaign level manager.
+     * @throws FileNotFoundException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @author Elvira Grubb
+     */
+
     public void campaignWorldManager() throws FileNotFoundException, InterruptedException, IOException, ClassNotFoundException {
         worldMaps = new WorldMaps(world);
         worldTemplate = new WorldTemplate();
@@ -137,6 +198,17 @@ public class GameController {
         campaignLevelManager(world, level);
     }
 
+    /**
+     * This method sets up the level based on the level number.
+     * It returns the level array based on the level number.
+     * @param level
+     * @return levelArray
+     * @throws FileNotFoundException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @author Elvira Grubb
+     */
 
     public int[][] setUpLevel(int level) throws FileNotFoundException, InterruptedException, IOException, ClassNotFoundException {
         int[][] levelArray;
@@ -165,6 +237,16 @@ public class GameController {
         return levelArray;
     }
 
+    /**
+     * This method is used to increment the level.
+     * It sets the level array based on the level number and returns the level array.
+     * @throws FileNotFoundException
+     * @throws InterruptedException
+     * @throws IOException
+     * @throws ClassNotFoundException
+     * @author Elvira Grubb
+     */
+
     public void nextLevel() throws FileNotFoundException, InterruptedException, IOException, ClassNotFoundException {
         if (level >= 5) {
             world++;
@@ -174,9 +256,22 @@ public class GameController {
         }
         campaignWorldManager();
     }
+
+    /**
+     * This method is sets the up an animation in the beginning of a new world.
+     * @author Elvira Grubb
+     */
+
     public void setUpNewWorldAnimation(){
         worldTemplate.setNewWorldAnimation(mainPaneCampaign, world);
     }
+
+
+    /**
+     * This method is used when the mouse has entered a ghost.
+     * @param e
+     * @author Elvira Grubb
+     */
 
     public void enteredGhost(MouseEvent e) {
         ImageView view = (ImageView) e.getSource();
@@ -198,6 +293,13 @@ public class GameController {
             startButtonPressed = false;
         }
     }
+
+    /**
+     * This method is used when the mouse has entered a heart crystal.
+     * @param e
+     * @author Elvira Grubb
+     */
+
     public void heartCrystalObtained(MouseEvent e) {
         Label label = (Label)e.getSource();
 
@@ -210,6 +312,13 @@ public class GameController {
             }
         }
     }
+
+    /**
+     * This method is used when the mouse has entered a wall.
+     * @param e
+     * @author Elvira Grubb
+     */
+
     public void enteredWall(MouseEvent e) {
         Label label = (Label)e.getSource();
         FadeTransition fade = new FadeTransition();
@@ -231,6 +340,13 @@ public class GameController {
             startButtonPressed = false;
         }
     }
+
+    /**
+     * This method is used when the mouse has entered a goal.
+     * @throws InterruptedException, IOException, ClassNotFoundException
+     * @author Elvira Grubb
+     */
+
     public void enteredGoal() throws  InterruptedException, IOException, ClassNotFoundException {
         if (startButtonPressed && allCollectiblesObtained) {
             audioPlayer.stopClockSound();
@@ -244,6 +360,14 @@ public class GameController {
             allCollectiblesObtained = false;
         }
     }
+
+    /**
+     * This method starts the level and is called when the has clicked on a certain label, the start label.
+     * It starts the total timer and the level timer. It also starts the game if it has not been started before.
+     * If the start button has not been clicked once, it will start the level timer. It also plays the start sound.
+     * @author Elvira Grubb
+     */
+
     public void startLevel() {
         if (!totalTimeStarted){
             rightPanel.startTotalTimer();
@@ -269,6 +393,13 @@ public class GameController {
         startButtonPressed = true;
     }
 
+    /**
+     * This method is used to start a level from the level editor. It is not implemented in this version but if refactored it would be used to start a level from the level editor.
+     * @param customMapTemplate
+     * @author Wahid Hassani
+     */
+
+
     public void startLevelFromLevelEditor(MapTemplate customMapTemplate) {
         if (customMapTemplate != null) {
             mainPaneCampaign.setCenter(customMapTemplate);
@@ -293,6 +424,13 @@ public class GameController {
         audioPlayer.playStartSound();
         startButtonPressed = true;
     }
+
+    /**
+     * This is called when the mouse has entered a breakable wall.
+     * @param e
+     * @author Elvira Grubb
+     */
+
     public void enteredBreakableWall(MouseEvent e) {
 
         Label label = (Label)e.getSource();
@@ -312,6 +450,13 @@ public class GameController {
             }
         }
     }
+
+    /**
+     * This class is responsible for handling mouse events in the game.
+     * It is used to handle mouse events such as clicking on collectibles and pickaxes.
+     * @author Elvira Grubb
+     */
+
     private class MouseListener implements EventHandler<MouseEvent> {
 
         @Override
@@ -346,46 +491,112 @@ public class GameController {
         }
     }
 
+    /**
+     * This method is used to get the enemy controller.
+     * @return EnemyController
+     * @author Elvira Grubb
+     */
+
     public EnemyController getEnemyController() {
         return enemyController;
     }
+
+    /**
+     * This method is used to get the seconds.
+     * @return int seconds
+     * @author Elvira Grubb
+     */
 
     public int getSeconds() {
         return seconds;
     }
 
+    /**
+     * This method is used to get the heart crystals.
+     * @return int heartCrystals
+     * @author Elvira Grubb
+     */
+
     public int getHeartCrystals() {
         return heartCrystals;
     }
+
+    /**
+     * This method is used to get the world.
+     * @return int world
+     * @author Elvira Grubb
+     */
 
     public int getWorld() {
         return world;
     }
 
+    /**
+     * This method is used to get the level.
+     * @return int level
+     * @author Elvira Grubb
+     */
+
     public int getLevel() {
         return level;
     }
+
+    /**
+     * Returns the audio player.
+     * @return AudioPlayer
+     * @author Elvira Grubb
+     */
 
     public AudioPlayer getAudioPlayer() {
         return audioPlayer;
     }
 
+    /**
+     * Returns the right panel.
+     * @return RightPanel rightPanel
+     * @author Elvira Grubb
+     */
+
     public RightPanel getRightPanel() {
         return rightPanel;
     }
 
+    /**
+     * Returns the mouse listener.
+     * @return MouseListener mouseListener
+     * @author Elvira Grubb
+     */
 
     public MouseListener getMouseListener() {
         return mouseListener;
     }
 
+    /**
+     * Returns the collectibles.
+     * @return ArrayList<Label> collectibles
+     * @author Elvira Grubb
+     */
+
     public ArrayList<Label> getCollectibles() {
         return collectibles;
     }
 
+    /**
+     * Returns the pickaxes.
+     * @return ArrayList<Label> pickaxes
+     * @author Elvira Grubb
+     */
+
     public ArrayList<Label> getPickaxes() {
         return pickaxes;
     }
+
+    /**
+     * Sets the time.
+     * @param time
+     * @author Wahid Hassani
+     */
+
     public void setTime(TimeThread time) {
         this.time = time;
     }
