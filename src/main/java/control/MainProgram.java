@@ -34,6 +34,7 @@ import java.util.Arrays;
 
 /**
  * Updated MainProgram implementing a scalable UI with a special layout for the Level Editor.
+ * @author Wahid Hassani, Linus Sigurd, Elvira Grubb, Alanah Coleman, Kasper Svenlin , Viktor Näslund, André Eklund
  */
 public class MainProgram extends Application {
 
@@ -81,6 +82,14 @@ public class MainProgram extends Application {
 
     // Scale factor for the main UI scenes.
     private double scaleFactor = 1.2;
+
+
+    /**
+     * Main method that starts the application.
+     * @param primaryStage
+     * @throws Exception
+     * @author Linus Sigurd, Alanah Coleman, Wahid Hassani, Elvira Grubb,  Kasper Svenlin, Viktor Näslund, André Eklund
+     */
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -175,7 +184,9 @@ public class MainProgram extends Application {
         return scene;
     }
     /**
+     * Switches to the level editor scene.
      * @author Linus Sigurd
+     * @edit Wahid Hassani
      */
     public void enterLevelEditor(int dimension, int themeInt) throws FileNotFoundException {
         // 1. Create a new BorderPane for the level editor.
@@ -229,7 +240,16 @@ public class MainProgram extends Application {
         // 10. Finally, show this scene in your primary stage/window.
         mainWindow.setScene(levelEditorScene);
     }
-//TODO fix this
+
+    /**
+     * Switches to the level editor scene with a specified maze.
+     * @param maze the maze to edit
+     * @param dimension the size of the maze
+     * @param themeInt the theme of the maze
+     * @throws FileNotFoundException if there is an issue loading the maze files
+     * @author Wahid Hassani
+     */
+
     public void enterLevelEditorFromEdit(int[][] maze, int dimension, int themeInt) throws FileNotFoundException {
         System.out.println("Maze vid enterLevelEditorFromEdit:" + Arrays.deepToString(maze));
         BorderPane levelEditorPane = new BorderPane();
@@ -283,6 +303,17 @@ public class MainProgram extends Application {
         mainWindow.setScene(levelEditorScene);
     }
 
+    /**
+     * Starts a test level with the specified parameters.
+     * @param themeInt
+     * @param dimension
+     * @param maze
+     * @param seconds
+     * @param lives
+     * @return true if the test level was started successfully, false otherwise
+     * @author Wahid Hassani
+     */
+
     public boolean startTestLevel(int themeInt, int dimension, int[][] maze, int seconds, int lives) {
         BorderPane testLevelPane = new BorderPane();
 
@@ -331,22 +362,43 @@ public class MainProgram extends Application {
 
     /**
      * Switches to the menu scene.
+     * @author Linus Sigurd
      */
     public void changeToMenu() {
         mainWindow.setScene(menuScene);
     }
 
+    /**
+     * Switches to the LevelEditor scene.
+     * @author Alanah Coleman
+     */
+
     public void changeToLevelEditor() {
         setDimensionLevelEditor();
     }
+
+    /**
+     * Sets dimension for the LevelEditor scene.
+     * @author Alanah Coleman
+     */
 
     public void setDimensionLevelEditor() {
         mainWindow.setScene(LEScene);
     }
 
+    /**
+     * Sets scene to the LevelEditor menu.
+     * @author Alanah Coleman
+     */
+
     public void setDimensionLevelEditormenu() {
         mainWindow.setScene(menuLEScene);
     }
+
+    /**
+     * Sets dimension to LevelEditor menu .
+     * @author Alanah Coleman
+     */
 
     public void changeToLevelEditorMenu() {
         setDimensionLevelEditormenu();
@@ -368,6 +420,7 @@ public class MainProgram extends Application {
 
     /**
      * Switches to the Campaign scene.
+     * @Kasper Svenlin, Elvira Grubb
      */
     public void changeToCampaign() {
         gameController = new GameController(this, rightPanel, audioPlayer, gameOverScreen, mainPaneCampaign, 1, 1);
@@ -379,6 +432,11 @@ public class MainProgram extends Application {
         mainWindow.setScene(campaignScene);
         gameController.setUpNewWorldAnimation();
     }
+
+    /**
+     * Returns the GameController.
+     * @return gameController
+     */
 
     public GameController getCampaignController() {
         return gameController;
@@ -437,20 +495,51 @@ public class MainProgram extends Application {
         mainWindow.setScene(highscoreScene);
     }
 
+    /**
+     * Returns the right panel.
+     * @return rightPanel
+     * @author Elvira Grubb
+     */
+
     public RightPanel getRightPanel()
     {
         return rightPanel;
     }
 
+    /**
+     * Returns the SetUp class
+     * @return SetUp
+     * @author Linus Sigurd
+     */
+
     public SetUp getSetUp() {
         return setUp;
     }
+
+    /**
+     * Returns the MazeGenerator.
+     * @return mazeGenerator
+     * @author Linus Sigurd
+     */
+
     public MazeGenerator getMazeGenerator() {
         return this.mazeGenerator;
     }
+
+    /**
+     * returns the MapTemplateLE.
+     * @return mapTemplateLE
+     * @author Linus Sigurd
+     */
+
     public MapTemplateLE getMapTemplateLE() {
         return this.mapTemplateLE;
     }
+
+    /**
+     * Starts the application.
+     * @param args
+     */
 
     public static void main(String[] args) {
         launch(args);
