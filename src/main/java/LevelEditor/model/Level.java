@@ -8,7 +8,7 @@ public class Level {
     private String levelName;
     private String theme;
     private String dimension;
-
+    private int lives = 3;
 
     public Level(MainLE mainLE) {
         this.mainLE = mainLE;
@@ -71,7 +71,16 @@ public class Level {
     public String getDimension() {
         return dimension;
     }
-
-
+    public void setLives(int lives) {
+        if (lives < 1) {
+            this.lives = 1;
+        } else if (lives > 3) {
+        } else {
+            this.lives = lives;
+        }
+    }
+        public int getLives() {
+        return lives;
+        }
 }
 
