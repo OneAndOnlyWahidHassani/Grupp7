@@ -53,12 +53,11 @@ public class GenerateNextLevel {
      * @param mainProgram  The main program object responsible for handling game logic.
      * @param mainPane     The main BorderPane layout of the game.
      * @param mazeGenerator The maze generator object that generates new mazes.
-     * @param rightPanel   The right panel showing information such as lives, time, level, etc.
      * @param dimension    The size of the maze to be generated.
      * @param themeInt     The integer representing the current theme for the level.
      * @author Linus Sigurd
      */
-    public GenerateNextLevel(MainProgram mainProgram, BorderPane mainPane, MazeGenerator mazeGenerator, RightPanel rightPanel, int dimension, int themeInt){
+    public GenerateNextLevel(MainProgram mainProgram, BorderPane mainPane, MazeGenerator mazeGenerator, int dimension, int themeInt){
         this.dimension = dimension;
         this.mazeGenerator = mazeGenerator;
         this.mainProgram = mainProgram;

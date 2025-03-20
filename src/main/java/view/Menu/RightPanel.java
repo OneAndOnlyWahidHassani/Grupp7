@@ -507,7 +507,7 @@ public class RightPanel extends Pane {
     public void createWallButton(String theme, int x, int y, int v, int h) {
         wallImage = new Image("file:files/" + theme + "/wall.png", v, h, false, false);
         wallView = new ImageView(wallImage);
-        wallLabel = new Label("wallLabel" + i);
+        wallLabel = new Label("wallLabel");
         wallLabel.setGraphic(wallView);
         wallLabel.setLayoutX(x);
         wallLabel.setLayoutY(y);
