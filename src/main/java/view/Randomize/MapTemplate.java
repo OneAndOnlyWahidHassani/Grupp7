@@ -1,6 +1,7 @@
 package view.Randomize;
 
 
+import control.GameController;
 import model.MazeGeneration.GenerateNextLevel;
 import control.MainProgram;
 import javafx.animation.FadeTransition;
@@ -16,6 +17,8 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.shape.Polyline;
 import javafx.util.Duration;
 import javafx.scene.media.Media;
+import model.TimeThread;
+import view.AudioPlayer;
 import view.Menu.RightPanel;
 
 import java.io.File;
@@ -32,13 +35,19 @@ public class MapTemplate extends GridPane {
 
     private MainProgram mainProgram;
     private GenerateNextLevel generateNextLevel;
+    private GameController controller;
+    private RightPanel rightPanel;
     private int[][] level;
+    private int themeInt;
     private ArrayList<Label> collectibles = new ArrayList<>();
     private MouseListener mouseListener = new MouseListener();
+    private AudioPlayer audioPlayer;
 
     private boolean startButtonPressed;
     private boolean allCollectiblesObtained;
     private int collectiblesObtained = 0;
+    private boolean pickaxeObtained;
+    private ArrayList<Label> pickaxes = new ArrayList<>();
     private int squareSize;;
 
     private Image wall;
@@ -47,6 +56,7 @@ public class MapTemplate extends GridPane {
     private Image goal;
     private Image diamond;
     private Image start;
+    private int heartCrystals;
 
     private File diamondSound = new File("files/sounds/Diamond1.mp3");
     private Media diamondMedia = new Media(diamondSound.toURI().toString());
@@ -65,6 +75,13 @@ public class MapTemplate extends GridPane {
     private Media goalMedia = new Media(goalSound.toURI().toString());
     private MediaPlayer goalPlayer = new MediaPlayer(goalMedia);
 
+    private int seconds;
+    private boolean totalTimeStarted = false;
+    private boolean gameStarted;
+    private TimeThread time;
+    private boolean startNotClickedOnce;
+    private boolean wallDestroyed;
+
 
     /**
      * Konstruktorn ska kunna ta emot int-arrayer och representera dem i GUIt
@@ -79,6 +96,26 @@ public class MapTemplate extends GridPane {
         setupImages(new Random().nextInt(6));
         setupBorders();
         setupLevel();
+    }
+
+    public MapTemplate (int[][] maze, MainProgram mainProgram, GameController gameController, GenerateNextLevel generateNextLevel, int themeInt) throws FileNotFoundException {
+        this.mainProgram = mainProgram;
+        this.level = maze;
+        squareSize = 600/(level.length+2);
+        this.generateNextLevel = generateNextLevel;
+        this.themeInt = themeInt;
+        this.controller = gameController;
+        this.seconds = gameController.getSeconds();
+        this.heartCrystals = gameController.getHeartCrystals();
+        this.rightPanel = gameController.getRightPanel();
+        this.audioPlayer = gameController.getAudioPlayer();
+        rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+        setBackground();
+        setupImages(themeInt);
+        setupBorders();
+        setupLevelforEdited();
+        rightPanel.setSTARTTIME(seconds);
+        rightPanel.resetTimerLabel();
     }
     /**
      * Sätter bakgrunden i fönstret.
@@ -130,6 +167,59 @@ public class MapTemplate extends GridPane {
                     add(getGoal(),j + 1,i + 1);
                 }
             }
+        }
+    }
+
+    public void setupLevelforEdited() {
+        for (int i = 0; i < level.length; i++) {
+            for (int j = 0; j < level.length; j++) {
+                switch (level[i][j]) {
+                    case 0:
+                        add(getWallforEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        break;
+                    case 1:
+                        add(getPathForEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        break;
+                    case 2:
+                        add(getStartForEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        break;
+                    case 3:
+                        add(getGoalForEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        break;
+                    case 4:
+                        add(getPathForEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        add(addCollectibleForEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        break;
+                    case 5:
+                        add(getPathForEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        add(addHeartForEdited(), j + 1, i + 1);
+                        break;
+                    case 6:
+                        add(getPathForEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        add(addPickaxeForEdited(), j + 1, i + 1);
+                        break;
+                    case 7:
+                        add(getBreakableWallForEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        break;
+                    case 8:
+                        add(getBordersForEdited(getThemeString(themeInt)), j + 1, i + 1);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    private String getThemeString(int themeInt) {
+        switch (themeInt) {
+            case 0: return "forest";
+            case 1: return "lava";
+            case 2: return "underground";
+            case 3: return "cloud";
+            case 4: return "desert";
+            case 5: return "space";
+            default: return "forest";
         }
     }
     /**
@@ -185,6 +275,18 @@ public class MapTemplate extends GridPane {
         label.setOnMouseExited(e -> exitedLabel(e));
         return label;
     }
+
+    public Label getWallforEdited(String theme) {
+        Label label = new Label();
+        Image wallImage = new Image("file:files/" + theme + "/wall.png", squareSize, squareSize, false, false);
+        ImageView wallView = new ImageView(wallImage);
+        wallView.setFitHeight(squareSize);
+        wallView.setFitWidth(squareSize);
+        label.setGraphic(wallView);
+        label.setOnMouseEntered(e -> enteredWallForEdited(e));
+        label.setOnMouseExited(e -> exitedLabel(e));
+        return label;
+    }
     /**
      * En metod som skapar ett objekt av label som representerar en väg.
      * @return Returnerar en label.
@@ -192,6 +294,16 @@ public class MapTemplate extends GridPane {
     private Label getPath() {
         Label label = new Label();
         ImageView pathView = new ImageView(path);
+        pathView.setFitHeight(squareSize);
+        pathView.setFitWidth(squareSize);
+        label.setGraphic(pathView);
+        return label;
+    }
+
+    public Label getPathForEdited(String theme) {
+        Label label = new Label();
+        Image pathImage = new Image("file:files/" + theme + "/path.png", squareSize, squareSize, false, false);
+        ImageView pathView = new ImageView(pathImage);
         pathView.setFitHeight(squareSize);
         pathView.setFitWidth(squareSize);
         label.setGraphic(pathView);
@@ -208,6 +320,18 @@ public class MapTemplate extends GridPane {
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
         label.setOnMouseEntered(e -> enteredWall(e));
+        label.setOnMouseExited(e -> exitedLabel(e));
+        return label;
+    }
+
+    private Label getBordersForEdited(String theme) {
+        Label label = new Label();
+        Image borderImage = new Image("file:files/" + theme + "/border.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(borderImage);
+        borderView.setFitHeight(squareSize);
+        borderView.setFitWidth(squareSize);
+        label.setGraphic(borderView);
+        label.setOnMouseEntered(e -> enteredWallForEdited(e));
         label.setOnMouseExited(e -> exitedLabel(e));
         return label;
     }
@@ -230,6 +354,23 @@ public class MapTemplate extends GridPane {
         });
         return label;
     }
+
+    private Label getGoalForEdited(String theme) {
+        Label label = new Label();
+        Image goalImage = new Image("file:files/" + theme + "/goal.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(goalImage);
+        borderView.setFitHeight(squareSize);
+        borderView.setFitWidth(squareSize);
+        label.setGraphic(borderView);
+        label.setOnMouseEntered(e -> {
+            try {
+                enteredGoalFromEdit();
+            } catch (FileNotFoundException | InterruptedException fileNotFoundException) {
+                fileNotFoundException.printStackTrace();
+            }
+        });
+        return label;
+    }
     /**
      * En metod som skapar ett objekt av label som representerar start.
      * @return Returnerar en label.
@@ -241,6 +382,18 @@ public class MapTemplate extends GridPane {
         borderView.setFitWidth(squareSize);
         label.setGraphic(borderView);
         label.setOnMouseClicked(e -> startLevel());
+        return label;
+    }
+
+    private Label getStartForEdited(String theme) {
+        Label label = new Label();
+        Image startImage = new Image("file:files/" + theme + "/start.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(startImage);
+        borderView.setFitHeight(squareSize);
+        borderView.setFitWidth(squareSize);
+        label.setGraphic(borderView);
+        label.setOnMouseClicked(e -> startLevelFromEdited()
+        );
         return label;
     }
     /**
@@ -262,6 +415,78 @@ public class MapTemplate extends GridPane {
         return collectible;
     }
 
+    public Label addCollectibleForEdited(String theme) {
+        Label collectible = new Label();
+        Image diamond = new Image("file:files/" + theme + "/collectible.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(diamond);
+        borderView.setFitHeight(squareSize);
+        borderView.setFitWidth(squareSize);
+        Glow glow = new Glow();
+        glow.setLevel(0.7);
+        borderView.setEffect(glow);
+        collectible.setStyle("fx-background-color: transparent;");
+        collectible.setGraphic(borderView);
+        collectible.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener);
+        collectibles.add(collectible);
+        return collectible;
+    }
+
+    public Label addHeartForEdited() {
+        Label heartCrystal = new Label();
+        Image heartImage = new Image("file:files/items/heart.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(heartImage);
+        borderView.setFitHeight(squareSize);
+        borderView.setFitWidth(squareSize);
+        Glow glow = new Glow();
+        glow.setLevel(0.8);
+        borderView.setEffect(glow);
+        heartCrystal.setStyle("fx-background-color: transparent;");
+        heartCrystal.setGraphic(borderView);
+        heartCrystal.setOpacity(0.8);
+        heartCrystal.setOnMouseEntered(e -> heartCrystalObtained(e));
+        return heartCrystal;
+    }
+
+    public void heartCrystalObtained(MouseEvent e) {
+        Label label = (Label)e.getSource();
+
+        if (startButtonPressed) {
+            audioPlayer.playHeartSound();
+            label.setVisible(false);
+            if(heartCrystals<3){
+                heartCrystals++;
+                rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+            }
+        }
+    }
+
+    public Label addPickaxeForEdited() {
+        Label pickAxe = new Label();
+        Image pickaxeImage = new Image("file:files/items/pickaxe.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(pickaxeImage);
+        borderView.setFitHeight(squareSize);
+        borderView.setFitWidth(squareSize);
+        Glow glow = new Glow();
+        glow.setLevel(0.7);
+        borderView.setEffect(glow);
+        pickAxe.setStyle("fx-background-color: transparent;");
+        pickAxe.setGraphic(borderView);
+        pickAxe.addEventHandler(MouseEvent.MOUSE_ENTERED, mouseListener);
+        pickaxes.add(pickAxe);
+        return pickAxe;
+    }
+
+    private Label getBreakableWallForEdited(String theme) {
+        Label label = new Label();
+        Image breakableWallImage = new Image("file:files/" + theme + "/breakableWall.png", squareSize, squareSize, false, false);
+        ImageView borderView = new ImageView(breakableWallImage);
+        borderView.setFitHeight(squareSize);
+        borderView.setFitWidth(squareSize);
+        label.setGraphic(borderView);
+        label.setOnMouseEntered(e -> enteredBreakableWall(e));
+        return label;
+    }
+
     /**
      * Om spelaren vidrör muspekaren vid en vägg avslutas spelrundan.
      * @param e Används för att hitta rätt label.
@@ -281,6 +506,45 @@ public class MapTemplate extends GridPane {
             startButtonPressed = false;
         }
     }
+
+    public void enteredWallForEdited(MouseEvent e) {
+        Label label = (Label)e.getSource();
+        FadeTransition fade = new FadeTransition();
+        fade.setNode(label);
+        fade.setDuration(Duration.seconds(0.3));
+        fade.setFromValue(10);
+        fade.setToValue(0.6);
+        fade.play();
+
+        if (startButtonPressed) {
+
+            heartCrystals--;
+            rightPanel.changeHeartCounter(String.valueOf(heartCrystals));
+
+            if (heartCrystals == 0) {
+                controller.gameOver();
+            }
+            controller.getAudioPlayer().playDeathSound();
+            startButtonPressed = false;
+        }
+    }
+
+    public void enteredBreakableWall(MouseEvent e){
+    Label label = (Label) e.getSource();
+    ImageView pathView = new ImageView(new Image("file:files/" + getThemeString(themeInt) + "/path.png", squareSize, squareSize, false, false));
+
+        if (startButtonPressed) {
+            if (pickaxeObtained) {
+                label.setGraphic(pathView);
+                pickaxeObtained = false;
+                rightPanel.removePickaxe();
+                wallDestroyed = true;
+                audioPlayer.playBreakableWallSound();
+            } else if (!wallDestroyed) {
+                enteredWall(e);
+            }
+        }
+    }
     /**
      * Om spelrundan är aktiverad och spelaren har plockat upp alla collectibles startas nästa nivå.
      * @throws FileNotFoundException
@@ -293,12 +557,51 @@ public class MapTemplate extends GridPane {
             generateNextLevel.generateNewMaze();
         }
     }
+
+    public void enteredGoalFromEdit() throws FileNotFoundException, InterruptedException {
+        if(collectibles.isEmpty()){
+            allCollectiblesObtained = true;
+        }
+        if (startButtonPressed && allCollectiblesObtained) {
+            goalPlayer.play();
+            goalPlayer.seek(Duration.ZERO);
+            gameStarted = false;
+            controller.gameOver();
+        }
+    }
+
+
     /**
      * Startar spelrundan och timern.
      */
     public void startLevel() {
         startPlayer.play();
         startPlayer.seek(Duration.ZERO);
+        startButtonPressed = true;
+    }
+    public void startLevelFromEdited() {
+        if (!totalTimeStarted){
+            rightPanel.startTotalTimer();
+            rightPanel.setTimerIsStarted(true);
+        }
+        if (!gameStarted){
+            rightPanel.resumeClock();
+            gameStarted = true;
+            time = new TimeThread(seconds, rightPanel);
+            controller.setTime(time);
+            time.setGameOver(false);
+            time.start();
+
+        }else if (startNotClickedOnce){
+            rightPanel.runClock();
+            time = new TimeThread(seconds, rightPanel);
+            time.setGameOver(false);
+            time.start();
+
+        }
+        totalTimeStarted = true;
+        startNotClickedOnce = false;
+        audioPlayer.playStartSound();
         startButtonPressed = true;
     }
     /**
@@ -324,15 +627,30 @@ public class MapTemplate extends GridPane {
             if (startButtonPressed) {
                 diamondPlayer.play();
                 diamondPlayer.seek(Duration.ZERO);
-                for (Label label: collectibles) {
-                    if (e.getSource() == label) {
+                for (Label label : pickaxes){
+                    if (e.getSource()== label){
+                        audioPlayer.playPickAxeSound();
                         label.setVisible(false);
-                        collectiblesObtained++;
-                        if (collectiblesObtained == collectibles.size()) {
-                            allCollectiblesObtained = true;
-                        }
+                        pickaxeObtained = true;
+                        rightPanel.addPickaxe();
                     }
                 }
+                Label labelCheck = null;
+                for (Label label: collectibles) {
+                    if (e.getSource() == label) {
+                        audioPlayer.playCollectibleSound();
+                        label.setVisible(false);
+                        labelCheck = label;
+                        break;
+                    }
+                }
+                if(labelCheck != null){
+                    collectibles.remove(labelCheck);
+                    if(collectibles.isEmpty()){
+                        allCollectiblesObtained = true;
+                    }
+                }
+
             }
         }
     }

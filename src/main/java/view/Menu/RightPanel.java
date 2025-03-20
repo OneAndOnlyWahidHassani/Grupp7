@@ -3,6 +3,7 @@ package view.Menu;
 
 import LevelEditor.controller.MainLE;
 import LevelEditor.view.MapTemplateLE;
+import control.GameController;
 import control.MainProgram;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -72,7 +73,7 @@ public class RightPanel extends Pane {
     private Image emptySprite;
     private ImageView emptyView;
 
-    private static Integer STARTTIME = 15;
+    private static Integer STARTTIME = 0;
     private Timeline timeline = new Timeline();
     private Label timerLabel = new Label();
     private IntegerProperty timeSeconds = new SimpleIntegerProperty(STARTTIME);
@@ -88,6 +89,16 @@ public class RightPanel extends Pane {
     private ImageView wallView;
     private Label wallLabel;
     private int currentXPositionWall = 100;
+
+    // ====== Breakable Wall variables ======
+    private Image breakableWallImage;
+    private ImageView breakableWallView;
+    private Label breakableWallLabel;
+
+    // ====== Breakable Wall variables ======
+    private Image borderWallImage;
+    private ImageView borderWallView;
+    private Label borderWallLabel;
 
     // ====== Collectible variables ======
     private Image collectibleImage;
@@ -210,6 +221,93 @@ public class RightPanel extends Pane {
         }
 
 
+
+        soundLabel.setOnMouseClicked(e -> soundLabelClicked());
+        musicLabel.setOnMouseClicked(e -> musicLabelClicked());
+
+
+
+        menuView.setOnMouseClicked(e -> MainMenuClicked(e));
+
+        totTime = new TotalTime(false);
+    }
+
+    public RightPanel(MainProgram mainProgram, String gameMode, AudioPlayer audioPlayer, TimeThread time, GameController controller, int seconds) throws FileNotFoundException {
+        this.mainProgram = mainProgram;
+        this.gameMode = gameMode;
+        this.audioPlayer = audioPlayer;
+        this.time = time;
+        this.setId("campaignScene");
+
+        soundOn = true;
+        musicOn = true;
+
+        imageMenu = new Image("file:files/texts/Menu.png", 110, 30, false, false);
+        menuView = new ImageView(imageMenu);
+
+        emptySprite = new Image("file:files/emptySprite.png", 30, 30, false, false);
+        emptyView = new ImageView(emptySprite);
+
+        pickaxe = new Image("file:files/items/pickaxe.png", 30, 30, false, false);
+        pickaxeView = new ImageView(pickaxe);
+        pickaxeLabel = new Label();
+        pickaxeLabel.setGraphic(emptyView);
+
+        levelNumber = new Image("file:files/levelcounter/"+ gameMode +".png", 180, 60, false, false);
+        currentLevelView = new ImageView(levelNumber);
+        levelLabel = new Label();
+        levelLabel.setGraphic(currentLevelView);
+
+        soundImage = new Image("file:files/soundbuttons/soundon.png", 30,30,false,false);
+        soundView = new ImageView(soundImage);
+        soundLabel = new Label();
+        soundLabel.setGraphic(soundView);
+
+        musicImage = new Image("file:files/soundbuttons/musicon.png", 30,30,false,false);
+        musicView = new ImageView(musicImage);
+        musicLabel = new Label();
+        musicLabel.setGraphic(musicView);
+        setSTARTTIME(seconds);
+        timeSeconds = new SimpleIntegerProperty(STARTTIME);
+        timerLabel.textProperty().bind(timeSeconds.asString());
+        timerLabel.setTextFill(Color.WHITE);
+        timerLabel.setFont(font);
+
+        // Add everything to the Pane (absolute positioning)
+        getChildren().addAll(menuView, levelLabel, pickaxeLabel,
+                soundLabel, musicLabel);
+
+        // Position them with setLayoutX/Y:
+        menuView.setLayoutX(400);
+
+        // Example layout positions (adjust to taste)
+        levelLabel.setLayoutX(5);
+        levelLabel.setLayoutY(5);
+
+        pickaxeLabel.setLayoutX(10);
+        pickaxeLabel.setLayoutY(80);
+
+        soundLabel.setLayoutX(460);
+        soundLabel.setLayoutY(690);
+
+        musicLabel.setLayoutX(490);
+        musicLabel.setLayoutY(690);
+        musicLabel.setId("musicLabel");
+
+        timerLabel.setLayoutX(15);
+        timerLabel.setLayoutY(300);
+        getChildren().add(timerLabel);
+
+        if(gameMode!="Random"){
+            heart = new Image("file:files/hearts/3heart.png", 180, 60, false, false);
+            currentHeartView = new ImageView(heart);
+            heartLabel = new Label();
+            heartLabel.setGraphic(currentHeartView);
+            heartLabel.setId("heartLabel");
+            getChildren().add(heartLabel);
+            heartLabel.setLayoutX(15);
+            heartLabel.setLayoutY(120);
+        }
 
         soundLabel.setOnMouseClicked(e -> soundLabelClicked());
         musicLabel.setOnMouseClicked(e -> musicLabelClicked());
@@ -363,6 +461,7 @@ public class RightPanel extends Pane {
         x += columnSpacing;
 
         createGoalButton(theme, x, y, buttonWidth, buttonHeight);
+        x += columnSpacing;
 
         createBreakableWallButton(theme, x, y, buttonWidth, buttonHeight);
         y += rowHeight;
@@ -406,36 +505,46 @@ public class RightPanel extends Pane {
     }
 
     public void createBreakableWallButton(String theme, int x, int y, int v, int h) {
-        wallImage = new Image("file:files/" + theme + "/breakableWall.png", v, h, false, false);
+        switch (theme){
+            case "cloud":
+                createBreakableWall(theme, x, y, v, h);
+                break;
+            case "underground":
+                createBreakableWall(theme, x, y, v, h);
+                break;
+            default:
+                break;
+        }
 
-        wallView = new ImageView(wallImage);
-        wallLabel = new Label();
-        wallLabel.setGraphic(wallView);
-        wallLabel.setOnMouseEntered(e -> {
-            wallLabel.setTooltip(new Tooltip("Breakable Wall"));
+    }
+
+    private void createBreakableWall(String theme, int x, int y , int v, int h){
+        breakableWallImage = new Image("file:files/" + theme + "/breakableWall.png", v, h, false, false);
+
+        breakableWallView = new ImageView(breakableWallImage);
+        breakableWallLabel = new Label();
+        breakableWallLabel.setGraphic(breakableWallView);
+        breakableWallLabel.setOnMouseEntered(e -> {
+            breakableWallLabel.setTooltip(new Tooltip("Breakable Wall"));
         });
-
-        makeDraggable(wallLabel, wallImage, 7, theme);
-
-        wallLabel.setLayoutX(currentXPositionWall - 160);
-        wallLabel.setLayoutY(y);
-        currentXPositionWall += 37;
-
-        getChildren().add(wallLabel);
+        breakableWallLabel.setLayoutX(x);
+        breakableWallLabel.setLayoutY(y);
+        makeDraggable(breakableWallLabel, breakableWallImage, 7, theme);
+        getChildren().add(breakableWallLabel);
     }
 
     public void createBorderButton(String theme, int x, int y, int v, int h) {
-        wallImage = new Image("file:files/" + theme + "/border.png", v, h, false, false);
-        wallView = new ImageView(wallImage);
-        wallLabel = new Label();
-        wallLabel.setGraphic(wallView);
-        wallLabel.setLayoutX(x);
-        wallLabel.setLayoutY(y);
-        wallLabel.setOnMouseEntered(e -> {
-            wallLabel.setTooltip(new Tooltip("Border"));
+        borderWallImage = new Image("file:files/" + theme + "/border.png", v, h, false, false);
+        borderWallView = new ImageView(borderWallImage);
+        borderWallLabel = new Label();
+        borderWallLabel.setGraphic(borderWallView);
+        borderWallLabel.setLayoutX(x);
+        borderWallLabel.setLayoutY(y);
+        borderWallLabel.setOnMouseEntered(e -> {
+            borderWallLabel.setTooltip(new Tooltip("Border"));
         });
-        makeDraggable(wallLabel, wallImage, 8, theme);
-        getChildren().add(wallLabel);
+        makeDraggable(borderWallLabel, borderWallImage, 8, theme);
+        getChildren().add(borderWallLabel);
     }
 
     public void createCollectibleButton(String theme, int x, int y, int v, int h) {
@@ -705,7 +814,7 @@ public class RightPanel extends Pane {
      */
     public void startTotalTimer(){
         if (!timerIsStartedOnce)
-        totTime.start();
+            totTime.start();
     }
     /**
      * Startar en task för Game Over

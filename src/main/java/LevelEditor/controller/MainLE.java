@@ -106,7 +106,7 @@ public class MainLE {
             mazeGenerator = new MazeGenerator(mazeSize, true);
         }
 
-        return mainProgram.startTestLevel( getThemeInt(), mazeSize, mazeGenerator.getRawMazeArray());
+        return mainProgram.startTestLevel( getThemeInt(), mazeSize, mazeGenerator.getRawMazeArray(), 50, 3); //todo input seconds and heart from user
     }
 
 

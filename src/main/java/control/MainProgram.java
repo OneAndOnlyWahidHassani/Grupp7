@@ -21,6 +21,7 @@ import javafx.stage.WindowEvent;
 import model.HighscoreList;
 import model.MazeGeneration.GenerateNextLevel;
 import model.MazeGeneration.MazeGenerator;
+import model.TimeThread;
 import view.AudioPlayer;
 import view.GameOverScreen;
 import view.Menu.*;
@@ -277,7 +278,7 @@ public class MainProgram extends Application {
         mainWindow.setScene(levelEditorScene);
     }
 
-    public boolean startTestLevel(int themeInt, int dimension, int[][] maze) {
+    public boolean startTestLevel(int themeInt, int dimension, int[][] maze, int seconds, int lives) {
         BorderPane testLevelPane = new BorderPane();
 
         Pane testLevelContent = new Pane();
@@ -296,14 +297,22 @@ public class MainProgram extends Application {
 
             MazeGenerator mazeGenerator = new MazeGenerator(maze, false, true);
             GenerateNextLevel generateNextLevel = new GenerateNextLevel(this, testLevelPane, mazeGenerator, dimension, themeInt);
-            MapTemplateLE mapTemplate = new MapTemplateLE(maze, this, generateNextLevel, themeInt);
+
+            //todo lägg in level alltså maze direkt i din kontruktor för gamecontroller. I konrktorn skapa worldtemplate med vår maze och tema
+            //todo skapa även en rightpanel som ser ut som i campaign som har modifierats med indata från testrightpanel
+            RightPanel rightPanelforTestingLvl = new RightPanel(this, "LevelCustom", audioPlayer, null, null, seconds);
+            rightPanelforTestingLvl.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
+            rightPanelforTestingLvl.setPrefWidth(515);
+
+
+            gameController = new GameController(this, rightPanelforTestingLvl, audioPlayer, gameOverScreen, testLevelPane, 0 , lives, seconds, themeInt);
+
+            MapTemplate mapTemplate = new MapTemplate(maze, this, gameController, generateNextLevel, themeInt);
+
             testLevelGroup.getChildren().add(mapTemplate);
+            testLevelPane.setRight(rightPanelforTestingLvl);
 
-            RightPanel testLevelRightPanel = new RightPanel(this, audioPlayer, themeInt, setUp.getMainLE(), mapTemplate);
-            testLevelRightPanel.setPrefWidth(515);
-            testLevelRightPanel.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
-            testLevelPane.setRight(testLevelRightPanel);
-
+            //todo: fixa med tiden och liv. Den behöver indatan från levelEditorn.
             BorderPane.setAlignment(testLevelGroup, Pos.TOP_LEFT);
             testLevelPane.setCenter(testLevelGroup);
 
